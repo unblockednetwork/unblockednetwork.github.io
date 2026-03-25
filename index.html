@@ -3,258 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Unblocked Network</title>
+    <title>Games List</title>
     <style>
-        /* --- FONTS --- */
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
-
-        /* --- RESET --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: 'Inter', sans-serif;
-            min-height: 100vh;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #ffffff;
+            color: #000000;
         }
-
-        /* --- LAYOUT --- */
-        .wrapper {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 30px 20px;
-        }
-
-        /* --- HEADER --- */
-        header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 30px;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
         h1 {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #fff;
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            font-size: 24px;
+            margin-bottom: 20px;
         }
-
-        .badge {
-            background: #333;
-            color: #aaa;
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
         input {
-            background: #1e1e1e;
-            border: 1px solid #333;
-            padding: 12px 16px;
-            border-radius: 8px;
-            color: #fff;
+            padding: 8px;
+            margin-bottom: 20px;
             width: 300px;
-            font-family: inherit;
-            outline: none;
-            transition: border 0.2s;
+            border: 1px solid #ccc;
         }
-
-        input:focus {
-            border-color: #444;
+        ul {
+            list-style-type: none;
+            padding: 0;
+            border-top: 1px solid #eee;
         }
-
-        input::placeholder { color: #666; }
-
-        /* --- GRID --- */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 20px;
+        li {
+            border-bottom: 1px solid #eee;
         }
-
-        /* --- CARD --- */
-        .card {
-            background: #1e1e1e;
-            border-radius: 12px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-        }
-
-        .card-image {
-            width: 100%;
-            aspect-ratio: 16/9;
-            background: #2a2a2a;
-            object-fit: cover;
+        li a {
             display: block;
-            /* Smooth loading */
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .card-image.loaded {
-            opacity: 1;
-        }
-
-        .card-body {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-grow: 1;
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: #fff;
-            /* Ellipsis for long titles */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 85%;
-        }
-
-        .play-btn {
-            width: 32px;
-            height: 32px;
-            background: #fff;
-            color: #000;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            font-weight: bold;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.2s;
-            flex-shrink: 0;
-        }
-
-        .card:hover .play-btn {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .link-overlay {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2;
+            padding: 10px 5px;
+            color: #0000ee;
             text-decoration: none;
         }
-
-        .hidden { display: none !important; }
-
-        #status {
-            text-align: center;
-            padding: 50px;
-            color: #666;
-            grid-column: 1 / -1;
+        li a:hover {
+            background-color: #f9f9f9;
+        }
+        li a:visited {
+            color: #551a8b;
         }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <header>
-        <h1>Library <span class="badge" id="count">0</span></h1>
-        <input type="text" id="search" placeholder="Search games...">
-    </header>
+    <h1>Games List</h1>
+    <input type="text" id="search" placeholder="Search..." onkeyup="filterGames()">
 
-    <div class="grid" id="container">
-        <div id="status">Loading games...</div>
-    </div>
-</div>
+    <ul id="game-list"></ul>
 
-<script>
-    // CONFIG
-    const URL = 'https://unblockednetwork.github.io/games.json';
-    const container = document.getElementById('container');
-    const countEl = document.getElementById('count');
-    const searchEl = document.getElementById('search');
-    const statusEl = document.getElementById('status');
-
-    // 1. FETCH DATA
-    fetch(URL)
-        .then(res => res.json())
-        .then(data => {
-            statusEl.remove();
-            countEl.textContent = data.length;
-            render(data);
-            setupSearch();
-        })
-        .catch(e => {
-            statusEl.textContent = "Error loading games.";
-            statusEl.style.color = "red";
-        });
-
-    // 2. RENDER CARDS
-    function render(games) {
-        const frag = document.createDocumentFragment();
-
-        games.forEach(game => {
-            const div = document.createElement('div');
-            div.className = 'card';
-            div.dataset.name = game.name.toLowerCase();
-
-            // Create Image URL: path + /splash.png
-            const imgUrl = game.path.endsWith('/') 
-                ? `${game.path}splash.png` 
-                : `${game.path}/splash.png`;
-
-            div.innerHTML = `
-                <a href="${game.path}" class="link-overlay" title="${game.name}"></a>
-                <img class="card-image" src="${imgUrl}" alt="${game.name}" loading="lazy">
-                <div class="card-body">
-                    <span class="card-title">${game.name}</span>
-                    <div class="play-btn">▶</div>
-                </div>
-            `;
-
-            // Handle image loading fade-in
-            const img = div.querySelector('img');
-            img.onload = () => img.classList.add('loaded');
-            // Fallback if image fails to load (optional)
-            img.onerror = () => { 
-                img.src = 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect fill="%232a2a2a" width="100" height="100"/><text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" fill="%23555" font-family="sans-serif">No Img</text></svg>'; 
-                img.classList.add('loaded');
-            };
-
-            frag.appendChild(div);
-        });
-
-        container.appendChild(frag);
-    }
-
-    // 3. SEARCH
-    function setupSearch() {
-        searchEl.addEventListener('input', e => {
-            const term = e.target.value.toLowerCase();
-            document.querySelectorAll('.card').forEach(c => {
-                c.classList.toggle('hidden', !c.dataset.name.includes(term));
+    <script>
+        fetch('https://unblockednetwork.github.io/games.json')
+            .then(response => response.json())
+            .then(data => {
+                const list = document.getElementById('game-list');
+                data.forEach(game => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = game.path;
+                    a.textContent = game.name;
+                    li.appendChild(a);
+                    list.appendChild(li);
+                });
             });
-        });
-    }
-</script>
+
+        function filterGames() {
+            const input = document.getElementById('search');
+            const filter = input.value.toLowerCase();
+            const ul = document.getElementById('game-list');
+            const li = ul.getElementsByTagName('li');
+
+            for (let i = 0; i < li.length; i++) {
+                const a = li[i].getElementsByTagName("a")[0];
+                const txtValue = a.textContent || a.innerText;
+                if (txtValue.toLowerCase().indexOf(filter) > -1) {
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+    </script>
 
 </body>
 </html>
