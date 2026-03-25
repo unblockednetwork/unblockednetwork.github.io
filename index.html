@@ -3,90 +3,122 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Games</title>
     <style>
-        /* Reset */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            background-color: #000;
+            background-color: #050505;
+            color: #888;
+            font-family: 'Courier New', Courier, monospace; /* Tech feel */
+            padding: 20px;
+            font-size: 14px;
+            line-height: 2; /* Tight lines */
+        }
+
+        /* Header stuck to top */
+        header {
+            position: sticky;
+            top: 0;
+            background: #050505;
+            padding: 10px 0 20px 0;
+            border-bottom: 1px solid #111;
+            margin-bottom: 10px;
+            z-index: 100;
+        }
+
+        h1 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            padding: 30px;
         }
 
-        /* Container */
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
-        /* Search */
         input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid #333;
+            color: #fff;
             width: 100%;
-            background: #111;
-            border: 1px solid #333;
-            padding: 15px;
-            color: #fff;
-            font-size: 16px;
-            margin-bottom: 30px;
+            padding: 5px 0;
+            font-family: inherit;
+            font-size: 14px;
             outline: none;
-            border-radius: 4px;
         }
 
-        input:focus { border-color: #555; }
-        input::placeholder { color: #666; }
-
-        /* List Layout */
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-            gap: 8px;
+        /* THE WALL OF GAMES */
+        /* Uses CSS Columns to create a dense newspaper/data layout */
+        #wall {
+            column-count: 4; 
+            column-gap: 40px;
         }
 
-        a {
-            color: #ccc;
+        /* Make links look like data entries */
+        .entry {
+            display: inline-block; /* Keeps them flowing in columns */
+            margin-bottom: 5px;
+        }
+
+        .entry a {
+            color: #aaa;
             text-decoration: none;
-            padding: 8px;
-            border-radius: 4px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            transition: background 0.2s;
+            transition: color 0.1s;
         }
 
-        a:hover {
-            background: #111;
-            color: #fff;
+        .entry a:hover {
+            color: #0f0; /* Matrix green on hover */
+            text-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
         }
+
+        /* The separator adds to the "thousands" feeling */
+        .separator {
+            color: #222;
+            margin: 0 5px;
+            user-select: none;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 1000px) { #wall { column-count: 3; } }
+        @media (max-width: 700px) { #wall { column-count: 2; } }
+        @media (max-width: 500px) { #wall { column-count: 1; } }
+
+        .hidden { display: none; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <input type="text" id="search" placeholder="Search..." oninput="filter()">
-    <div class="grid" id="list"></div>
-</div>
+<header>
+    <h1>Database Access // <span id="count">0</span> Files</h1>
+    <input type="text" id="search" placeholder="FILTER DATA...">
+</header>
+
+<div id="wall"></div>
 
 <script>
     fetch('https://unblockednetwork.github.io/games.json')
         .then(res => res.json())
         .then(data => {
-            const list = document.getElementById('list');
-            data.forEach(g => {
-                const a = document.createElement('a');
-                a.href = g.path;
-                a.textContent = g.name;
-                list.appendChild(a);
+            document.getElementById('count').textContent = data.length;
+            const wall = document.getElementById('wall');
+            
+            // Build the wall
+            data.forEach(game => {
+                const span = document.createElement('span');
+                span.className = 'entry';
+                span.dataset.name = game.name.toLowerCase();
+                
+                // Link + Visual Separator
+                span.innerHTML = `<a href="${game.path}">${game.name}</a><span class="separator">//</span>`;
+                wall.appendChild(span);
             });
         });
 
-    function filter() {
-        const q = document.getElementById('search').value.toLowerCase();
-        document.querySelectorAll('#list a').forEach(a => {
-            a.style.display = a.textContent.toLowerCase().includes(q) ? '' : 'none';
+    // Instant Search
+    document.getElementById('search').addEventListener('input', (e) => {
+        const term = e.target.value.toLowerCase();
+        document.querySelectorAll('.entry').forEach(el => {
+            const match = el.dataset.name.includes(term);
+            el.classList.toggle('hidden', !match);
         });
-    }
+    });
 </script>
 
 </body>
