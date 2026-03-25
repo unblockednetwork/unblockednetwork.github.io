@@ -4,572 +4,402 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --bg: #0a0a0a;
-            --bg-secondary: #111;
-            --card-bg: rgba(20, 20, 20, 0.8);
-            --card-hover: rgba(30, 30, 30, 0.95);
-            --text: #eaeaea;
-            --text-muted: #666;
-            --accent: #3b82f6;
-            --accent-hover: #2563eb;
-            --border: rgba(255, 255, 255, 0.08);
-            --danger: #ef4444;
-            --success: #22c55e;
-        }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: var(--text-muted); border-radius: 3px; }
-        body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
-
-        /* Background Effects */
-        .bg-effect {
-            position: fixed; inset: 0; z-index: -1;
-            background: 
-                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.05) 0%, transparent 40%),
-                radial-gradient(circle at 80% 80%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
-        }
-        .grid-overlay {
-            position: fixed; inset: 0; z-index: -1;
-            background-image: linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-            background-size: 50px 50px;
-        }
-
-        /* Layout */
-        .app-container { display: flex; min-height: 100vh; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
         
-        /* Sidebar (Desktop) */
-        .sidebar {
-            width: 240px; background: var(--bg-secondary); border-right: 1px solid var(--border);
-            padding: 20px; display: flex; flex-direction: column; position: fixed; height: 100vh;
-            transition: transform 0.3s ease; z-index: 100;
+        body {
+            font-family: system-ui, sans-serif;
+            background-color: #000;
+            /* Cool minimal grid background */
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
         }
-        .logo { font-size: 1.2rem; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; color: #fff; }
-        .logo span { background: var(--accent); width: 8px; height: 8px; border-radius: 50%; }
-        
-        .nav-list { list-style: none; flex: 1; }
-        .nav-item { margin-bottom: 5px; }
-        .nav-link {
-            display: flex; align-items: center; gap: 12px; padding: 12px 15px; border-radius: 8px;
-            color: var(--text-muted); text-decoration: none; font-weight: 500; font-size: 0.95rem;
-            transition: all 0.2s; cursor: pointer;
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid #222;
+            padding-bottom: 12px;
         }
-        .nav-link:hover { background: rgba(255,255,255,0.05); color: #fff; }
-        .nav-link.active { background: rgba(59, 130, 246, 0.1); color: var(--accent); }
-        .nav-link svg { width: 20px; height: 20px; stroke-width: 1.5; }
+        .tab {
+            background: none;
+            border: none;
+            color: #555;
+            padding: 10px 20px;
+            font-size: 14px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: color 0.2s;
+        }
+        .tab.active { color: #fff; border-bottom: 2px solid #fff; margin-bottom: -13px; }
+        .tab:hover { color: #ccc; }
 
-        .status-bar { border-top: 1px solid var(--border); padding-top: 15px; margin-top: auto; font-size: 0.8rem; color: var(--text-muted); }
-        .status-dot { width: 6px; height: 6px; background: var(--success); border-radius: 50%; display: inline-block; margin-right: 5px; }
-
-        /* Main Content Area */
-        .main-content { flex: 1; margin-left: 240px; padding: 30px; width: 100%; }
-        
-        /* Mobile Header */
-        .mobile-header { display: none; position: sticky; top: 0; background: rgba(10,10,10,0.9); backdrop-filter: blur(10px); padding: 15px 20px; border-bottom: 1px solid var(--border); margin: -30px -30px 20px -30px; z-index: 50; }
-        
         /* Views */
-        .view { display: none; animation: fadeIn 0.3s ease; }
+        .view { display: none; }
         .view.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* Inputs & Buttons */
-        input, select {
-            background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px;
-            color: var(--text); font-family: inherit; font-size: 0.95rem; outline: none; transition: border-color 0.2s;
+        /* Search */
+        .search {
+            width: 100%;
+            padding: 12px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid #333;
+            color: #fff;
+            margin-bottom: 20px;
+            font-size: 14px;
+            outline: none;
         }
-        input:focus, select:focus { border-color: var(--accent); }
-        
-        .btn {
-            background: var(--accent); color: #fff; border: none; padding: 12px 24px; border-radius: 8px;
-            font-weight: 600; cursor: pointer; transition: all 0.2s; display: inline-flex; align-items: center; gap: 8px;
+        .search:focus { border-color: #fff; }
+
+        /* Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
         }
-        .btn:hover { background: var(--accent-hover); transform: translateY(-1px); }
-        .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
-        .btn-ghost:hover { border-color: var(--text-muted); background: rgba(255,255,255,0.05); }
-        .btn-danger { background: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
-        .btn-danger:hover { background: var(--danger); color: #fff; }
 
-        /* Cards Grid */
-        .section-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-        .section-title { font-size: 1.1rem; font-weight: 600; }
-        
-        .search-bar { width: 100%; max-width: 400px; position: relative; }
-        .search-bar input { width: 100%; padding-left: 45px; }
-        .search-bar svg { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--text-muted); width: 18px; height: 18px; }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        
+        /* Card */
         .card {
-            background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px;
-            padding: 20px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center; min-height: 120px;
-            position: relative; overflow: hidden;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #222;
+            padding: 24px 12px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            color: #fff;
+            transition: all 0.2s;
         }
-        .card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, transparent, rgba(255,255,255,0.03)); opacity: 0; transition: opacity 0.2s; }
-        .card:hover { border-color: rgba(255,255,255,0.2); transform: translateY(-3px); }
-        .card:hover::before { opacity: 1; }
-        .card-icon { font-size: 1.5rem; margin-bottom: 10px; color: var(--accent); }
-        .card-name { font-size: 0.9rem; font-weight: 500; color: #ddd; }
-        .card-sub { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; }
-
-        /* Settings Specific */
-        .settings-group { background: var(--card-bg); border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 15px; }
-        .setting-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid var(--border); }
-        .setting-item:last-child { border-bottom: none; padding-bottom: 0; }
-        .setting-item:first-child { padding-top: 0; }
-        .setting-label h4 { font-size: 0.95rem; margin-bottom: 4px; }
-        .setting-label p { font-size: 0.8rem; color: var(--text-muted); max-width: 300px; }
-
-        /* Toggle Switch */
-        .toggle { position: relative; width: 44px; height: 24px; }
-        .toggle input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; inset: 0; background-color: var(--bg); border: 1px solid var(--border); border-radius: 24px; transition: 0.3s; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: var(--text-muted); border-radius: 50%; transition: 0.3s; }
-        input:checked + .slider { background-color: var(--accent); border-color: var(--accent); }
-        input:checked + .slider:before { transform: translateX(20px); background-color: #fff; }
-
-        /* Bookmarklet Code Block */
-        .code-block { background: #000; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 0.85rem; color: #a5b4fc; overflow-x: auto; margin-top: 10px; border: 1px solid var(--border); }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); width: 260px; }
-            .sidebar.open { transform: translateX(0); box-shadow: 0 0 20px rgba(0,0,0,0.5); }
-            .main-content { margin-left: 0; padding: 20px; }
-            .mobile-header { display: flex; justify-content: space-between; align-items: center; }
-            .hamburger { width: 24px; height: 24px; cursor: pointer; display: flex; flex-direction: column; gap: 5px; }
-            .hamburger span { display: block; width: 100%; height: 2px; background: #fff; transition: all 0.3s; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
-            .setting-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+        .card:hover { 
+            background: rgba(255,255,255,0.08); 
+            border-color: #444; 
         }
+
+        /* Settings */
+        .setting {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid #222;
+            padding: 20px;
+            margin-bottom: 12px;
+        }
+        .setting h4 { font-size: 14px; margin-bottom: 4px; color: #fff; }
+        .setting p { font-size: 12px; color: #666; margin-bottom: 12px; }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #333;
+            color: #fff;
+            font-size: 13px;
+            outline: none;
+        }
+        input[type="text"]:focus, select:focus { border-color: #fff; }
+
+        .row { display: flex; gap: 10px; }
+        .row input { flex: 1; }
+
+        /* Toggle */
+        .toggle-wrap { display: flex; justify-content: space-between; align-items: center; }
+        .toggle { width: 44px; height: 24px; background: #222; position: relative; cursor: pointer; }
+        .toggle.on { background: #fff; }
+        .toggle::after {
+            content: "";
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background: #fff;
+            top: 3px;
+            left: 3px;
+        }
+        .toggle.on::after { left: 23px; background: #000; }
+
+        /* Button */
+        .btn {
+            background: #fff;
+            color: #000;
+            border: none;
+            padding: 10px 20px;
+            font-size: 13px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-ghost { background: transparent; border: 1px solid #333; color: #fff; }
+
+        /* Modal */
+        #modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            z-index: 100;
+        }
+        .modal-box {
+            background: #050505;
+            border: 1px solid #222;
+            padding: 30px;
+            width: 100%;
+            max-width: 400px;
+        }
+        .modal-box h3 { margin-bottom: 20px; font-size: 18px; color: #fff; }
+        .modal-box input, .modal-box textarea {
+            width: 100%;
+            margin-bottom: 12px;
+            padding: 10px;
+            background: #000;
+            border: 1px solid #222;
+            color: #fff;
+            font-size: 13px;
+        }
+        .modal-box textarea { height: 80px; resize: none; font-family: monospace; }
+        .modal-btns { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div class="bg-effect"></div>
-    <div class="grid-overlay"></div>
-
-    <div class="app-container">
-        <!-- Sidebar -->
-        <nav class="sidebar" id="sidebar">
-            <div class="logo"><span></span>Portal</div>
-            
-            <ul class="nav-list">
-                <li class="nav-item">
-                    <div class="nav-link active" data-view="games">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 01-.657.643 48.39 48.39 0 01-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 01-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 00-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 01-.642 5.056c1.518.107 3.048.148 4.59.148.427 0 .853-.004 1.278-.014a.64.64 0 00.657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 01-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 005.427-.63 48.05 48.05 0 00.582-4.717.532.532 0 00-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.96.401v0a.656.656 0 00.658-.663 48.422 48.422 0 00-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 01-.61-.58v0z" /></svg>
-                        Games
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-view="bookmarklets">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M17.593 3.322c1.1.128 1.907 1.077 1.907 2.185V21L12 17.25 4.5 21V5.507c0-1.108.806-2.057 1.907-2.185a48.507 48.507 0 0111.186 0z" /></svg>
-                        Bookmarklets
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <div class="nav-link" data-view="settings">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" /><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
-                        Instellingen
-                    </div>
-                </li>
-            </ul>
-
-            <div class="status-bar">
-                <span class="status-dot"></span>Systeem Actief<br>
-                <small style="opacity: 0.5">v2.0 SPA</small>
-            </div>
-        </nav>
-
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Mobile Header -->
-            <div class="mobile-header">
-                <div class="logo" style="margin-bottom: 0;"><span></span>Portal</div>
-                <div class="hamburger" id="hamburger">
-                    <span></span><span></span><span></span>
-                </div>
-            </div>
-
-            <!-- Games View -->
-            <section id="view-games" class="view active">
-                <div class="section-header">
-                    <h2 class="section-title">Games Bibliotheek</h2>
-                    <div class="search-bar">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" /></svg>
-                        <input type="text" id="search-input" placeholder="Zoek games...">
-                    </div>
-                </div>
-                <div id="games-grid" class="grid">Laden...</div>
-            </section>
-
-            <!-- Bookmarklets View -->
-            <section id="view-bookmarklets" class="view">
-                <div class="section-header">
-                    <h2 class="section-title">Bookmarklets & Tools</h2>
-                    <button class="btn" onclick="app.openBookmarkletModal()">
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.5v15m7.5-7.5h-15" /></svg>
-                        Toevoegen
-                    </button>
-                </div>
-                <p style="color: var(--text-muted); margin-bottom: 20px; max-width: 600px;">Sleep deze links naar je bladwijzerbalk of klik erop om ze uit te voeren. Handige scripts voor school of werk.</p>
-                <div id="bookmarklets-grid" class="grid"></div>
-            </section>
-
-            <!-- Settings View -->
-            <section id="view-settings" class="view">
-                <div class="section-header">
-                    <h2 class="section-title">Instellingen</h2>
-                </div>
-
-                <div class="settings-group">
-                    <h3 style="margin-bottom: 15px; font-size: 1rem;">UI & Weergave</h3>
-                    <div class="setting-item">
-                        <div class="setting-label">
-                            <h4>Tab Cloak (Camouflage)</h4>
-                            <p>Verandert de titel en het icoon van dit tabblad om het te verbergen.</p>
-                        </div>
-                        <select id="cloak-select" onchange="app.setCloak(this.value)">
-                            <option value="default">Portal (Standaard)</option>
-                            <option value="google">Google</option>
-                            <option value="classroom">Google Classroom</option>
-                            <option value="drive">Google Drive</option>
-                            <option value="docs">Google Docs</option>
-                            <option value="canvas">Canvas</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <h3 style="margin-bottom: 15px; font-size: 1rem;">Beveiliging</h3>
-                    <div class="setting-item">
-                        <div class="setting-label">
-                            <h4>Panic Key (Noodknop)</h4>
-                            <p>Druk op de geselecteerde toets om direct naar een veilige site te gaan.</p>
-                        </div>
-                        <input type="text" id="panic-key" placeholder="Druk op een toets..." style="width: 120px; text-align: center;" readonly onclick="this.value='...wachten op toets'">
-                    </div>
-                    <div class="setting-item">
-                        <div class="setting-label">
-                            <h4>Panic Redirect URL</h4>
-                            <p>De website waar je naar toe wordt gestuurd.</p>
-                        </div>
-                        <input type="text" id="panic-url" placeholder="https://google.com" style="width: 200px;">
-                    </div>
-                </div>
-
-                <div class="settings-group">
-                    <h3 style="margin-bottom: 15px; font-size: 1rem;">About:Blank Cloaking</h3>
-                    <div class="setting-item">
-                        <div class="setting-label">
-                            <h4>Open games in About:Blank</h4>
-                            <p>Verbergt de game-URL door deze in een 'about:blank' venster te openen.</p>
-                        </div>
-                        <label class="toggle">
-                            <input type="checkbox" id="ab-toggle" checked>
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                     <div class="setting-item">
-                        <div class="setting-label">
-                            <h4>Custom Window Title</h4>
-                            <p>De titel die in het nieuwe venster verschijnt.</p>
-                        </div>
-                        <input type="text" id="ab-title" placeholder="Loading..." style="width: 150px;">
-                    </div>
-                </div>
-            </section>
-        </main>
+    <div class="tabs">
+        <button class="tab active" data-view="games">Games</button>
+        <button class="tab" data-view="tools">Tools</button>
+        <button class="tab" data-view="settings">Instellingen</button>
     </div>
 
-    <!-- Modal Structure -->
-    <div id="modal-overlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 200; display: none; justify-content: center; align-items: center; backdrop-filter: blur(4px);">
-        <div style="background: var(--bg-secondary); border: 1px solid var(--border); border-radius: 16px; width: 90%; max-width: 500px; padding: 30px; position: relative;">
-            <h3 style="margin-bottom: 20px;">Bookmarklet Toevoegen</h3>
-            <div style="display: flex; flex-direction: column; gap: 15px;">
-                <input type="text" id="bm-name" placeholder="Naam (bijv. 'Full Screen')">
-                <textarea id="bm-code" placeholder="javascript:..." style="background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--text); resize: vertical; min-height: 100px; font-family: monospace;"></textarea>
-                <p style="font-size: 0.8rem; color: var(--text-muted);">Plak hier je JavaScript code (begin met javascript:...).</p>
+    <div id="view-games" class="view active">
+        <input type="text" class="search" id="search" placeholder="Zoeken...">
+        <div class="grid" id="games-grid"></div>
+    </div>
+
+    <div id="view-tools" class="view">
+        <div class="grid" id="tools-grid"></div>
+        <button class="btn" style="margin-top:20px;" onclick="openModal()">+ Tool Toevoegen</button>
+    </div>
+
+    <div id="view-settings" class="view">
+        <div class="setting">
+            <div class="toggle-wrap">
+                <div>
+                    <h4>About:Blank Cloak</h4>
+                    <p>Opent in leeg venster</p>
+                </div>
+                <div class="toggle on" id="toggle-ab" onclick="toggleAB()"></div>
             </div>
-            <div style="margin-top: 25px; display: flex; gap: 10px; justify-content: flex-end;">
-                <button class="btn btn-ghost" onclick="app.closeModal()">Annuleren</button>
-                <button class="btn" onclick="app.saveBookmarklet()">Opslaan</button>
+        </div>
+        <div class="setting">
+            <h4>Venster Titel</h4>
+            <p>Titel voor about:blank venster</p>
+            <input type="text" id="ab-title" placeholder="Loading...">
+        </div>
+        <div class="setting">
+            <h4>Tab Cloak</h4>
+            <p>Verander tab uiterlijk</p>
+            <select id="cloak-select">
+                <option value="default">Portal</option>
+                <option value="google">Google</option>
+                <option value="classroom">Classroom</option>
+                <option value="drive">Drive</option>
+                <option value="docs">Docs</option>
+            </select>
+        </div>
+        <div class="setting">
+            <h4>Panic Key</h4>
+            <p>Druk toets om te vluchten</p>
+            <div class="row">
+                <input type="text" id="panic-key" placeholder="`" style="width:70px; text-align:center;" readonly>
+                <input type="text" id="panic-url" placeholder="https://google.com">
+            </div>
+        </div>
+    </div>
+
+    <div id="modal">
+        <div class="modal-box">
+            <h3>Tool Toevoegen</h3>
+            <input type="text" id="bm-name" placeholder="Naam">
+            <textarea id="bm-code" placeholder="javascript:..."></textarea>
+            <div class="modal-btns">
+                <button class="btn btn-ghost" onclick="closeModal()">Annuleren</button>
+                <button class="btn" onclick="saveTool()">Opslaan</button>
             </div>
         </div>
     </div>
 
     <script>
-        // App Configuratie
-        var COMMIT = "96e8e4e333a69bb2cc9f3df1794607296b55be33";
-        var BASE = "https://cdn.jsdelivr.net/gh/HyperRushNet/c6xc@" + COMMIT + "/";
+        var BASE = "https://cdn.jsdelivr.net/gh/HyperRushNet/c6xc@96e8e4e333a69bb2cc9f3df1794607296b55be33/";
         
-        const app = {
-            games: [],
-            bookmarklets: [],
-            settings: {
-                panicKey: '`',
-                panicUrl: 'https://google.com',
-                cloak: 'default',
-                abToggle: true,
-                abTitle: 'Loading...'
-            },
+        var games = [];
+        var tools = []; // Start leeg
+        var cfg = { panicKey: '`', panicUrl: 'https://google.com', cloak: 'default', abOn: true, abTitle: '' };
 
-            init() {
-                this.loadSettings();
-                this.bindEvents();
-                this.fetchGames();
-                this.renderBookmarklets();
-                this.applySettings();
-            },
+        // Init
+        loadCfg();
+        loadGames();
+        loadTools();
+        bindEvents();
 
-            // --- Core Logic ---
-            bindEvents() {
-                // Navigation
-                document.querySelectorAll('.nav-link').forEach(el => {
-                    el.addEventListener('click', () => this.switchView(el.dataset.view));
-                });
+        function loadCfg() {
+            var s = localStorage.getItem('cfg');
+            if (s) cfg = JSON.parse(s);
+            document.getElementById('ab-title').value = cfg.abTitle || '';
+            document.getElementById('cloak-select').value = cfg.cloak || 'default';
+            document.getElementById('panic-key').value = cfg.panicKey || '`';
+            document.getElementById('panic-url').value = cfg.panicUrl || '';
+            document.getElementById('toggle-ab').className = cfg.abOn ? 'toggle on' : 'toggle';
+            applyCloak();
+        }
 
-                // Mobile Menu
-                document.getElementById('hamburger').addEventListener('click', () => {
-                    document.getElementById('sidebar').classList.toggle('open');
-                });
+        function saveCfg() {
+            cfg.abTitle = document.getElementById('ab-title').value;
+            cfg.cloak = document.getElementById('cloak-select').value;
+            cfg.panicKey = document.getElementById('panic-key').value;
+            cfg.panicUrl = document.getElementById('panic-url').value;
+            localStorage.setItem('cfg', JSON.stringify(cfg));
+            applyCloak();
+        }
 
-                // Search
-                document.getElementById('search-input').addEventListener('input', (e) => {
-                    const val = e.target.value.toLowerCase();
-                    document.querySelectorAll('.game-card').forEach(card => {
-                        card.style.display = card.dataset.name.includes(val) ? 'flex' : 'none';
-                    });
-                });
-
-                // Panic Key Binding
-                document.getElementById('panic-key').addEventListener('keydown', (e) => {
-                    e.preventDefault();
-                    e.target.value = e.key.toUpperCase();
-                    this.settings.panicKey = e.key;
-                    this.saveSettings();
-                });
-
-                document.getElementById('panic-url').addEventListener('change', (e) => {
-                    this.settings.panicUrl = e.target.value;
-                    this.saveSettings();
-                });
-                
-                document.getElementById('ab-title').addEventListener('change', (e) => {
-                    this.settings.abTitle = e.target.value;
-                    this.saveSettings();
-                });
-                
-                document.getElementById('ab-toggle').addEventListener('change', (e) => {
-                    this.settings.abToggle = e.target.checked;
-                    this.saveSettings();
-                });
-
-                // Global Panic Listener
-                window.addEventListener('keydown', (e) => {
-                    if (e.key === this.settings.panicKey && document.activeElement.tagName !== 'INPUT') {
-                        window.location.replace(this.settings.panicUrl);
-                    }
-                });
-            },
-
-            switchView(viewId) {
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                document.querySelectorAll('.nav-link').forEach(n => n.classList.remove('active'));
-                
-                document.getElementById('view-' + viewId).classList.add('active');
-                document.querySelector(`.nav-link[data-view="${viewId}"]`).classList.add('active');
-                
-                // Close mobile menu
-                document.getElementById('sidebar').classList.remove('open');
-            },
-
-            // --- Games Logic ---
-            fetchGames() {
-                fetch(BASE + "game-data.json")
-                    .then(r => r.json())
-                    .then(d => {
-                        this.games = d;
-                        this.renderGames();
-                    })
-                    .catch(() => {
-                        document.getElementById('games-grid').innerText = "Kon games niet laden.";
-                    });
-            },
-
-            renderGames() {
-                const grid = document.getElementById('games-grid');
-                const sorted = this.games.sort((a, b) => a.name.localeCompare(b.name));
-                
-                grid.innerHTML = sorted.map(game => `
-                    <div class="card game-card" data-name="${game.name.toLowerCase()}" onclick="app.launchGame('${game.path}', '${game.name}')">
-                        <div class="card-icon">${this.getIcon(game.name)}</div>
-                        <div class="card-name">${game.name}</div>
-                        <div class="card-sub">Click to play</div>
-                    </div>
-                `).join('');
-            },
-
-            launchGame(path, name) {
-                // Google Script Call (if applicable in original env)
-                if (typeof google !== 'undefined' && google.script) {
-                    google.script.run.saveUserData(name);
-                }
-
-                const url = BASE + path + "/index.html";
-                const title = this.settings.abTitle || 'Loading...';
-
-                if (this.settings.abToggle) {
-                    // About:Blank Cloaking
-                    const win = window.open('about:blank', '_blank');
-                    if (!win) return alert("Pop-up geblokkeerd! Sta pop-ups toe.");
-
-                    win.document.write(`
-                        <html>
-                            <head><title>${title}</title></head>
-                            <body style="background:#111;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;margin:0;">
-                                <div style="text-align:center;">
-                                    <div style="border: 4px solid rgba(255,255,255,0.1); border-top: 4px solid #fff; border-radius: 50%; width: 40px; height: 40px; animation: spin 1s linear infinite; margin: 0 auto 20px;"></div>
-                                    Bezig met laden...
-                                </div>
-                                <style>@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }</style>
-                            </body>
-                        </html>`);
-
-                    fetch(url).then(r => r.text()).then(html => {
-                        win.document.open();
-                        // Inject base tag for relative paths
-                        win.document.write(html.replace('<head>', `<head><base href="${BASE}${path}/">`));
-                        win.document.close();
-                    }).catch(() => {
-                        win.document.body.innerHTML = "<h1>Fout bij laden</h1>";
-                    });
-                } else {
-                    // Standard Open
-                    window.open(url, '_blank');
-                }
-            },
-
-            // --- Bookmarklets Logic ---
-            renderBookmarklets() {
-                const grid = document.getElementById('bookmarklets-grid');
-                // Default bookmarklets
-                const defaults = [
-                    { name: "Full Screen", code: "javascript:document.documentElement.requestFullscreen();" },
-                    { name: "Edit Page", code: "javascript:document.body.contentEditable = 'true';" },
-                    { name: "View Source", code: "javascript:location.href='view-source:'+location.href;" }
-                ];
-                
-                // Load saved or defaults
-                const saved = JSON.parse(localStorage.getItem('portal_bookmarklets') || '[]');
-                if(saved.length === 0) this.bookmarklets = defaults;
-                else this.bookmarklets = saved;
-
-                grid.innerHTML = this.bookmarklets.map((bm, i) => `
-                    <div class="card" style="min-height: 100px;">
-                        <div class="card-name" style="margin-bottom:10px;">${bm.name}</div>
-                        <div style="display:flex;gap:5px;">
-                            <a href="${bm.code}" class="btn" style="padding:6px 12px;font-size:0.8rem;text-decoration:none;">Run</a>
-                            <button class="btn btn-danger" style="padding:6px 12px;font-size:0.8rem;" onclick="app.runBookmarklet(${i})">Exec</button>
-                        </div>
-                        <small style="color:var(--text-muted);font-size:0.7rem;margin-top:8px;word-break:break-all;max-width:100%;">${bm.code.substring(0, 30)}...</small>
-                    </div>
-                `).join('');
-            },
-
-            openBookmarkletModal() {
-                document.getElementById('modal-overlay').style.display = 'flex';
-            },
-            
-            closeModal() {
-                document.getElementById('modal-overlay').style.display = 'none';
-            },
-
-            saveBookmarklet() {
-                const name = document.getElementById('bm-name').value;
-                let code = document.getElementById('bm-code').value;
-                
-                if(!name || !code) return alert("Vul beide velden in.");
-                if(!code.startsWith('javascript:')) code = 'javascript:' + code;
-
-                this.bookmarklets.push({ name, code });
-                localStorage.setItem('portal_bookmarklets', JSON.stringify(this.bookmarklets));
-                this.renderBookmarklets();
-                this.closeModal();
-                
-                document.getElementById('bm-name').value = '';
-                document.getElementById('bm-code').value = '';
-            },
-
-            runBookmarklet(index) {
-                const code = this.bookmarklets[index].code;
-                try {
-                    // Execution context is current page
-                    eval(code.replace('javascript:', ''));
-                } catch(e) {
-                    alert("Fout bij uitvoeren: " + e.message);
-                }
-            },
-
-            // --- Settings Logic ---
-            loadSettings() {
-                const saved = localStorage.getItem('portal_settings');
-                if (saved) {
-                    this.settings = JSON.parse(saved);
-                }
-                // Update UI
-                document.getElementById('panic-key').value = this.settings.panicKey.toUpperCase();
-                document.getElementById('panic-url').value = this.settings.panicUrl;
-                document.getElementById('ab-title').value = this.settings.abTitle;
-                document.getElementById('ab-toggle').checked = this.settings.abToggle;
-                document.getElementById('cloak-select').value = this.settings.cloak;
-            },
-
-            saveSettings() {
-                localStorage.setItem('portal_settings', JSON.stringify(this.settings));
-            },
-
-            applySettings() {
-                this.setCloak(this.settings.cloak);
-            },
-
-            setCloak(type) {
-                this.settings.cloak = type;
-                this.saveSettings();
-                
-                const cloakData = {
-                    default: { title: 'Portal', icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text y=".9em" font-size="90">🚀</text></svg>' },
-                    google: { title: 'Google', icon: 'https://www.google.com/favicon.ico' },
-                    classroom: { title: 'Home', icon: 'https://www.gstatic.com/classroom/logo_square_rounded.svg' },
-                    drive: { title: 'My Drive - Google Drive', icon: 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png' },
-                    docs: { title: 'Google Docs', icon: 'https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png' },
-                    canvas: { title: 'Dashboard', icon: 'https://du11hjcvx0uqb.cloudfront.net/dist/images/favicon-e10d657a73.ico' }
-                };
-
-                const c = cloakData[type];
-                document.title = c.title;
-                document.querySelector('link[rel="icon"]').href = c.icon;
-            },
-
-            // Helpers
-            getIcon(name) {
-                const icons = {
-                    'Minecraft': '⛏️', 'Shell Shockers': '🥚', '1v1.LOL': '🔫', 'Subway Surfers': '🏃',
-                    'Geometry Dash': '🔷', 'Roblox': '🎮', 'Slope': '🏔️', 'Tetris': '🧱',
-                    '2048': '🔢', 'Agar.io': '🦠', 'Krunker': '🎯', 'Paper.io': '📄'
-                };
-                return icons[name] || '🎮';
+        function applyCloak() {
+            var maps = {
+                default: ['Portal', 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%23000" width="100" height="100"/></svg>'],
+                google: ['Google', 'https://www.google.com/favicon.ico'],
+                classroom: ['Home', 'https://www.gstatic.com/classroom/logo_square_rounded.svg'],
+                drive: ['My Drive', 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png'],
+                docs: ['Google Docs', 'https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png']
+            };
+            var c = maps[cfg.cloak] || maps.default;
+            document.title = c[0];
+            var link = document.querySelector('link[rel="icon"]');
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.head.appendChild(link);
             }
-        };
+            link.href = c[1];
+        }
 
-        // Initialize App
-        window.onload = () => app.init();
+        function toggleAB() {
+            cfg.abOn = !cfg.abOn;
+            document.getElementById('toggle-ab').className = cfg.abOn ? 'toggle on' : 'toggle';
+            saveCfg();
+        }
+
+        function bindEvents() {
+            // Tabs
+            document.querySelectorAll('.tab').forEach(function(t) {
+                t.onclick = function() {
+                    document.querySelectorAll('.tab').forEach(function(x) { x.className = 'tab'; });
+                    document.querySelectorAll('.view').forEach(function(x) { x.className = 'view'; });
+                    t.className = 'tab active';
+                    document.getElementById('view-' + t.dataset.view).className = 'view active';
+                };
+            });
+
+            // Search
+            document.getElementById('search').oninput = function(e) {
+                var q = e.target.value.toLowerCase();
+                document.querySelectorAll('.game-card').forEach(function(c) {
+                    c.style.display = c.dataset.name.indexOf(q) > -1 ? '' : 'none';
+                });
+            };
+
+            // Settings inputs
+            document.getElementById('ab-title').onchange = saveCfg;
+            document.getElementById('cloak-select').onchange = saveCfg;
+            document.getElementById('panic-url').onchange = saveCfg;
+            document.getElementById('panic-key').onkeydown = function(e) {
+                e.preventDefault();
+                e.target.value = e.key.toUpperCase();
+                cfg.panicKey = e.key;
+                saveCfg();
+            };
+
+            // Panic
+            document.onkeydown = function(e) {
+                if (e.key === cfg.panicKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                    window.location.replace(cfg.panicUrl);
+                }
+            };
+        }
+
+        function loadGames() {
+            fetch(BASE + 'game-data.json')
+                .then(function(r) { return r.json(); })
+                .then(function(d) {
+                    games = d.sort(function(a, b) { return a.name.localeCompare(b.name); });
+                    renderGames();
+                })
+                .catch(function() {
+                    document.getElementById('games-grid').innerText = 'Fout bij laden';
+                });
+        }
+
+        function renderGames() {
+            var html = games.map(function(g) {
+                return '<div class="card game-card" data-name="' + g.name.toLowerCase() + '" onclick="launch(\'' + g.path + '\')">' + g.name + '</div>';
+            }).join('');
+            document.getElementById('games-grid').innerHTML = html;
+        }
+
+        function launch(path) {
+            var url = BASE + path + '/index.html';
+            if (cfg.abOn) {
+                var win = window.open('about:blank', '_blank');
+                if (!win) return alert('Pop-up geblokkeerd');
+                win.document.write('<html><head><title>' + (cfg.abTitle || 'Loading...') + '</title></head><body style="background:#000;color:#fff;font-family:sans-serif;display:flex;justify-content:center;align-items:center;height:100vh;">Laden...</body></html>');
+                fetch(url).then(function(r) { return r.text(); }).then(function(html) {
+                    win.document.open();
+                    win.document.write(html.replace('<head>', '<head><base href="' + BASE + path + '/">'));
+                    win.document.close();
+                });
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
+        function loadTools() {
+            var saved = localStorage.getItem('tools');
+            if (saved) tools = JSON.parse(saved); // Alleen laden als er opgeslagen tools zijn
+            renderTools();
+        }
+
+        function renderTools() {
+            if (tools.length === 0) {
+                document.getElementById('tools-grid').innerHTML = '<p style="color:#555; grid-column: 1/-1;">Nog geen tools toegevoegd.</p>';
+                return;
+            }
+            var html = tools.map(function(t) {
+                return '<div class="card"><div>' + t.name + '</div><a href="' + t.code + '" style="color:#666;font-size:11px; margin-top:8px; display:block; text-decoration:none;">Run</a></div>';
+            }).join('');
+            document.getElementById('tools-grid').innerHTML = html;
+        }
+
+        function openModal() {
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+            document.getElementById('bm-name').value = '';
+            document.getElementById('bm-code').value = '';
+        }
+
+        function saveTool() {
+            var n = document.getElementById('bm-name').value;
+            var c = document.getElementById('bm-code').value;
+            if (!n || !c) return;
+            if (c.indexOf('javascript:') !== 0) c = 'javascript:' + c;
+            tools.push({ name: n, code: c });
+            localStorage.setItem('tools', JSON.stringify(tools));
+            renderTools();
+            closeModal();
+        }
     </script>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23000' width='100' height='100'/>">
 </body>
 </html>
