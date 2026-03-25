@@ -1,0 +1,1886 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no,viewport-fit=cover">
+      <link rel="icon" href="./assets/branding/favicon/favicon-black.png" media="(prefers-color-scheme: light)">
+      <link rel="icon" href="./assets/branding/favicon/favicon-white.png" media="(prefers-color-scheme: dark)">
+      <link rel="manifest" href="./assets/manifest.json">
+      <meta name="theme-color" content="#ffffff">
+      <title>HyperRush Chat</title>
+      <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+      <style>
+         :root{--bg:#fff;--surface:#fff;--border:#e5e5ea;--text-main:#1c1c1e;--text-mute:#8e8e93;--accent:#262626;--danger:#ff3b30;--success:#34c759;--warning:#ff9500;--radius:14px}*{margin:0;padding:0;box-sizing:border-box;font-family:Plus Jakarta Sans,sans-serif;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}input,textarea{-webkit-user-select:text;user-select:text}::-webkit-scrollbar{width:0;height:0}body{height:100dvh;background:#f2f2f7;color:var(--text-main);justify-content:center;align-items:center}#app,body{display:flex}#app{width:100%;max-width:440px;height:100%;position:relative;box-shadow:0 0 60px rgba(0,0,0,.05);overflow:hidden}#app,.screen{flex-direction:column;background:var(--bg)}.screen{display:none;padding:20px;inset:0;position:absolute;will-change:transform,opacity;transition:transform .4s cubic-bezier(.19,1,.22,1),opacity .3s ease}.screen.active{display:flex;animation:instantFade .2s ease-out}.screen.slide-left{transform:translateX(-100%);opacity:0}.screen.slide-right{transform:translateX(100%);opacity:0}@keyframes instantFade{0%{opacity:0}to{opacity:1}}.center-content{justify-content:center;align-items:center;text-align:center}h1.title{font-size:28px;letter-spacing:-1px;color:#000;font-weight:800;margin-bottom:4px}.subtitle{text-transform:uppercase;color:var(--text-mute);font-size:11px;font-weight:700;letter-spacing:1px;margin-bottom:24px;display:block}.header{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 0 16px;border-bottom:1px solid var(--border);margin-bottom:16px;flex-shrink:0}.input-field{color:var(--text-main);width:100%;background:#f2f2f7;border:1px solid transparent;border-radius:var(--radius);padding:14px;font-size:15px;outline:0;margin-bottom:10px;transition:.2s}.input-field:focus{border-color:var(--accent);background:#fff}.btn{color:var(--text-main);width:100%;height:50px;border-radius:var(--radius);border:1px solid var(--border);background:0 0;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px;transition:.15s;cursor:pointer;padding:0 20px}.btn-accent{background:var(--accent);color:#fff;border:none}.btn:active{transform:scale(.98);opacity:.8}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}#toast-container{position:absolute;top:30px;left:50%;transform:translateX(-50%);z-index:999999;width:85%;pointer-events:none;display:flex;flex-direction:column;align-items:center}.toast-item{background:#fff;color:var(--text-main);padding:12px 18px;border-radius:40px;font-weight:600;font-size:12px;text-align:center;box-shadow:0 8px 24px rgba(0,0,0,.15);animation:slideUp .3s cubic-bezier(.2,1,.3,1);pointer-events:auto;cursor:pointer;width:100%;margin-bottom:8px;border:1px solid var(--text-mute)}@keyframes slideUp{0%{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}#block-overlay{position:absolute;inset:0;background:var(--bg);z-index:6000;display:none;flex-direction:column;align-items:center;justify-content:center;padding:20px;text-align:center}#block-overlay.active{display:flex}#loader-overlay{position:absolute;inset:0;background:hsla(0,0%,100%,.98);z-index:3500;display:none;align-items:center;justify-content:center;flex-direction:column;gap:12px;opacity:0}#loader-overlay.active{display:flex;opacity:1}.spinner{width:20px;height:20px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .5s linear infinite}@keyframes spin{to{transform:rotate(1turn)}}.loader-text{font-size:11px;font-weight:700;margin-top:6px;color:var(--text-mute)}.room-card{padding:14px;border-radius:var(--radius);background:#fff;display:flex;align-items:center;justify-content:space-between;border:1px solid var(--border);margin-bottom:8px;width:100%;transition:.15s;cursor:pointer}.room-card:active{transform:scale(.99);background:#f9f9f9}.room-card-content{display:flex;flex-direction:column;flex:1;min-width:0}.room-name{font-weight:700;font-size:14px;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.room-preview{font-size:12px;color:var(--text-mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;justify-content:space-between;align-items:center;width:100%}.room-meta{display:flex;align-items:center;gap:4px}.room-time{font-size:11px;color:var(--text-mute);flex-shrink:0}.room-icon{flex-shrink:0;color:var(--text-mute)}#chat-messages{flex:1;display:flex;flex-direction:column;overflow-y:auto;background:var(--bg);padding-bottom:10px;position:relative}.date-divider{position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:center;margin:16px auto 4px;width:25%;padding:2px 6px;background:#fff;border:1px solid #ddd;border-radius:999px;text-align:center;color:#333;box-sizing:border-box;font-size:.875rem}.date-label{font-weight:700;text-transform:uppercase;letter-spacing:.5px;margin:0 auto;background:var(--bg);padding:4px 0;font-size:9px;text-align:center;color:var(--text-mute)}.msg{position:relative;max-width:82%;padding:8px 12px;border-radius:16px;background:#f2f2f7;font-size:14px;line-height:1.4;display:flex;flex-direction:column;white-space:pre-wrap;word-break:break-word;width:fit-content;margin-top:2px;transition:all .3s ease}.msg.me{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:4px}.msg.not-me{align-self:flex-start;border-bottom-left-radius:4px}.msg.me a,.msg.not-me a{color:#169cf5}.msg.group-start{margin-top:14px}.msg-header{display:flex;align-items:center;gap:4px;margin-bottom:2px}.msg-user{font-size:10px;color:var(--accent);cursor:pointer;font-weight:700}.msg.me .msg-user{color:hsla(0,0%,100%,.7)}.msg-time{font-size:8px;opacity:.4;text-align:right;margin-top:1px;align-self:flex-end;display:flex;align-items:center;gap:4px}.msg-continuation .msg-header{display:none}.msg-continuation{margin-top:1px}.msg-continuation.msg.me{border-radius:16px 4px 4px 16px}.msg-continuation.msg.not-me{border-radius:4px 16px 16px 4px}.msg.me.group-start{border-radius:16px 16px 4px 16px}.msg.not-me.group-start{border-radius:16px 16px 16px 4px}.edited-tag{font-size:8px;opacity:.6;font-weight:600}.deleted-text{opacity:.5;font-style:italic;font-size:13px}.msg-pending{opacity:.7;border-style:dashed;border-width:1px}.msg-pending.msg.me{background:var(--text-mute)}.pop-in{animation:none}#context-menu{position:fixed;background:hsla(0,0%,100%,.98);backdrop-filter:blur(20px);border-radius:14px;box-shadow:0 10px 30px rgba(0,0,0,.15);z-index:99999;padding:6px;min-width:140px;display:flex;flex-direction:column;gap:2px;opacity:0;transform:scale(.95);pointer-events:none;transition:opacity .15s,transform .15s}#context-menu.active{opacity:1;transform:scale(1);pointer-events:auto}.ctx-item{background:none;border:none;width:100%;padding:10px 12px;text-align:left;font-size:13px;font-weight:600;color:var(--text-main);cursor:pointer;display:flex;align-items:center;gap:8px;border-radius:8px}.ctx-item:active{background:#f2f2f7}.ctx-item.danger{color:var(--danger)}.ctx-item i{width:16px;height:16px}.chat-avatar{width:36px;height:36px;border-radius:50%;background:#f2f2f7;overflow:hidden;flex-shrink:0;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:12px;line-height:1;position:relative;padding:2px;margin-right:10px}.chat-avatar img{width:100%;height:100%;object-fit:cover;border-radius:50%}.status-border{border:2px solid var(--text-mute);transition:border-color .3s ease}.status-connected{border-color:var(--success)}.status-connecting{border-color:var(--warning)}.status-offline{border-color:var(--text-mute)}.chat-header-main{display:flex;align-items:center;gap:10px;flex:1;min-width:0}.chat-header-title-wrapper{display:flex;flex-direction:column;min-width:0}.chat-header-title-wrapper .title{font-size:16px;margin:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;text-align:left}.chat-header-subtitle{display:flex;align-items:center;gap:4px}.chat-header-subtitle,.chat-subtitle{font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:.5px;font-weight:600}.step-container{position:relative;overflow:hidden;width:100%}.wizard-step{display:none;flex-direction:column;gap:12px;width:100%;animation:stepFade .3s ease}.wizard-step.active{display:flex}@keyframes stepFade{0%{opacity:0;transform:translateX(20px)}to{opacity:1;transform:translateX(0)}}.step-indicator{display:flex;justify-content:center;gap:6px;margin-bottom:20px}.step-dot{width:6px;height:6px;border-radius:50%;background:var(--border);transition:all .2s}.step-dot.active{background:var(--accent);width:20px;border-radius:4px}.type-card{padding:16px;border-radius:var(--radius);background:#fff;border:1px solid var(--border);cursor:pointer;transition:.15s;display:flex;align-items:center;gap:12px;width:100%;text-align:left;margin-bottom:8px}.type-card:active{transform:scale(.99)}.type-card.selected{border-color:var(--accent);background:rgba(0,122,255,.03)}.type-icon{width:36px;height:36px;border-radius:10px;background:#f2f2f7;display:flex;align-items:center;justify-content:center;color:var(--accent)}.type-info h4{font-size:14px;margin-bottom:1px;font-weight:700}.type-info p{font-size:11px;color:var(--text-mute)}.avatar-carousel-container{display:flex;flex-direction:column;align-items:center;gap:16px;margin-bottom:12px}.carousel-wrapper{gap:12px;width:100%}.carousel-btn,.carousel-wrapper{display:flex;align-items:center;justify-content:center}.carousel-btn{width:40px;height:40px;border-radius:50%;background:var(--bg);border:1px solid var(--border);cursor:pointer;transition:.2s}.carousel-btn:active{transform:scale(.95);background:#f2f2f7}.carousel-preview{width:100px;height:100px;border-radius:50%;background:#f2f2f7;border:2px solid var(--border);overflow:hidden;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,.05)}.carousel-preview img{width:100%;height:100%;object-fit:cover}.upload-btn-wrapper{width:100%;margin-top:8px}.upload-btn{width:100%;height:44px;border-radius:var(--radius);border:1px dashed var(--accent);background:transparent;color:var(--accent);font-weight:600;display:flex;gap:8px;cursor:pointer}#overlay-container,.upload-btn{align-items:center;justify-content:center}#overlay-container{position:absolute;background:rgba(0,0,0,.4);z-index:5000;transition:opacity .3s;backdrop-filter:blur(16px);opacity:0;display:none;padding:20px;inset:0}#overlay-container.active{display:flex;opacity:1}.panel-card{background:var(--bg);width:100%;max-width:340px;border-radius:20px;padding:20px;box-shadow:0 20px 40px rgba(0,0,0,.2);animation:panelSlide .4s cubic-bezier(.16,1,.3,1);max-height:80vh;overflow:hidden}@keyframes panelSlide{0%{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}.view-content{display:none}.view-content.active{display:block}.access-summary-card{border-radius:var(--radius);border:1px solid var(--border);cursor:pointer;transition:.15s}.access-summary-card,.flex-sb-aic-w100-p18-bg-br12-mb20{width:100%;background:#f2f2f7;padding:12px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.flex-sb-aic-w100-p18-bg-br12-mb20{border-radius:var(--radius)}.w-48{width:48px}.h-48{height:48px}.mb-24{margin-bottom:24px}.c-danger{color:var(--danger)}.c-warning{color:var(--warning)}.c-main{color:var(--text-main)}.c-accent{color:var(--accent)}.mb-48{margin-bottom:48px}.mt-24{margin-top:24px}.w-100{width:100%}.mt-12{margin-top:12px}.bn{border:none}.mb-20{margin-bottom:20px}.c-mute{color:var(--text-mute)}.fs-12{font-size:12px}.flex-1{flex:1}.flex-gap12-mt20{display:flex;gap:12px;margin-top:20px}.m-0-flex-1{margin:0;flex:1}.w-80{width:80px}.mb-16{margin-bottom:16px}.flex-s0{flex-shrink:0}.dn{display:none}.w-20{width:20px}.h-20{height:20px}.switch{position:relative;display:inline-block;width:44px;height:24px}.switch input{opacity:0;width:0;height:0}.slider{cursor:pointer;inset:0;background-color:#ccc;border-radius:24px}.slider,.slider:before{position:absolute;transition:.2s}.slider:before{content:"";height:18px;width:18px;left:3px;bottom:3px;background-color:#fff;border-radius:50%}input:checked+.slider{background-color:var(--accent)}input:checked+.slider:before{transform:translateX(20px)}.acc-info-card{background:#f2f2f7;border-radius:var(--radius);padding:14px;margin-bottom:12px}.acc-label{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--text-mute);font-weight:700;margin-bottom:4px}.acc-value{font-size:14px;font-weight:600;color:var(--text-main);word-break:break-all}.info-header{text-align:center;margin-bottom:24px}.info-avatar{width:80px;height:80px;border-radius:50%;background:#f2f2f7;margin:0 auto 12px;overflow:hidden;display:flex;align-items:center;justify-content:center;color:var(--accent);font-size:28px;font-weight:800}.info-avatar img{width:100%;height:100%;object-fit:cover}.info-title{font-size:18px;font-weight:800;color:#000;margin-bottom:4px}.info-subtitle{font-size:12px;color:var(--text-mute);text-transform:uppercase;font-weight:600;letter-spacing:.5px}.info-section{background:#f2f2f7;border-radius:var(--radius);margin-bottom:16px;padding:4px 0}.info-row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;font-size:13px}.info-row:not(:last-child){border-bottom:1px solid rgba(0,0,0,.05)}.info-label{color:var(--text-mute);font-weight:500}.info-value{color:var(--text-main);font-weight:600;text-align:right;max-width:60%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.info-value.clickable{color:var(--accent);cursor:pointer}.status-legend{display:flex;align-items:center;gap:8px;margin-top:4px}.status-dot{width:8px;height:8px;border-radius:50%}.danger-zone{margin-top:24px;padding-top:16px;border-top:1px solid var(--border)}.btn-danger{background:rgba(255,59,48,.1);color:var(--danger);border:none}.btn-danger:hover{background:rgba(255,59,48,.15)}.btn-danger.active{background:var(--danger);color:#fff}.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--border)}.refresh-btn{background:none;border:none;padding:4px;color:var(--text-mute);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s}.refresh-btn:active{transform:rotate(90deg)}#chat-input-area{display:flex;gap:10px;padding-top:12px;align-items:flex-end;border-top:1px solid var(--border)}#send-btn{width:50px;min-width:50px;height:50px;padding:0;border-radius:var(--radius);flex-shrink:0}#chat-input{margin:0}.icon-wrapper{width:20px;height:20px;display:flex;align-items:center;justify-content:center;cursor:pointer}.edit-modal-textarea{width:100%;height:120px;border:1px solid var(--border);border-radius:var(--radius);padding:12px;font-size:14px;font-family:inherit;resize:none;margin-bottom:12px}.pill-badge{font-size:9px;background:var(--accent);color:#fff;padding:2px 6px;border-radius:99px;font-weight:700;margin-left:6px}.online-dot{width:6px;height:6px;background:var(--success);border-radius:50%;display:inline-block;margin-right:4px}
+      </style>
+   </head>
+   <body>
+      <div id="app">
+         <div id="overlay-container">
+            <div class="panel-card">
+               <div id="view-access-manager" class="view-content">
+                  <div style="display:flex;flex-direction:column;gap:12px;height:100%">
+                     <div style="text-align:center">
+                        <h3 style="font-size:16px;font-weight:800;margin-bottom:4px">Select Users</h3>
+                        <p style="font-size:11px;color:var(--text-mute)">Add users to restrict access.</p>
+                     </div>
+                     <div style="display:flex;gap:6px;align-items:center"><input id="picker-id-input" class="input-field" placeholder="Paste User ID..." style="margin-bottom:0"><button class="btn btn-accent" style="width:auto;padding:0 12px;height:44px" onclick="window.addUserById()">Add</button></div>
+                     <label style="font-size:9px;color:var(--text-mute);text-transform:uppercase;letter-spacing:1px;font-weight:800">Added (<span id="picker-count">0</span>)</label>
+                     <div id="picker-selected-list" style="flex:1;overflow-y:auto;padding-right:4px;max-height:200px">
+                        <div style="color:var(--text-mute);padding:20px 0;font-size:12px;text-align:center">No users added.</div>
+                     </div>
+                     <button class="btn btn-accent" style="height:48px" onclick="window.closeAccessManager()">Done</button>
+                  </div>
+               </div>
+               <div id="view-room-settings" class="view-content">
+                  <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:16px">
+                     <h3 style="margin:0;font-weight:800;font-size:16px">Settings</h3>
+                     <button style="background:rgba(0,0,0,0.05);border:none;border-radius:8px;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-main)" onclick="window.closeOverlay()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                           <path d="M18 6 6 18"/>
+                           <path d="m6 6 12 12"/>
+                        </svg>
+                     </button>
+                  </div>
+                  <div class="step-indicator" id="edit-step-indicator">
+                     <div class="step-dot active"></div>
+                     <div class="step-dot"></div>
+                  </div>
+                  <div class="step-container">
+                     <div id="edit-step-1" class="wizard-step active">
+                        <input id="edit-room-name" class="input-field" placeholder="Room Name">
+                        <div class="flex-sb-aic-w100-p18-bg-br12-mb20"><span style="font-weight:600;font-size:13px">Visible in Lobby</span><label class="switch"><input type="checkbox" id="edit-room-visible" checked><span class="slider"></span></label></div>
+                        <button class="btn btn-accent" onclick="window.nextEditStep()">Next</button>
+                     </div>
+                     <div id="edit-step-2" class="wizard-step">
+                        <div style="margin-bottom:12px">
+                           <div style="display:flex;justify-content:space-between;align-items:center;width:100%;padding:0 0 8px 0"><span style="font-weight:600;font-size:12px">Password</span><span id="pass-status-label" style="font-size:9px;color:var(--text-mute);text-transform:uppercase;font-weight:700">Not Set</span></div>
+                           <input id="edit-room-pass" type="password" class="input-field" placeholder="Change password" autocomplete="new-password"><button id="btn-remove-pass" class="btn bn c-danger fs-12" style="height:auto;padding:4px 0;display:none;justify-content:flex-start" onclick="window.prepareRemovePassword()">Remove Password</button>
+                        </div>
+                        <div id="edit-access-summary" class="access-summary-card" onclick="window.openAccessManager('edit-room')">
+                           <span class="c-main">Public Room</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                              <path d="m9 18 6-6-6-6"/>
+                           </svg>
+                        </div>
+                        <div style="display:flex;gap:8px;margin-top:4px"><button class="btn" style="background:#f2f2f7;flex:1" onclick="window.prevEditStep()">Back</button><button class="btn btn-accent" style="flex:1" onclick="window.saveRoomSettings(event)">Save</button></div>
+                     </div>
+                  </div>
+               </div>
+               <div id="view-room-info" class="view-content">
+                  <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:16px">
+                     <h3 style="margin:0;font-weight:800;font-size:16px">Room Info</h3>
+                     <button style="background:rgba(0,0,0,0.05);border:none;border-radius:8px;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-main)" onclick="window.closeOverlay()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                           <path d="M18 6 6 18"/>
+                           <path d="m6 6 12 12"/>
+                        </svg>
+                     </button>
+                  </div>
+                  <div class="info-header">
+                     <div id="info-avatar" class="info-avatar">?</div>
+                     <div id="info-name" class="info-title">Room Name</div>
+                     <div id="info-type" class="info-subtitle">Group</div>
+                  </div>
+                  <div class="info-section">
+                     <div class="info-row" id="info-creator-row"><span class="info-label">Created By</span><span id="info-creator" class="info-value">User</span></div>
+                     <div class="info-row">
+                        <span class="info-label">Room ID</span>
+                        <div style="display:flex;align-items:center;gap:6px">
+                           <span id="info-id" class="info-value" style="font-family:monospace;font-size:11px;max-width:120px">id</span>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy" style="width:14px;height:14px;color:var(--accent);cursor:pointer;flex-shrink:0" onclick="window.copyInfoId()">
+                              <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                              <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+                           </svg>
+                        </div>
+                     </div>
+                     <div class="info-row"><span class="info-label">Created</span><span id="info-date" class="info-value">Date</span></div>
+                  </div>
+                  <div class="info-section" style="background:transparent;padding:0">
+                     <div style="padding:0 0 8px 4px;font-size:11px;font-weight:700;color:var(--text-mute);text-transform:uppercase">Presence</div>
+                     <div style="display:flex;flex-direction:column;gap:6px;background:#f2f2f7;padding:12px 14px;border-radius:var(--radius)">
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                           <div class="status-legend">
+                              <div class="status-dot" style="background:var(--success)"></div>
+                              <span style="font-size:12px;font-weight:600">This Room</span>
+                           </div>
+                           <span id="info-room-count" class="pill-badge">-</span>
+                        </div>
+                        <div style="display:flex;justify-content:space-between;align-items:center">
+                           <div class="status-legend">
+                              <div class="status-dot" style="background:var(--accent)"></div>
+                              <span style="font-size:12px;font-weight:600">Global Network</span>
+                           </div>
+                           <span id="info-global-count" class="pill-badge" style="background:var(--text-main)">0</span>
+                        </div>
+                     </div>
+                  </div>
+                  <div style="margin-top:24px; display:flex; flex-direction:column; gap:10px"><button id="info-delete-btn" class="btn btn-danger" style="display:none" onclick="window.initiateDeleteRoom()">Delete Chat</button></div>
+               </div>
+               <div id="view-edit-message" class="view-content">
+                  <div style="display:flex;justify-content:space-between;align-items:center;width:100%;margin-bottom:16px">
+                     <h3 style="margin:0;font-weight:800;font-size:16px">Edit Message</h3>
+                     <button style="background:rgba(0,0,0,0.05);border:none;border-radius:8px;padding:6px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-main)" onclick="window.closeOverlay()">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-x">
+                           <path d="M18 6 6 18"/>
+                           <path d="m6 6 12 12"/>
+                        </svg>
+                     </button>
+                  </div>
+                  <textarea id="edit-msg-input" class="edit-modal-textarea" placeholder="Message..."></textarea>
+                  <button class="btn btn-accent" onclick="window.saveEditMessage()">Save</button>
+               </div>
+            </div>
+         </div>
+         <div id="block-overlay"></div>
+         <div id="loader-overlay" class="active">
+            <div class="spinner"></div>
+            <span id="loader-text" class="loader-text">Initializing...</span>
+         </div>
+         <div id="toast-container"></div>
+         <div id="context-menu">
+            <button class="ctx-item" id="ctx-edit">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-pencil">
+                  <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/>
+                  <path d="m15 5 4 4"/>
+               </svg>
+               Edit
+            </button>
+            <button class="ctx-item" id="ctx-copy">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-copy">
+                  <rect width="14" height="14" x="8" y="8" rx="2" ry="2"/>
+                  <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/>
+               </svg>
+               Copy
+            </button>
+            <button class="ctx-item danger" id="ctx-delete">
+               <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-trash-2">
+                  <path d="M10 11v6"/>
+                  <path d="M14 11v6"/>
+                  <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/>
+                  <path d="M3 6h18"/>
+                  <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+               </svg>
+               Delete
+            </button>
+         </div>
+         <div id="scr-start" class="screen active center-content">
+            <h1 class="title">HRN Chat</h1>
+            <p class="subtitle">Secure Network</p>
+            <button class="btn btn-accent" onclick="window.nav('scr-login')">Sign In</button><button class="btn mt-12" onclick="window.nav('scr-register')">Create Account</button>
+         </div>
+         <div id="scr-login" class="screen center-content">
+            <h1 class="title">Sign In</h1>
+            <p class="subtitle">Access Secure Room</p>
+            <input id="l-email" class="input-field" type="email" placeholder="Email Address"><input id="l-pass" type="password" class="input-field" placeholder="Password"><button class="btn btn-accent" onclick="window.handleLogin(event)">Access</button><button class="btn bn mt-12" style="color:var(--text-mute)" onclick="window.nav('scr-start')">Back</button>
+         </div>
+         <div id="scr-register" class="screen center-content">
+            <div class="step-indicator" id="reg-step-indicator">
+               <div class="step-dot active"></div>
+               <div class="step-dot"></div>
+               <div class="step-dot"></div>
+            </div>
+            <div class="step-container">
+               <div id="reg-step-1" class="wizard-step active">
+                  <h1 class="title">Sign Up</h1>
+                  <p class="subtitle">Step 1 of 3</p>
+                  <input id="r-email" class="input-field" type="email" placeholder="Email Address">
+                  <input id="r-pass" class="input-field" type="password" placeholder="Password (min. 8 chars)">
+                  <button class="btn btn-accent" onclick="window.nextRegStep()">Next</button>
+               </div>
+               <div id="reg-step-2" class="wizard-step">
+                  <h1 class="title">Profile</h1>
+                  <p class="subtitle">Step 2 of 3</p>
+                  <input id="r-name" class="input-field" placeholder="Full Name">
+                  <div style="display:flex;gap:8px;margin-top:4px">
+                     <button class="btn" style="background:#f2f2f7;flex:1" onclick="window.prevRegStep()">Back</button>
+                     <button class="btn btn-accent" style="flex:1" onclick="window.nextRegStep()">Next</button>
+                  </div>
+               </div>
+               <div id="reg-step-3" class="wizard-step">
+                  <h1 class="title">Avatar</h1>
+                  <p class="subtitle">Step 3 of 3</p>
+                  <div class="avatar-carousel-container">
+                     <div class="carousel-wrapper">
+                        <button class="carousel-btn" onclick="window.carouselNav(-1)">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left">
+                              <path d="m15 18-6-6 6-6"/>
+                           </svg>
+                        </button>
+                        <div class="carousel-preview" id="avatar-preview-el"></div>
+                        <button class="carousel-btn" onclick="window.carouselNav(1)">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                              <path d="m9 18 6-6-6-6"/>
+                           </svg>
+                        </button>
+                     </div>
+                     <div class="upload-btn-wrapper">
+                        <label class="upload-btn">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-upload">
+                              <path d="M12 3v12"/>
+                              <path d="m17 8-5-5-5 5"/>
+                              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                           </svg>
+                           <span>Upload Custom</span>
+                           <input type="file" id="avatar-upload-input" accept="image/*" style="display:none" onchange="window.handleAvatarUpload(event)">
+                        </label>
+                     </div>
+                  </div>
+                  <input id="r-avatar-url" class="input-field" placeholder="Or paste Image URL..." style="margin-top:8px">
+                  <div style="display:flex;gap:8px;margin-top:4px">
+                     <button class="btn" style="background:#f2f2f7;flex:1" onclick="window.prevRegStep()">Back</button>
+                     <button class="btn btn-accent" style="flex:1" onclick="window.handleRegister(event)">Verify</button>
+                  </div>
+               </div>
+            </div>
+            <button class="btn bn mt-12" style="color:var(--text-mute)" onclick="window.nav('scr-start')">Cancel</button>
+         </div>
+         <div id="scr-verify" class="screen center-content">
+            <h1 class="title">Verify</h1>
+            <p class="subtitle">Confirm Identity</p>
+            <input id="v-code" class="input-field" style="text-align:center;font-size:22px;letter-spacing:6px" placeholder="000000"><button class="btn btn-accent" onclick="window.handleVerify(event)">Confirm</button>
+            <div id="v-timer" class="mt-24" style="color:var(--accent);font-weight:800;font-size:12px">10:00</div>
+         </div>
+         <div id="scr-account" class="screen">
+            <div class="header">
+               <span class="clickable" onclick="window.nav('scr-lobby', 'right')">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left">
+                     <path d="m15 18-6-6 6-6"/>
+                  </svg>
+               </span>
+               <h1 class="title" style="font-size:18px;margin:0;flex:1;text-align:center">My Account</h1>
+               <div style="width:22px"></div>
+            </div>
+            <div class="center-content" style="padding-top: 20px; margin-bottom: 30px">
+               <div id="acc-page-avatar" class="chat-avatar" style="width:90px;height:90px;font-size:36px; margin:0 auto 12px auto"></div>
+               <h1 id="acc-page-name" class="title" style="font-size:22px">User Name</h1>
+               <p id="acc-page-type" class="subtitle">Account Type</p>
+            </div>
+            <div style="padding: 0 10px">
+               <div class="acc-info-card">
+                  <div class="acc-label">User ID</div>
+                  <div id="acc-page-id" class="acc-value" style="cursor:pointer;color:var(--accent);font-family:monospace;font-size:12px" onclick="window.copyAccountId()"></div>
+               </div>
+               <div id="acc-email-wrapper" class="acc-info-card">
+                  <div class="acc-label">Email Address</div>
+                  <div id="acc-page-email" class="acc-value" style="font-size:12px"></div>
+               </div>
+            </div>
+            <div style="padding: 20px; margin-top:auto"><button class="btn" style="background:transparent;border:1px dotted var(--accent);color:var(--accent)" onclick="window.handleLogout(event)">Log Out</button></div>
+         </div>
+         <div id="scr-lobby" class="screen">
+            <div class="header">
+               <div style="display:flex;align-items:center;gap:8px;flex:1;min-width:0">
+                  <h1 class="title" style="font-size:18px;margin:0">HRN Chat</h1>
+                  <button class="refresh-btn" onclick="window.refreshLobby()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-refresh-cw">
+                        <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/>
+                        <path d="M21 3v5h-5"/>
+                        <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/>
+                        <path d="M8 16H3v5"/>
+                     </svg>
+                  </button>
+               </div>
+               <div style="display:flex;gap:12px;align-items:center;flex-shrink:0">
+                  <span class="clickable" id="icon-plus-lobby" onclick="window.nav('scr-create')">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-plus">
+                        <path d="M5 12h14"/>
+                        <path d="M12 5v14"/>
+                     </svg>
+                  </span>
+                  <div id="lobby-avatar-btn" class="chat-avatar" style="width:32px;height:32px;cursor:pointer" onclick="window.nav('scr-account')"></div>
+               </div>
+            </div>
+            <input id="search-bar" class="input-field" placeholder="Search..." oninput="window.filterRooms()">
+            <div id="room-list" class="flex-1" style="overflow-y:auto"></div>
+            <div style="display:flex;gap:10px;padding-top:12px;border-top:1px solid var(--border)"><input id="join-id" class="input-field m-0-flex-1" placeholder="Direct ID"><button class="btn btn-accent w-80" onclick="window.joinPrivate()">Join</button></div>
+         </div>
+         <div id="scr-chat" class="screen">
+            <div class="header" style="margin-bottom:12px">
+               <div class="chat-header-main">
+                  <span class="clickable flex-s0" onclick="window.leaveChat()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-left">
+                        <path d="m15 18-6-6 6-6"/>
+                     </svg>
+                  </span>
+                  <div class="chat-avatar status-border" id="chat-avatar-display">?</div>
+                  <div class="chat-header-title-wrapper">
+                     <h2 id="chat-title" class="title">---</h2>
+                     <div id="chat-subtitle-area" class="chat-header-subtitle"><span class="online-dot"></span><span id="room-user-count">-</span></div>
+                  </div>
+               </div>
+               <div style="display:flex;gap:12px;align-items:center;flex-shrink:0">
+                  <span id="info-edit-btn" class="icon-wrapper" style="display:none" onclick="window.openRoomSettings()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-settings">
+                        <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/>
+                        <circle cx="12" cy="12" r="3"/>
+                     </svg>
+                  </span>
+                  <span class="icon-wrapper" onclick="window.openRoomInfo()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-info">
+                        <circle cx="12" cy="12" r="10"/>
+                        <path d="M12 16v-4"/>
+                        <path d="M12 8h.01"/>
+                     </svg>
+                  </span>
+               </div>
+            </div>
+            <div id="chat-messages"></div>
+            <div id="chat-input-area">
+               <textarea id="chat-input" class="input-field" placeholder="Message..." style="height:50px;resize:none;min-height:50px"></textarea>
+               <button id="send-btn" class="btn btn-accent" onclick="window.sendMsg(event)">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-arrow-up">
+                     <path d="m5 12 7-7 7 7"/>
+                     <path d="M12 19V5"/>
+                  </svg>
+               </button>
+            </div>
+         </div>
+         <div id="scr-create" class="screen center-content">
+            <div class="step-indicator" id="create-step-indicator">
+               <div class="step-dot active"></div>
+               <div class="step-dot"></div>
+            </div>
+            <div class="step-container">
+               <div id="create-step-1" class="wizard-step active">
+                  <h1 class="title">New Chat</h1>
+                  <p class="subtitle">Choose Type</p>
+                  <div id="type-group" class="type-card" onclick="window.selectCreateType('group')">
+                     <div class="type-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-users">
+                           <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/>
+                           <path d="M16 3.128a4 4 0 0 1 0 7.744"/>
+                           <path d="M22 21v-2a4 4 0 0 0-3-3.87"/>
+                           <circle cx="9" cy="7" r="4"/>
+                        </svg>
+                     </div>
+                     <div class="type-info">
+                        <h4>Group Chat</h4>
+                        <p>Multiple people</p>
+                     </div>
+                  </div>
+                  <div id="type-direct" class="type-card" onclick="window.selectCreateType('direct')">
+                     <div class="type-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-user">
+                           <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/>
+                           <circle cx="12" cy="7" r="4"/>
+                        </svg>
+                     </div>
+                     <div class="type-info">
+                        <h4>Private Chat</h4>
+                        <p>Direct message</p>
+                     </div>
+                  </div>
+                  <button class="btn btn-accent" onclick="window.nextCreateStep()">Next</button>
+               </div>
+               <div id="create-step-2" class="wizard-step">
+                  <h1 class="title" id="create-step2-title">Setup</h1>
+                  <p class="subtitle" id="create-step2-sub">Details</p>
+                  <div id="create-group-fields">
+                     <input id="c-name" class="input-field" placeholder="Group Name"><input id="c-avatar" class="input-field" placeholder="Avatar URL (optional)"><input id="c-pass" type="password" class="input-field" placeholder="Password (optional)">
+                     <div class="flex-sb-aic-w100-p18-bg-br12-mb20"><span style="font-weight:600;font-size:13px">Visible in Lobby</span><label class="switch"><input type="checkbox" id="c-visible" checked><span class="slider"></span></label></div>
+                  </div>
+                  <div id="create-direct-fields" class="dn"><input id="c-target-user" class="input-field" placeholder="Paste User ID..."></div>
+                  <div id="create-access-summary" class="access-summary-card" onclick="window.openAccessManager('create')">
+                     <span class="c-main">Public Room</span>
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-chevron-right">
+                        <path d="m9 18 6-6-6-6"/>
+                     </svg>
+                  </div>
+                  <div style="display:flex;gap:8px"><button class="btn" style="background:#f2f2f7;flex:1" onclick="window.prevCreateStep()">Back</button><button class="btn btn-accent" style="flex:1" onclick="window.handleCreate(event)">Create</button></div>
+               </div>
+            </div>
+            <button class="btn bn mt-12" style="color:var(--text-mute)" onclick="window.nav('scr-lobby')">Cancel</button>
+         </div>
+         <div id="scr-gate" class="screen center-content">
+            <h1 class="title">Encrypted</h1>
+            <p class="subtitle">Authentication Required</p>
+            <input id="gate-pass" type="password" class="input-field" style="text-align:center" placeholder="Passkey"><button class="btn btn-accent" onclick="window.submitGate(event)">Decrypt</button><button class="btn bn mt-12" style="color:var(--text-mute)" onclick="window.nav('scr-lobby')">Abort</button>
+         </div>
+         <div id="scr-success" class="screen center-content">
+            <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--success)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check mb-24">
+               <circle cx="12" cy="12" r="10"/>
+               <path d="m9 12 2 2 4-4"/>
+            </svg>
+            <h1 class="title">Room Created</h1>
+            <p class="subtitle">Deployment Successful</p>
+            <div id="s-id" class="input-field" style="text-align:center;color:var(--accent);font-weight:800;border:1px dashed var(--accent)" onclick="window.copySId()">---</div>
+            <button class="btn btn-accent" onclick="window.enterCreated()">Enter</button>
+         </div>
+      </div>
+      <script type="module">
+         import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
+
+         export function initHRNchat(customConfig = {}) {
+             const CONFIG = {
+                 supabaseUrl: customConfig.supabaseUrl || "https://jnhsuniduzvhkpexorqk.supabase.co",
+                 supabaseKey: customConfig.supabaseKey || "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpuaHN1bmlkdXp2aGtwZXhvcnFrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE1NjAxMDYsImV4cCI6MjA4NzEzNjEwNn0.9I5bbqskCgksUaNWYlFFo0-6Odht28pOMdxTGZECahY",
+                 mailApi: customConfig.mailApi || "https://vercel-serverless-hrn.vercel.app/api/mailAPI",
+                 maxUsers: customConfig.maxUsers || 150,
+                 maxMessages: customConfig.maxMessages || 50,
+                 historyLoadLimit: customConfig.historyLoadLimit || 20,
+                 rateLimitMs: customConfig.rateLimitMs || 1000,
+                 verificationCodeExpiry: customConfig.verificationCodeExpiry || 600,
+                 maxMessageLength: customConfig.maxMessageLength || 5000,
+                 requestTimeout: 3000,
+                 backgroundDisconnectMs: customConfig.backgroundDisconnectMs || 5000
+             };
+         
+             const AVATARS = ['./assets/avatars/1.webp', './assets/avatars/2.webp', './assets/avatars/3.webp', './assets/avatars/4.webp', './assets/avatars/5.webp'];
+             const DB_NAME = 'HRN_LOCAL_DB_9';
+             const DB_VERSION = 1;
+             const MAX_CACHE_SIZE = 100;
+         
+             const state = {
+                 user: null,
+                 currentRoomId: null,
+                 currentRoomData: null,
+                 currentRoomDisplay: { name: null, avatar: null },
+                 chatChannel: null,
+                 presenceChannel: null,
+                 globalPresenceChannel: null,
+                 lobbyChannel: null, // New: Dedicated channel for lobby updates
+                 allRooms: [],
+                 vTimer: null,
+                 lastRenderedDateLabel: null,
+                 lastKnownOnlineCount: null,
+                 globalOnlineCount: 0,
+                 sessionStartTime: null,
+                 isPresenceSubscribed: false,
+                 pending: null,
+                 lastCreated: null,
+                 lastCreatedPass: null,
+                 processingAction: false,
+                 isLoadingHistory: false,
+                 oldestMessageTimestamp: null,
+                 hasMoreHistory: true,
+                 lastMessageTime: 0,
+                 isChatChannelReady: false,
+                 selectedAllowedUsers: [],
+                 currentPickerContext: null,
+                 lastLobbyRefresh: 0,
+                 removePasswordFlag: false,
+                 longPressTimer: null,
+                 currentStep: { create: 1, edit: 1, reg: 1 },
+                 selectedAvatar: null,
+                 createType: 'group',
+                 currentRoomPassword: null,
+                 reconnectTimer: null,
+                 deleteConfirmTimeout: null,
+                 profileCache: {},
+                 profileCacheKeys: [],
+                 editingMessage: null,
+                 contextTarget: null,
+                 connectionStrength: '4g',
+                 globalPresenceReady: false,
+                 connectionTimeoutTimer: null,
+                 presenceUpdateTimer: null,
+                 isNavigating: false,
+                 isOfflineMode: false,
+                 isCapacityBlocked: false,
+                 authListener: null,
+                 internetCheckInterval: null,
+                 backgroundDisconnectTimer: null,
+                 isBackgroundDisconnectActive: false,
+                 isHardReconnecting: false,
+                 isConnecting: false,
+                 ui: { isOverlayOpen: false, isContextOpen: false, overlayCloseLocked: false },
+                 dom: {},
+                 roomKeys: {} // New: Cache for room keys to decrypt previews
+             };
+         
+             let toastQueue = [], toastVisible = false, lastToastText = "", lastToastTime = 0;
+         
+             const $ = id => state.dom[id] || (state.dom[id] = document.getElementById(id));
+             const esc = t => { const p = document.createElement('p'); p.textContent = t; return p.innerHTML; };
+             const truncateText = (text, maxLength = 20) => !text ? "" : text.length > maxLength ? text.substring(0, maxLength) + "..." : text;
+             const getTimeFromDate = (d) => new Date(d).toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+             const getRelativeTime = (date) => {
+                 if (!date) return '';
+                 const now = new Date();
+                 const d = new Date(date);
+                 const diff = now - d;
+                 const mins = Math.floor(diff / 60000);
+                 const hrs = Math.floor(mins / 60);
+                 const days = Math.floor(hrs / 24);
+                 if (mins < 1) return 'Now';
+                 if (mins < 60) return `${mins}m`;
+                 if (hrs < 24) return `${hrs}h`;
+                 if (days < 7) return `${days}d`;
+                 return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+             };
+         
+             const fetchWithTimeout = async (promise, ms = CONFIG.requestTimeout) => {
+                 const controller = new AbortController();
+                 const timeout = setTimeout(() => controller.abort(), ms);
+                 try { const result = await promise; clearTimeout(timeout); return result; } 
+                 catch (error) { clearTimeout(timeout); throw error; }
+             };
+         
+             const execQuery = async (queryPromise) => {
+                 return Promise.race([
+                     queryPromise,
+                     new Promise((_, reject) => setTimeout(() => reject(new Error("Request Timeout")), CONFIG.requestTimeout))
+                 ]);
+             };
+         
+             const localDB = {
+                 db: null,
+                 async init() {
+                     return new Promise((resolve, reject) => {
+                         const request = indexedDB.open(DB_NAME, DB_VERSION);
+                         request.onerror = (e) => reject(request.error);
+                         request.onsuccess = () => { this.db = request.result; resolve(); };
+                         request.onupgradeneeded = (e) => {
+                             const db = e.target.result;
+                             const tx = e.target.transaction;
+                             if (!db.objectStoreNames.contains('rooms')) db.createObjectStore('rooms', { keyPath: 'id' });
+                             if (!db.objectStoreNames.contains('messages')) {
+                                 const ms = db.createObjectStore('messages', { keyPath: 'id' });
+                                 ms.createIndex('room_id', 'room_id', { unique: false });
+                             } else {
+                                 const ms = tx.objectStore('messages');
+                                 if (!ms.indexNames.contains('room_id')) ms.createIndex('room_id', 'room_id', { unique: false });
+                             }
+                             if (!db.objectStoreNames.contains('profiles')) db.createObjectStore('profiles', { keyPath: 'id' });
+                             if (!db.objectStoreNames.contains('keys')) db.createObjectStore('keys', { keyPath: 'room_id' });
+                             if (!db.objectStoreNames.contains('known_users')) db.createObjectStore('known_users', { keyPath: 'id' });
+                             if (!db.objectStoreNames.contains('user_tree')) db.createObjectStore('user_tree', { keyPath: 'user_id' });
+                         };
+                     });
+                 },
+                 async get(store, key) {
+                     return new Promise((res, rej) => {
+                         if (!this.db) return rej("DB not init");
+                         const tx = this.db.transaction(store, 'readonly');
+                         const req = tx.objectStore(store).get(key);
+                         req.onsuccess = () => res(req.result);
+                         req.onerror = () => rej(req.error);
+                     });
+                 },
+                 async getAll(store) {
+                     return new Promise((res, rej) => {
+                         if (!this.db) return res([]);
+                         const tx = this.db.transaction(store, 'readonly');
+                         const req = tx.objectStore(store).getAll();
+                         req.onsuccess = () => res(req.result || []);
+                         req.onerror = () => rej(req.error);
+                     });
+                 },
+                 async put(store, val) {
+                     if (!val || !val.id) return;
+                     return new Promise((res, rej) => {
+                         if (!this.db) return rej("DB not init");
+                         const tx = this.db.transaction(store, 'readwrite');
+                         tx.objectStore(store).put(val);
+                         tx.oncomplete = () => res();
+                         tx.onerror = () => rej(tx.error);
+                     });
+                 },
+                 async putAll(store, vals) {
+                     if (!vals || vals.length === 0) return;
+                     return new Promise((res, rej) => {
+                         if (!this.db) return rej("DB not init");
+                         const tx = this.db.transaction(store, 'readwrite');
+                         const os = tx.objectStore(store);
+                         vals.forEach(v => { if (v && v.id) os.put(v); });
+                         tx.oncomplete = () => res();
+                         tx.onerror = () => rej(tx.error);
+                     });
+                 },
+                 async clear(store) {
+                     return new Promise((res, rej) => {
+                         if (!this.db) return res();
+                         const tx = this.db.transaction(store, 'readwrite');
+                         tx.objectStore(store).clear();
+                         tx.oncomplete = () => res();
+                         tx.onerror = () => rej(tx.error);
+                     });
+                 },
+                 async delete(store, key) {
+                     return new Promise((res, rej) => {
+                         if (!this.db) return res();
+                         const tx = this.db.transaction(store, 'readwrite');
+                         tx.objectStore(store).delete(key);
+                         tx.oncomplete = () => res();
+                         tx.onerror = () => rej(tx.error);
+                     });
+                 },
+                 async getRoomMessages(roomId) {
+                     const all = await this.getAll('messages');
+                     return all.filter(m => m.room_id === roomId).sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
+                 },
+                 async clearRoomMessages(roomId) {
+                     return new Promise((resolve, reject) => {
+                         if (!this.db) return reject();
+                         const tx = this.db.transaction('messages', 'readwrite');
+                         const store = tx.objectStore('messages');
+                         const index = store.index('room_id');
+                         const req = index.openCursor(IDBKeyRange.only(roomId));
+                         req.onsuccess = (e) => { const cursor = e.target.result; if (cursor) { cursor.delete(); cursor.continue(); } };
+                         tx.oncomplete = () => resolve();
+                         tx.onerror = () => reject(tx.error);
+                     });
+                 },
+                 async saveUserTree(userId, rooms) {
+                     return this.put('user_tree', { user_id: userId, room_ids: rooms.map(r => r.id), timestamp: Date.now() });
+                 },
+                 async getUserTree(userId) { return this.get('user_tree', userId); }
+             };
+         
+             const db = createClient(CONFIG.supabaseUrl, CONFIG.supabaseKey, {
+                 auth: { persistSession: false, autoRefreshToken: true },
+                 realtime: { params: { eventsPerSecond: 10 } }
+             });
+         
+             const setAppMode = (offline) => {
+                 state.isOfflineMode = offline;
+                 updatePresenceUI();
+                 updateSendButtonState();
+                 setConnectionVisuals(offline ? 'offline' : 'connected');
+             };
+         
+             const setConnectionVisuals = (status) => {
+                 const avatar = $('chat-avatar-display');
+                 if (!avatar) return;
+                 avatar.classList.remove('status-connected', 'status-connecting', 'status-offline');
+                 if (status === 'connected') avatar.classList.add('status-connected');
+                 else if (status === 'connecting') avatar.classList.add('status-connecting');
+                 else avatar.classList.add('status-offline');
+                 updateSendButtonState();
+             };
+         
+             const updateSendButtonState = () => {
+                 const btn = $('send-btn'); const input = $('chat-input');
+                 if (!btn || !input) return;
+                 const disable = state.isOfflineMode || !state.isChatChannelReady || state.isCapacityBlocked;
+                 btn.disabled = disable; btn.style.opacity = disable ? "0.5" : "1"; input.disabled = disable;
+                 input.placeholder = state.isOfflineMode ? "You are offline." : (disable ? "Connecting..." : "Message...");
+             };
+         
+             const schedulePresenceUpdate = () => {
+                 if (state.presenceUpdateTimer) clearTimeout(state.presenceUpdateTimer);
+                 state.presenceUpdateTimer = setTimeout(() => {
+                     updatePresenceUI();
+                     state.presenceUpdateTimer = null;
+                 }, 500);
+             };
+         
+             const updatePresenceUI = () => {
+                 const roomCountEl = $('room-user-count'); const infoRoomEl = $('info-room-count'); const infoGlobalEl = $('info-global-count');
+                 let dotColor = 'var(--text-mute)';
+                 if (state.isOfflineMode) {
+                     if (infoGlobalEl) infoGlobalEl.innerText = "Local";
+                     if (roomCountEl) roomCountEl.innerText = "-";
+                     if (infoRoomEl) infoRoomEl.innerText = "-";
+                 } else {
+                     let count = state.lastKnownOnlineCount || 0; let displayRoomText = count;
+                     if (state.currentRoomData?.is_direct) {
+                         if (count === 1) { displayRoomText = "Offline"; dotColor = 'var(--text-mute)'; }
+                         else if (count === 2) { displayRoomText = "Online"; dotColor = 'var(--success)'; }
+                         else { displayRoomText = "-"; dotColor = 'var(--text-mute)'; }
+                     } else { dotColor = 'var(--success)'; }
+                     if (infoGlobalEl) infoGlobalEl.innerText = `${state.globalOnlineCount}/${CONFIG.maxUsers}`;
+                     if (roomCountEl) roomCountEl.innerText = displayRoomText;
+                     if (infoRoomEl) infoRoomEl.innerText = displayRoomText;
+                 }
+                 const dot = roomCountEl?.previousElementSibling;
+                 if (dot && dot.classList.contains('online-dot')) dot.style.background = dotColor;
+             };
+                       // Helper om preview tekst te formatteren (Naam: Bericht)
+            const formatPreview = (text, userName, userId, isDirect, currentUserId) => {
+                const displayName = truncateText(userName || 'User', 12);
+                const displayText = truncateText(text, 20);
+                
+                // Als het een DM is:
+                if (isDirect) {
+                    // Als wij het stuurden: "You: Message"
+                    if (userId === currentUserId) return `You: ${displayText}`;
+                    // Als de ander stuurt: Gewoon "Message" (standaard WhatsApp gedrag)
+                    return displayText;
+                }
+                
+                // Als het een Groep is: "Name: Message"
+                return `${displayName}: ${displayText}`;
+            };
+         
+             const processToastQueue = () => {
+                 if (toastVisible || toastQueue.length === 0) return;
+                 const msg = toastQueue[0]; const now = Date.now();
+                 if (msg === lastToastText && (now - lastToastTime < 3000)) { toastQueue.shift(); if (toastQueue.length === 0) return; return processToastQueue(); }
+                 toastVisible = true; const confirmedMsg = toastQueue.shift(); lastToastText = confirmedMsg; lastToastTime = now;
+                 const c = $('toast-container'); const t = document.createElement('div'); t.className = 'toast-item'; t.innerText = confirmedMsg;
+                 const spawnTime = Date.now();
+                 t.onclick = () => { if (Date.now() - spawnTime < 200) return; t.style.opacity = '0'; setTimeout(() => { t.remove(); toastVisible = false; processToastQueue(); }, 400); };
+                 c.appendChild(t);
+                 setTimeout(() => { if (t.parentNode) { t.style.opacity = '0'; setTimeout(() => { if (t.parentNode) t.remove(); toastVisible = false; processToastQueue(); }, 400); } }, 3000);
+             };
+         
+             window.toast = m => { if (m === lastToastText && (Date.now() - lastToastTime < 2000)) return; toastQueue.push(m); processToastQueue(); };
+             window.setLoading = (s, text = null) => {
+                 const loader = $('loader-overlay'); const loaderText = $('loader-text');
+                 if (!loader) return;
+                 if (s) loader.classList.add('active'); else loader.classList.remove('active');
+                 if (text) loaderText.innerText = text; else loaderText.innerText = "Loading...";
+             };
+         
+             const safeAwait = async (promise) => { try { return [await promise, null]; } catch (error) { return [null, error]; } };
+         
+             const cacheAvatar = async (profile) => {
+                 if (!profile) return profile;
+                 await localDB.put('profiles', profile);
+                 if (!state.profileCache[profile.id]) { state.profileCacheKeys.push(profile.id); }
+                 state.profileCache[profile.id] = profile;
+                 if (state.profileCacheKeys.length > MAX_CACHE_SIZE) {
+                     const oldKey = state.profileCacheKeys.shift();
+                     delete state.profileCache[oldKey];
+                 }
+                 return profile;
+             };
+         
+             const getProfiles = async (userIds) => {
+                 if (!userIds || userIds.length === 0) return [];
+                 const uniqueIds = [...new Set(userIds)]; const missingIds = uniqueIds.filter(id => !state.profileCache[id]);
+                 if (missingIds.length > 0 && !state.isOfflineMode) {
+                     try {
+                         const { data: profiles, error } = await db.from('profiles').select('id, full_name, avatar_url, updated_at').in('id', missingIds);
+                         if (profiles) await Promise.all(profiles.map(p => cacheAvatar(p)));
+                     } catch (e) { console.warn("Batch profile fetch failed", e); }
+                 }
+                 return uniqueIds.map(id => state.profileCache[id]).filter(Boolean);
+             };
+         
+             const getProfile = async (userId) => {
+                 if (!userId) return null;
+                 if (state.profileCache[userId]) return state.profileCache[userId];
+                 let profile = await localDB.get('profiles', userId);
+                 if (!state.isOfflineMode) {
+                     try {
+                         const { data: serverProfile, error } = await db.from('profiles').select('id, full_name, avatar_url, updated_at').eq('id', userId).single();
+                         if (serverProfile) {
+                             const localTime = profile?.updated_at ? new Date(profile.updated_at).getTime() : 0;
+                             const serverTime = serverProfile.updated_at ? new Date(serverProfile.updated_at).getTime() : 0;
+                             if (!profile || serverTime > localTime || !profile.full_name) { profile = serverProfile; await cacheAvatar(profile); }
+                         }
+                     } catch (e) { console.warn("Profile fetch failed", e); }
+                 }
+                 if (profile) state.profileCache[userId] = profile;
+                 return profile;
+             };
+         
+             const resolveRoomDisplay = async (room) => {
+                 if (!room) return { name: 'Chat', avatar: null };
+                 if (!room.is_direct) return { name: room.name, avatar: room.avatar_url || null };
+                 const myId = state.user?.id;
+                 if (!myId || !room.allowed_users || room.allowed_users.length === 0) return { name: 'Direct Message', avatar: null };
+                 const otherId = room.allowed_users.find(id => id !== myId && id !== '*');
+                 if (!otherId) return { name: 'Direct Message', avatar: null };
+                 const profile = await getProfile(otherId);
+                 if (!profile) return { name: 'Unknown User', avatar: null };
+                 return { name: profile.full_name || 'User', avatar: profile.avatar_url || null };
+             };
+         
+             const updateGateUI = async (room) => {
+                 if (!room) return;
+                 const display = await resolveRoomDisplay(room);
+                 if ($('gate-room-name')) $('gate-room-name').innerText = display.name;
+                 if ($('gate-room-avatar')) {
+                     if (display.avatar) $('gate-room-avatar').innerHTML = `<img src="${display.avatar}" style="width:100%;height:100%;object-fit:cover;border-radius:inherit">`;
+                     else $('gate-room-avatar').innerHTML = `<span style="font-size:24px;font-weight:700;color:var(--accent)">${display.name.charAt(0)}</span>`;
+                 }
+             };
+         
+             // Crypto Worker Setup
+             const workerCode = `
+                 self.onmessage = async (e) => { 
+                     const { id, type, payload } = e.data; 
+                     const encoder = new TextEncoder(); 
+                     const decoder = new TextDecoder(); 
+                     self.keys = self.keys || {};
+                     try { 
+                         if (type === 'deriveKey') { 
+                             const keyMaterial = await crypto.subtle.importKey('raw', encoder.encode(payload.password), { name: 'PBKDF2' }, false, ['deriveKey']); 
+                             const key = await crypto.subtle.deriveKey({ name: 'PBKDF2', salt: encoder.encode(payload.salt), iterations: 300000, hash: 'SHA-256' }, keyMaterial, { name: 'AES-GCM', length: 256 }, true, ['encrypt', 'decrypt']); 
+                             self.keys[payload.keyId] = key; 
+                             self.postMessage({ id, type: 'keyDerived', success: true }); 
+                         } else if (type === 'encrypt') { 
+                             if (!self.keys[payload.keyId]) throw new Error("Key not derived"); 
+                             const iv = crypto.getRandomValues(new Uint8Array(12)); 
+                             const encoded = encoder.encode(payload.text); 
+                             const ciphertext = await crypto.subtle.encrypt({ name: 'AES-GCM', iv }, self.keys[payload.keyId], encoded); 
+                             const combined = new Uint8Array(iv.length + ciphertext.byteLength); 
+                             combined.set(iv, 0); combined.set(new Uint8Array(ciphertext), iv.length); 
+                             const base64 = btoa(String.fromCharCode(...combined)); 
+                             self.postMessage({ id, type: 'encrypted', result: base64 }); 
+                         } else if (type === 'decryptHistory') { 
+                             if (!self.keys[payload.keyId]) throw new Error("Key not derived"); 
+                             const results = []; 
+                             for (const m of payload.messages) { 
+                                 try { 
+                                     if (m.content === '/') { results.push({ id: m.id, deleted: true, user_id: m.user_id, user_name: m.user_name, created_at: m.created_at, updated_at: m.updated_at }); continue; } 
+                                     const binary = atob(m.content); 
+                                     const bytes = new Uint8Array(binary.length); 
+                                     for(let i=0; i<binary.length; i++) bytes[i] = binary.charCodeAt(i); 
+                                     const iv = bytes.slice(0, 12); 
+                                     const ciphertext = bytes.slice(12); 
+                                     const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, self.keys[payload.keyId], ciphertext); 
+                                     const text = decoder.decode(decrypted); 
+                                     const parts = text.split('|'); 
+                                     results.push({ id: m.id, time: parts[0], text: parts.slice(1).join('|'), user_id: m.user_id, user_name: m.user_name, created_at: m.created_at, updated_at: m.updated_at }); 
+                                 } catch (err) { results.push({ id: m.id, error: true }); } 
+                             } 
+                             self.postMessage({ id, type: 'historyDecrypted', results }); 
+                         } else if (type === 'decryptSingle') { 
+                             if (!self.keys[payload.keyId]) throw new Error("Key not derived"); 
+                             if (payload.content === '/') { self.postMessage({ id, type: 'singleDecrypted', result: { deleted: true } }); return; } 
+                             try { 
+                                 const binary = atob(payload.content); 
+                                 const bytes = new Uint8Array(binary.length); 
+                                 for(let i=0; i<binary.length; i++) bytes[i] = binary.charCodeAt(i); 
+                                 const iv = bytes.slice(0, 12); 
+                                 const ciphertext = bytes.slice(12); 
+                                 const decrypted = await crypto.subtle.decrypt({ name: 'AES-GCM', iv }, self.keys[payload.keyId], ciphertext); 
+                                 const text = decoder.decode(decrypted); 
+                                 const parts = text.split('|'); 
+                                 self.postMessage({ id, type: 'singleDecrypted', result: { time: parts[0], text: parts.slice(1).join('|') } }); 
+                             } catch(e) { self.postMessage({ id, type: 'singleDecrypted', error: e.message }); } 
+                         } 
+                     } catch (error) { self.postMessage({ id, type: 'error', message: error.message }); } 
+                 };
+             `;
+             const workerBlob = new Blob([workerCode], { type: 'application/javascript' });
+             const cryptoWorker = new Worker(URL.createObjectURL(workerBlob));
+             const pendingResolvers = {};
+             cryptoWorker.onmessage = (e) => {
+                 const { id, type, result, error, results, success } = e.data;
+                 const key = id || type;
+                 if (pendingResolvers[key]) {
+                     if (error || results?.error) pendingResolvers[key].reject(error || "Decryption failed");
+                     else if (type === 'keyDerived') pendingResolvers[key].resolve(success);
+                     else pendingResolvers[key].resolve({ type, result, results });
+                     delete pendingResolvers[key];
+                 }
+             };
+             const workerExec = (type, payload) => {
+                 return new Promise((resolve, reject) => {
+                     const id = crypto.randomUUID();
+                     pendingResolvers[id] = { resolve, reject };
+                     cryptoWorker.postMessage({ id, type, payload });
+                 });
+             };
+             const generateSalt = () => { const arr = new Uint8Array(16); crypto.getRandomValues(arr); return Array.from(arr, b => b.toString(16).padStart(2, '0')).join(''); };
+             const sha256 = async (text) => { const buffer = new TextEncoder().encode(text); const hashBuffer = await crypto.subtle.digest('SHA-256', buffer); const hashArray = Array.from(new Uint8Array(hashBuffer)); return hashArray.map(b => b.toString(16).padStart(2, '0')).join(''); };
+             const deriveKey = (pass, salt, keyId) => workerExec('deriveKey', { password: pass, salt: salt, keyId: keyId });
+             const encryptMessage = async (text, keyId) => {
+                 const time = new Date().toLocaleTimeString('en-GB', { hour: '2-digit', minute: '2-digit' });
+                 const res = await workerExec('encrypt', { text: time + "|" + text, keyId: keyId });
+                 return res.result;
+             };
+         
+             const getConnectionTimeout = () => {
+                 const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+                 const type = connection?.effectiveType;
+                 if (type === '4g') return 5000; if (type === '3g') return 10000; if (type === '2g') return 20000; if (type === 'slow-2g') return 30000;
+                 return 8000;
+             };
+         
+             const handleServerFull = async () => {
+                 if (state.isCapacityBlocked) return;
+                 state.isCapacityBlocked = true;
+                 await fullDisconnect();
+                 const overlay = $('block-overlay');
+                 if (overlay) {
+                     overlay.innerHTML = `<i data-lucide="users" style="width:48px;height:48px;margin-bottom:24px;color:var(--warning)"></i><h1 style="margin-bottom: 20px" class="title">Server Full</h1><p class="subtitle" style="text-align:center">Max concurrent user count (${CONFIG.maxUsers}) was reached.<br>Please try again later.</p>`;
+                     overlay.classList.add('active');
+                 }
+             };
+         
+             const cleanupChannels = async (keepGlobal = false) => {
+                 if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                 state.connectionTimeoutTimer = null;
+                 if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                 state.reconnectTimer = null;
+                 
+                 if (state.presenceChannel) { try { state.presenceChannel.unsubscribe(); } catch (e) {} state.presenceChannel = null; state.isPresenceSubscribed = false; }
+                 if (state.chatChannel) { try { state.chatChannel.unsubscribe(); } catch (e) {} state.chatChannel = null; }
+                 if (!keepGlobal && state.globalPresenceChannel) { try { state.globalPresenceChannel.unsubscribe(); } catch (e) {} state.globalPresenceChannel = null; state.globalPresenceReady = false; }
+                 if (!keepGlobal && state.lobbyChannel) { try { state.lobbyChannel.unsubscribe(); } catch (e) {} state.lobbyChannel = null; }
+                 state.isChatChannelReady = false;
+                 updateSendButtonState();
+             };
+         
+             const fullDisconnect = async () => {
+                 await cleanupChannels(false);
+             };
+         
+             const queryOnlineCountImmediately = async () => {
+                 if (!state.presenceChannel) return;
+                 const presState = state.presenceChannel.presenceState();
+                 const uniqueUserIds = new Set(Object.values(presState).flat().map(p => p.user_id));
+                 state.lastKnownOnlineCount = uniqueUserIds.size;
+                 schedulePresenceUpdate();
+             };
+         
+             const trackPresence = async (channel, userId) => {
+                 if (!channel || !userId) return;
+                 try { await channel.track({ user_id: userId, online_at: new Date().toISOString() }); } catch (e) {}
+             };
+         
+             const setupGlobalPresence = async (userId) => {
+                 if (state.isOfflineMode || state.isCapacityBlocked) return;
+                 if (state.globalPresenceChannel) { try { state.globalPresenceChannel.unsubscribe(); } catch(e) {} state.globalPresenceChannel = null; }
+                 
+                 state.globalPresenceChannel = db.channel('global-presence', { config: { presence: { key: userId || `listener_${Date.now()}` } } });
+                 state.globalPresenceChannel.on('presence', { event: 'sync' }, async () => {
+                     if (!state.globalPresenceChannel) return;
+                     const presState = state.globalPresenceChannel.presenceState();
+                     const uniqueUserIds = new Set();
+                     Object.values(presState).flat().forEach(p => uniqueUserIds.add(p.user_id));
+                     state.globalOnlineCount = uniqueUserIds.size;
+                     state.globalPresenceReady = true;
+                     schedulePresenceUpdate();
+                     if (state.user && !state.isOfflineMode && !state.isCapacityBlocked) {
+                         if (state.globalOnlineCount > CONFIG.maxUsers) {
+                             if (!uniqueUserIds.has(state.user.id)) handleServerFull();
+                         }
+                     }
+                 }).subscribe(async (status) => {
+                     if (status === 'SUBSCRIBED' && userId) await trackPresence(state.globalPresenceChannel, userId);
+                 });
+             };
+
+             // --- Deel 2: Logic & Realtime ---
+
+             const hardRefreshRoomMessages = async (roomId) => {
+                 if (!roomId || !state.currentRoomData) return;
+                 const container = $('chat-messages'); let messages = [];
+                 try {
+                     const { data, error } = await execQuery(db.from('messages').select('*').eq('room_id', roomId).order('created_at', { ascending: false }).limit(CONFIG.maxMessages));
+                     if (error) throw error;
+                     if (data) {
+                         data.reverse();
+                         const res = await workerExec('decryptHistory', { messages: data, keyId: roomId });
+                         messages = res.results.filter(m => !m.error);
+                         await localDB.clearRoomMessages(roomId);
+                         await localDB.putAll('messages', messages.map(m => ({ ...m, room_id: roomId })));
+                     }
+                 } catch (e) { return; }
+                 container.innerHTML = ''; state.lastRenderedDateLabel = null;
+                 if (messages.length > 0) {
+                     state.oldestMessageTimestamp = messages[0].created_at;
+                     let html = '', prev = null;
+                     messages.forEach(m => { html += renderMsg(m, prev, state.currentRoomData?.is_direct); prev = m; });
+                     container.innerHTML = html;
+                 }
+                 container.scrollTop = container.scrollHeight;
+             };
+
+             const attemptHardReconnect = () => {
+                 if (!state.currentRoomId || document.hidden || !state.user || state.isOfflineMode || state.isCapacityBlocked) return;
+                 if (state.isHardReconnecting || state.isConnecting) return;
+                 state.isHardReconnecting = true;
+         
+                 if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                 if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                 state.reconnectTimer = null;
+                 
+                 cleanupChannels(true); // Keep global presence
+                 setConnectionVisuals('connecting');
+                 
+                 const timeout = getConnectionTimeout();
+                 state.connectionTimeoutTimer = setTimeout(() => {
+                     state.isHardReconnecting = false;
+                     attemptHardReconnect();
+                 }, timeout);
+                 
+                 try { if (db.realtime && typeof db.realtime.connect === 'function') db.realtime.connect(); } catch (e) {}
+                 
+                 initRoomPresence(state.currentRoomId);
+                 setupChatChannel(state.currentRoomId);
+             };
+         
+             const attemptLogin = async (email, pass) => {
+                 try {
+                     const { error } = await execQuery(db.auth.signInWithPassword({ email, password: pass }));
+                     if (error) throw error;
+                 } catch (e) { return false; }
+                 const { data: { user } } = await db.auth.getUser();
+                 state.user = user;
+                 if (user) { const profileData = { id: user.id, full_name: user.user_metadata?.full_name, avatar_url: user.user_metadata?.avatar_url, updated_at: new Date().toISOString() }; await cacheAvatar(profileData); }
+                 const hashInput = await sha256(pass + email);
+                 await localDB.put('known_users', { id: email, pass_hash: hashInput, email: email, metadata: user.user_metadata, userId: user.id });
+                 return true;
+             };
+         
+             window.goOnline = async () => {
+                 if (state.isConnecting || state.isHardReconnecting) return;
+                 state.isConnecting = true;
+                 
+                 stopInternetCheck(); state.isCapacityBlocked = false;
+                 const overlay = $('block-overlay'); if (overlay) overlay.classList.remove('active');
+                 
+                 try { if (db.realtime && typeof db.realtime.connect === 'function') db.realtime.connect(); } catch (e) {}
+         
+                 if (state.user) {
+                     const storedEmail = localStorage.getItem('hrn_auth_email'); const storedPass = localStorage.getItem('hrn_auth_pass');
+                     if (storedEmail && storedPass) {
+                         const success = await attemptLogin(storedEmail, storedPass);
+                         if (success) { 
+                             setAppMode(false); 
+                             setupGlobalPresence(state.user.id);
+                             state.isConnecting = false; 
+                             if (state.currentRoomId) attemptHardReconnect(); 
+                             window.loadRooms(); 
+                             window.toast("Connected."); 
+                         }
+                         else { setAppMode(true); state.isConnecting = false; } 
+                     } else { setAppMode(true); state.isConnecting = false; } 
+                     return;
+                 }
+                 const activeScreen = document.querySelector('.screen.active');
+                 const isAuthScreen = ['scr-login', 'scr-register', 'scr-start', 'scr-verify'].includes(activeScreen?.id);
+                 if (isAuthScreen) { setAppMode(false); window.setLoading(true, "Connecting..."); }
+                 const storedEmail = localStorage.getItem('hrn_auth_email'); const storedPass = localStorage.getItem('hrn_auth_pass');
+                 if (storedEmail && storedPass) {
+                     const success = await attemptLogin(storedEmail, storedPass);
+                     if (success) { 
+                         setAppMode(false); 
+                         setupGlobalPresence(state.user.id); 
+                         state.isConnecting = false;
+                         window.nav('scr-lobby'); 
+                         window.loadRooms(); 
+                         window.toast("Connected."); 
+                     }
+                     else { window.toast("Connection failed."); state.isConnecting = false; }
+                     if (isAuthScreen) window.setLoading(false);
+                 } else { if (isAuthScreen) window.setLoading(false); else { window.toast("No saved login found."); setAppMode(true); } state.isConnecting = false; }
+             };
+         
+             window.stayOffline = async () => { const overlay = $('block-overlay'); if (overlay) overlay.classList.remove('active'); await fullDisconnect(); setAppMode(true); window.toast("Offline mode active."); if (state.user) window.loadRooms(); };
+
+             // --- WHATSAPP STYLE LOBBY LISTENER ---
+             const setupLobbyListener = async (roomIds) => {
+                if (state.isOfflineMode || !roomIds || roomIds.length === 0) return;
+                if (state.lobbyChannel) { try { state.lobbyChannel.unsubscribe(); } catch(e){} }
+
+                const filter = `room_id=in.(${roomIds.join(',')})`;
+                
+                state.lobbyChannel = db.channel('lobby-updates');
+                state.lobbyChannel.on('postgres_changes', 
+                    { event: 'INSERT', schema: 'public', table: 'messages', filter: filter }, 
+                    async (payload) => {
+                        const msg = payload.new;
+                        const roomId = msg.room_id;
+                        
+                        await localDB.put('messages', { id: msg.id, room_id: roomId, created_at: msg.created_at, content: msg.content });
+
+                        let rawText = "New message";
+                        try {
+                            const res = await workerExec('decryptSingle', { content: msg.content, keyId: roomId });
+                            if (res.result && res.result.text) rawText = res.result.text;
+                        } catch(e) {}
+
+                        // Formatteer live update
+                        const roomData = state.allRooms.find(r => r.id === roomId);
+                        const isDirect = roomData ? roomData.is_direct : false;
+                        const previewText = formatPreview(rawText, msg.user_name, msg.user_id, isDirect, state.user.id);
+
+                        updateLobbyRow(roomId, previewText, msg.created_at);
+                    }
+                ).subscribe();
+             };
+
+             const updateLobbyRow = (roomId, text, time) => {
+                 const roomIndex = state.allRooms.findIndex(r => r.id === roomId);
+                 if (roomIndex === -1) return;
+                 
+                 const room = state.allRooms[roomIndex];
+                 state.allRooms.splice(roomIndex, 1);
+                 state.allRooms.unshift(room);
+
+                 room.preview = text; 
+                 room.last_message_at = time;
+
+                 const list = $('room-list');
+                 if (list && document.querySelector('.screen.active#scr-lobby')) {
+                     window.filterRooms(); 
+                 }
+             };
+
+             const setupChatChannel = (id) => {
+                 if (state.isOfflineMode) return;
+                 if (state.chatChannel) state.chatChannel.unsubscribe();
+                 const isDirect = state.currentRoomData?.is_direct;
+                 state.chatChannel = db.channel(`room_chat_${id}`, { config: { broadcast: { self: true } } });
+                 state.chatChannel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${id}` }, async (payload) => {
+                     const m = payload.new;
+                     if (m && state.currentRoomId) {
+                         try {
+                             const decRes = await workerExec('decryptSingle', { content: m.content, keyId: id });
+                             if (decRes.result) {
+                                 const msgObj = { ...m, ...decRes.result, room_id: m.room_id };
+                                 const container = $('chat-messages'); const lastMsg = container.querySelector('.msg:last-of-type');
+                                 let prevMsg = null; if (lastMsg) prevMsg = { user_id: lastMsg.dataset.uid, created_at: lastMsg.dataset.time };
+                                 container.insertAdjacentHTML('beforeend', renderMsg(msgObj, prevMsg, isDirect));
+                                 container.scrollTop = container.scrollHeight; checkChatEmpty();
+                                 await localDB.put('messages', msgObj);
+                                 
+                                 // Also update lobby preview immediately
+                                 updateLobbyRow(id, msgObj.text, m.created_at, m.user_name);
+                             }
+                         } catch (e) {}
+                     }
+                 }).on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: `room_id=eq.${id}` }, async (payload) => {
+                     const m = payload.new; const msgEl = document.querySelector(`.msg[data-id="${m.id}"]`);
+                     if (msgEl) {
+                         try {
+                             const decRes = await workerExec('decryptSingle', { content: m.content, keyId: id });
+                             const deleted = m.content === '/';
+                             if (deleted) {
+                                 msgEl.classList.add('msg-deleted');
+                                 const contentDiv = msgEl.querySelector('div:not(.msg-header)');
+                                 if (contentDiv) { contentDiv.className = 'deleted-text'; contentDiv.innerText = "Message deleted"; }
+                                 const timeSpan = msgEl.querySelector('.msg-time'); if (timeSpan) { const editedTag = timeSpan.querySelector('.edited-tag'); if (editedTag) editedTag.remove(); }
+                                 msgEl.dataset.text = "";
+                             } else if (decRes.result) {
+                                 const prevEl = msgEl.previousElementSibling; let prevData = null;
+                                 if (prevEl && prevEl.classList.contains('msg')) prevData = { user_id: prevEl.dataset.uid, created_at: prevEl.dataset.time };
+                                 msgEl.outerHTML = renderMsg({ ...m, ...decRes.result, room_id: m.room_id, updated_at: m.updated_at }, prevData, isDirect);
+                             }
+                             const cached = await localDB.get('messages', m.id);
+                             if (cached) { cached.deleted = deleted; cached.text = decRes.result?.text; await localDB.put('messages', cached); }
+                         } catch (e) {}
+                     }
+                 }).subscribe((status) => {
+                     const wasReady = state.isChatChannelReady;
+                     state.isChatChannelReady = (status === 'SUBSCRIBED');
+                     
+                     if (status === 'SUBSCRIBED') {
+                         if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                         state.connectionTimeoutTimer = null; state.isHardReconnecting = false;
+                         if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                         setConnectionVisuals('connected');
+                         hardRefreshRoomMessages(id);
+                     } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                         if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                         state.connectionTimeoutTimer = null;
+                         if (!state.isOfflineMode && !state.isCapacityBlocked && !state.isBackgroundDisconnectActive && !document.hidden && state.currentRoomId) {
+                             state.isChatChannelReady = false;
+                             if (!state.isHardReconnecting) { state.isHardReconnecting = true; setConnectionVisuals('connecting'); state.reconnectTimer = setTimeout(attemptHardReconnect, 2000); }
+                         }
+                     }
+                     
+                     if (wasReady !== state.isChatChannelReady) updateSendButtonState();
+                 });
+             };
+         
+             const initRoomPresence = async (roomId) => {
+                 if (!state.user || state.isOfflineMode) return;
+                 if (state.presenceChannel) state.presenceChannel.unsubscribe();
+                 const myId = state.user.id;
+                 state.presenceChannel = db.channel(`room_presence:${roomId}`, { config: { presence: { key: myId } } });
+                 state.presenceChannel.on('presence', { event: 'sync' }, () => { if (!state.presenceChannel) return; queryOnlineCountImmediately(); })
+                 .subscribe(async (status, err) => {
+                     if (status === 'SUBSCRIBED') { if (!state.presenceChannel) return; state.isPresenceSubscribed = true; state.isHardReconnecting = false; queryOnlineCountImmediately(); await trackPresence(state.presenceChannel, myId); queryOnlineCountImmediately(); }
+                     else if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                         state.isPresenceSubscribed = false;
+                         if (!state.isOfflineMode && !state.isCapacityBlocked && !state.isBackgroundDisconnectActive && !document.hidden && state.currentRoomId) {
+                             state.isHardReconnecting = true; setConnectionVisuals('connecting'); state.reconnectTimer = setTimeout(attemptHardReconnect, 2000);
+                         }
+                     }
+                 });
+             };
+         
+             const startInternetCheck = () => {
+                 if (state.internetCheckInterval) return;
+                 state.internetCheckInterval = setInterval(async () => {
+                     try {
+                         const response = await fetch('./assets/internet-test-file.txt', { cache: 'no-store', headers: { 'Pragma': 'no-cache' } });
+                         if (response.ok) { stopInternetCheck(); if (state.isOfflineMode) window.goOnline(); }
+                     } catch (e) {}
+                 }, 5000);
+             };
+         
+             const stopInternetCheck = () => { if (state.internetCheckInterval) { clearInterval(state.internetCheckInterval); state.internetCheckInterval = null; } };
+         
+             const monitorConnection = () => {
+                 const onlineHandler = () => { 
+                     stopInternetCheck(); 
+                     if (state.isOfflineMode) window.goOnline(); 
+                     else { 
+                         setConnectionVisuals('connecting'); 
+                         try { if (db.realtime && typeof db.realtime.connect === 'function') db.realtime.connect(); } catch (e) {}
+                         if (state.currentRoomId) attemptHardReconnect(); 
+                         else setConnectionVisuals('connected'); 
+                     } 
+                 };
+                 const offlineHandler = async () => {
+                     setAppMode(true);
+                     if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                     if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                     state.isHardReconnecting = false;
+                     state.isConnecting = false;
+                     state.globalPresenceReady = false;
+                     cleanupChannels(false); 
+                     startInternetCheck();
+                 };
+                 window.addEventListener('online', onlineHandler);
+                 window.addEventListener('offline', offlineHandler);
+                 document.addEventListener('visibilitychange', async () => {
+                     if (state.isCapacityBlocked) return;
+                     if (document.visibilityState === 'hidden') {
+                         if(state.reconnectTimer) clearTimeout(state.reconnectTimer); state.reconnectTimer = null;
+                         if (state.backgroundDisconnectTimer) clearTimeout(state.backgroundDisconnectTimer);
+                         state.backgroundDisconnectTimer = setTimeout(async () => {
+                             if (!state.isOfflineMode && !state.isCapacityBlocked) { await fullDisconnect(); state.isBackgroundDisconnectActive = true; }
+                         }, CONFIG.backgroundDisconnectMs);
+                     } else if (document.visibilityState === 'visible') {
+                         if (state.backgroundDisconnectTimer) clearTimeout(state.backgroundDisconnectTimer); state.backgroundDisconnectTimer = null;
+                         if (state.isBackgroundDisconnectActive) {
+                             state.isBackgroundDisconnectActive = false;
+                             if (state.user && !state.isOfflineMode) {
+                                 try { if (db.realtime && typeof db.realtime.connect === 'function') db.realtime.connect(); } catch (e) {}
+                                 setupGlobalPresence(state.user.id);
+                                 setupLobbyListener(state.allRooms.map(r => r.id)); // Resume lobby listener
+                                 if (state.currentRoomId) attemptHardReconnect();
+                             }
+                         } else if (!state.isChatChannelReady && state.currentRoomId) { attemptHardReconnect(); }
+                         else if (navigator.onLine && !state.globalPresenceReady) { window.goOnline(); }
+                         
+                         if (state.presenceChannel && state.user) await trackPresence(state.presenceChannel, state.user.id);
+                         if (state.globalPresenceChannel && state.user) await trackPresence(state.globalPresenceChannel, state.user.id);
+                     }
+                 });
+                 window.addEventListener('beforeunload', async () => { await fullDisconnect(); });
+             };
+         
+             const showContextMenu = (e, msgEl) => {
+                 if (!msgEl || !state.user || msgEl.classList.contains('msg-deleted')) return;
+                 e.preventDefault(); e.stopPropagation();
+                 const msgData = { id: msgEl.dataset.id, user_id: msgEl.dataset.uid, created_at: msgEl.dataset.time, text: msgEl.dataset.text };
+                 const menu = $('context-menu'); const editBtn = $('ctx-edit'); const deleteBtn = $('ctx-delete'); const copyBtn = $('ctx-copy');
+                 const isOwner = msgData.user_id === state.user.id;
+                 const msgDate = new Date(msgData.created_at); const now = new Date(); const diffMinutes = (now - msgDate) / 60000;
+                 editBtn.style.display = (isOwner && diffMinutes < 15) ? 'flex' : 'none';
+                 deleteBtn.style.display = isOwner ? 'flex' : 'none';
+                 copyBtn.style.display = 'flex';
+                 state.contextTarget = msgData;
+                 let x = e.clientX || e.touches?.[0]?.clientX; let y = e.clientY || e.touches?.[0]?.clientY;
+                 menu.style.left = `${x}px`; menu.style.top = `${y}px`;
+                 setTimeout(() => {
+                     const rect = menu.getBoundingClientRect();
+                     if (rect.right > window.innerWidth) menu.style.left = `${window.innerWidth - rect.width - 10}px`;
+                     if (rect.bottom > window.innerHeight) menu.style.top = `${window.innerHeight - rect.height - 10}px`;
+                     menu.classList.add('active'); state.ui.isContextOpen = true;
+                 }, 10);
+             };
+         
+             const hideContextMenu = () => { const menu = $('context-menu'); if (menu) menu.classList.remove('active'); state.contextTarget = null; state.ui.isContextOpen = false; };
+         
+             $('ctx-edit').onclick = (e) => { e.stopPropagation(); if (!state.contextTarget) return; state.editingMessage = state.contextTarget; $('edit-msg-input').value = state.contextTarget.text; window.showOverlayView('edit-message'); window.openOverlay(); hideContextMenu(); };
+             $('ctx-copy').onclick = (e) => { e.stopPropagation(); if (!state.contextTarget) return; navigator.clipboard.writeText(state.contextTarget.text); window.toast("Copied."); hideContextMenu(); };
+             $('ctx-delete').onclick = async (e) => { e.stopPropagation(); if (!state.contextTarget || !state.user) return; const idToDelete = state.contextTarget.id; hideContextMenu(); window.setLoading(true, "Deleting..."); const { error } = await db.from('messages').update({ content: '/' }).eq('id', idToDelete); if (error) window.toast("Failed to delete."); window.setLoading(false); };
+         
+             window.saveEditMessage = async () => {
+                 if (!state.editingMessage) return; const v = $('edit-msg-input').value.trim(); if (!v) return window.toast("Message is empty.");
+                 const msgDate = new Date(state.editingMessage.created_at); const now = new Date();
+                 if ((now - msgDate) / 60000 >= 15) { window.toast("Edit time expired."); window.closeOverlay(); state.editingMessage = null; return; }
+                 window.setLoading(true, "Saving...");
+                 try { const enc = await encryptMessage(v, state.currentRoomId); const { error } = await db.from('messages').update({ content: enc }).eq('id', state.editingMessage.id); if (error) window.toast("Failed to edit."); else window.toast("Message updated."); } catch (e) { window.toast("Encryption failed."); }
+                 state.editingMessage = null; window.setLoading(false); window.closeOverlay();
+             };
+         
+             document.addEventListener('click', (e) => {
+                 if (state.ui.isContextOpen) { const menu = $('context-menu'); if (menu && !menu.contains(e.target)) hideContextMenu(); }
+                 if (state.ui.isOverlayOpen && !state.ui.overlayCloseLocked) { const overlay = $('overlay-container'); if (overlay && e.target === overlay) window.closeOverlay(); }
+             });
+         
+             const chatContainer = $('chat-messages');
+             chatContainer.addEventListener('touchstart', (e) => { const msg = e.target.closest('.msg'); if (!msg) return; state.longPressTimer = setTimeout(() => { showContextMenu(e, msg); }, 500); }, { passive: true });
+             chatContainer.addEventListener('touchend', () => clearTimeout(state.longPressTimer));
+             chatContainer.addEventListener('touchmove', () => clearTimeout(state.longPressTimer));
+             chatContainer.addEventListener('contextmenu', (e) => { const msg = e.target.closest('.msg'); if (msg) { e.preventDefault(); showContextMenu(e, msg); } });
+         
+             const updateAccessSummary = (prefix) => { const summaryEl = $(`${prefix}-access-summary`); if (!summaryEl) return; const count = state.selectedAllowedUsers.length; const text = count === 0 ? "Public Room" : `${count} User${count > 1 ? 's' : ''}`; summaryEl.innerHTML = `<span class="c-main">${text}</span><i data-lucide="chevron-right" class="w-16 h-16"></i>`; };
+         
+             const updateStepUI = (context) => {
+                 const current = state.currentStep[context]; const indicator = $(`${context}-step-indicator`); if (!indicator) return;
+                 indicator.querySelectorAll('.step-dot').forEach((dot, index) => { if (index < current) dot.classList.add('active'); else dot.classList.remove('active'); });
+                 if (context === 'reg') {
+                     $('reg-step-1').classList.toggle('active', current === 1); $('reg-step-2').classList.toggle('active', current === 2); $('reg-step-3').classList.toggle('active', current === 3);
+                     if (current === 3) initAvatarCarousel();
+                 } else { $(`${context}-step-1`).classList.toggle('active', current === 1); $(`${context}-step-2`).classList.toggle('active', current === 2); }
+             };
+         
+             const initAvatarCarousel = () => { if (!state.selectedAvatar) state.selectedAvatar = AVATARS[0]; updateCarouselPreview(); };
+             const updateCarouselPreview = () => { const preview = $('avatar-preview-el'); if (state.selectedAvatar) preview.innerHTML = `<img src="${state.selectedAvatar}">`; };
+         
+             window.carouselNav = (direction) => { let index = AVATARS.indexOf(state.selectedAvatar); if (index === -1) index = 0; index += direction; if (index < 0) index = AVATARS.length - 1; if (index >= AVATARS.length) index = 0; state.selectedAvatar = AVATARS[index]; $('r-avatar-url').value = ''; updateCarouselPreview(); };
+             window.handleAvatarUpload = (event) => {
+                 const file = event.target.files[0]; if (file) {
+                     const reader = new FileReader();
+                     reader.onload = (e) => {
+                         const img = new Image();
+                         img.onload = () => { const canvas = document.createElement('canvas'); const size = 200; canvas.width = size; canvas.height = size; const ctx = canvas.getContext('2d'); const scale = Math.max(size / img.width, size / img.height); const x = (size - img.width * scale) / 2; const y = (size - img.height * scale) / 2; ctx.drawImage(img, x, y, img.width * scale, img.height * scale); const dataUrl = canvas.toDataURL('image/jpeg', 0.85); state.selectedAvatar = dataUrl; AVATARS.push(dataUrl); $('r-avatar-url').value = ''; updateCarouselPreview(); window.toast("Avatar uploaded."); };
+                         img.onerror = () => window.toast("Invalid image."); img.src = e.target.result;
+                     };
+                     reader.readAsDataURL(file);
+                 }
+             };
+         
+             window.selectCreateType = (type) => { state.createType = type; document.querySelectorAll('.type-card').forEach(el => el.classList.remove('selected')); $(`type-${type}`).classList.add('selected'); };
+             window.nextRegStep = () => { if (state.currentStep.reg === 1) { const em = $('r-email').value, p = $('r-pass').value; if (!em || p.length < 8) return window.toast("Invalid email or password."); } if (state.currentStep.reg === 2) { const n = $('r-name').value; if (!n) return window.toast("Name required."); } state.currentStep.reg++; updateStepUI('reg'); };
+             window.prevRegStep = () => { state.currentStep.reg--; updateStepUI('reg'); };
+             window.nextCreateStep = () => {
+                 state.currentStep.create = 2; updateStepUI('create');
+                 const groupFields = $('create-group-fields'); const directFields = $('create-direct-fields'); const accessSummary = $('create-access-summary'); const titleEl = $('create-step2-title'); const subEl = $('create-step2-sub');
+                 if (!groupFields || !directFields || !accessSummary || !titleEl || !subEl) return;
+                 if (state.createType === 'direct') { groupFields.classList.add('dn'); directFields.classList.remove('dn'); accessSummary.classList.add('dn'); titleEl.innerText = "Direct Message"; subEl.innerText = "Who are you messaging?"; }
+                 else { groupFields.classList.remove('dn'); directFields.classList.add('dn'); accessSummary.classList.remove('dn'); titleEl.innerText = "Setup"; subEl.innerText = "Details"; }
+                 updateAccessSummary('create');
+             };
+             window.prevCreateStep = () => { state.currentStep.create = 1; updateStepUI('create'); };
+             window.nextEditStep = () => { const name = $('edit-room-name').value.trim(); if (!name) return window.toast("Name required."); state.currentStep.edit = 2; updateStepUI('edit'); updateAccessSummary('edit'); };
+             window.prevEditStep = () => { state.currentStep.edit = 1; updateStepUI('edit'); };
+         
+             window.openAccessManager = async (prefix) => {
+                 state.currentPickerContext = prefix;
+                 if (prefix === 'edit-room' && state.selectedAllowedUsers.length === 0 && state.currentRoomData) {
+                     const ids = state.currentRoomData.allowed_users;
+                     if (ids && !ids.includes('*')) {
+                         const { data: profiles } = await db.from('profiles').select('id, full_name, avatar_url').in('id', ids);
+                         state.selectedAllowedUsers = ids.map(id => { const p = profiles?.find(pro => pro.id === id); return { id: id, name: p?.full_name || 'Unknown', avatar: p?.avatar_url }; });
+                     }
+                 }
+                 renderPickerSelectedUsers(); window.showOverlayView('access-manager'); window.openOverlay(); state.ui.overlayCloseLocked = true; $('picker-id-input').value = ''; $('picker-id-input').focus();
+             };
+             window.closeAccessManager = () => { state.ui.overlayCloseLocked = false; if (state.currentPickerContext === 'edit-room') window.showOverlayView('room-settings'); else window.closeOverlay(); updateAccessSummary(state.currentPickerContext); };
+         
+             const renderPickerSelectedUsers = () => {
+                 const container = $('picker-selected-list'); const displayUsers = state.selectedAllowedUsers;
+                 if (displayUsers.length === 0) { container.innerHTML = `<div style="color:var(--text-mute);padding:20px 0;font-size:12px;text-align:center">No users selected.</div>`; $('picker-count').innerText = '0'; return; }
+                 $('picker-count').innerText = displayUsers.length;
+                 container.innerHTML = displayUsers.map(u => `<div class="picker-user-card" style="display:flex;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)"><div style="width:28px;height:28px;border-radius:50%;background:#f2f2f7;overflow:hidden;margin-right:8px;display:flex;align-items:center;justify-content:center;color:var(--accent);font-weight:800;font-size:11px">${u.avatar ? `<img src="${u.avatar}">` : u.name.charAt(0)}</div><div style="flex:1;min-width:0"><div style="font-weight:700;font-size:12px">${esc(u.name)} ${u.id === state.user.id ? '<span style="color:var(--text-mute);font-weight:500">(You)</span>' : ''}</div><div style="font-size:9px;color:var(--text-mute);font-family:monospace">${u.id}</div></div><button class="picker-remove-btn" style="background:transparent;border:none;color:var(--danger);cursor:pointer;padding:8px" onclick="window.removePickerUser('${u.id}')"><i data-lucide="x" style="width:14px;height:14px"></i></button></div>`).join('');
+             };
+         
+             window.removePickerUser = (id) => { state.selectedAllowedUsers = state.selectedAllowedUsers.filter(u => u.id !== id); renderPickerSelectedUsers(); };
+             window.addUserById = async () => {
+                 const input = $('picker-id-input'); const id = input.value.trim();
+                 if (!id) return window.toast("Enter an ID.");
+                 if (state.selectedAllowedUsers.find(u => u.id === id)) return window.toast("User already added.");
+                 window.setLoading(true, "Fetching...");
+                 const { data, error } = await db.from('profiles').select('id, full_name, avatar_url, updated_at').eq('id', id).single();
+                 window.setLoading(false);
+                 if (error || !data) return window.toast("User not found.");
+                 await localDB.put('profiles', data); state.profileCache[data.id] = data;
+                 state.selectedAllowedUsers.push({ id: data.id, name: data.full_name, avatar: data.avatar_url });
+                 renderPickerSelectedUsers(); input.value = ''; window.toast("User added.");
+             };
+         
+             window.openOverlay = () => { const oc = $('overlay-container'); if (oc) { oc.classList.add('active'); state.ui.isOverlayOpen = true; } };
+             window.closeOverlay = () => { const oc = $('overlay-container'); if (oc) { oc.classList.remove('active'); state.ui.isOverlayOpen = false; state.ui.overlayCloseLocked = false; } };
+             window.showOverlayView = (viewId) => { const panel = document.querySelector('.panel-card'); if (!panel) return; panel.querySelectorAll('.view-content').forEach(v => v.classList.remove('active')); const target = $(`view-${viewId}`); if (target) target.classList.add('active'); };
+         
+             window.prepareAccountPage = async () => {
+                 if (!state.user) return;
+                 const { data: profile } = await db.from('profiles').select('avatar_url, full_name').eq('id', state.user.id).single();
+                 const name = profile?.full_name || state.user.user_metadata?.full_name || "User";
+                 const avatar = profile?.avatar_url || state.user.user_metadata?.avatar_url;
+                 $('acc-page-name').innerText = name; $('acc-page-type').innerText = "Full Account"; $('acc-page-id').innerText = state.user.id;
+                 const avPrev = $('acc-page-avatar'); if (avatar) avPrev.innerHTML = `<img src="${avatar}">`; else avPrev.innerText = name.charAt(0);
+                 $('acc-email-wrapper').style.display = 'block'; $('acc-page-email').innerText = state.user.email || "Not set";
+             };
+         
+             window.copyAccountId = () => { if (!state.user) return; navigator.clipboard.writeText(state.user.id); window.toast("ID copied."); };
+             window.copyInfoId = () => { if (!state.currentRoomId) return; navigator.clipboard.writeText(state.currentRoomId); window.toast("ID copied."); };
+         
+             const updateLobbyAvatar = async () => {
+                 if (!state.user) return; const btn = $('lobby-avatar-btn'); if (!btn) return;
+                 let avatar = state.user.user_metadata?.avatar_url; let name = state.user.user_metadata?.full_name;
+                 if (!avatar || !name) { const { data } = await db.from('profiles').select('avatar_url, full_name').eq('id', state.user.id).single(); if (data) { avatar = data.avatar_url; name = data.full_name; } }
+                 const profile = await getProfile(state.user.id); if (profile && profile.avatar_url) avatar = profile.avatar_url;
+                 if (avatar) btn.innerHTML = `<img src="${avatar}">`; else btn.innerText = (name || "U").charAt(0);
+             };
+         
+             const getDateLabel = (d) => {
+                 const now = new Date(); const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                 const target = new Date(d.getFullYear(), d.getMonth(), d.getDate()); const diff = Math.round((today - target) / 86400000);
+                 if (diff === 0) return "Today"; if (diff === 1) return "Yesterday"; if (diff < 7) return d.toLocaleDateString('en-GB', { weekday: 'long' });
+                 return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
+             };
+         
+             const processText = (text) => {
+                 let t = esc(text);
+                 const urlRegex = /(https?:\/\/[^\s]+)/g;
+                 t = t.replace(urlRegex, (url) => { const safeUrl = url.replace(/[<>"']/g, ''); return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer" class="chat-link">${safeUrl}</a>`; });
+                 return t;
+             };
+         
+             const checkChatEmpty = () => { return; };
+         
+             const renderMsg = (m, prevMsg, isDirect, isOptimistic = false) => {
+                 if (!m) return "";
+                 const isDeleted = m.deleted === true;
+                 const isEdited = m.updated_at && !isDeleted && new Date(m.updated_at).getTime() > new Date(m.created_at).getTime() + 1000;
+                 let html = "";
+                 const msgDateObj = new Date(m.created_at); const currentLabel = getDateLabel(msgDateObj);
+                 const isGroupStart = !prevMsg || prevMsg.user_id !== m.user_id || getDateLabel(new Date(prevMsg.created_at)) !== currentLabel;
+                 if (isGroupStart && currentLabel !== state.lastRenderedDateLabel) { html += `<div class="date-divider"><span class="date-label">${currentLabel}</span></div>`; state.lastRenderedDateLabel = currentLabel; }
+                 const displayName = truncateText(m.user_name || 'User', 18);
+                 const msgClass = isOptimistic ? 'msg-optimistic' : (isGroupStart ? 'group-start' : 'msg-continuation');
+                 const sideClass = m.user_id === state.user?.id ? 'me' : 'not-me';
+                 const safeText = isDeleted ? '' : esc(m.text || '').replace(/"/g, '&quot;');
+                 const dataAttrs = `data-id="${m.id}" data-uid="${m.user_id}" data-time="${m.created_at}" data-text="${safeText}"`;
+                 const timeString = m.time || getTimeFromDate(m.created_at);
+                 html += `<div class="msg ${sideClass} ${msgClass} ${isDeleted ? 'msg-deleted' : ''} ${isOptimistic ? 'msg-pending' : ''} pop-in" ${dataAttrs}>`;
+                 if (isDeleted) html += `${isGroupStart && !isDirect ? `<div class="msg-header"><span class="msg-user">${esc(displayName)}</span></div>` : ''}<div class="deleted-text">Message deleted</div><span class="msg-time">${timeString}</span>`;
+                 else {
+                     const processedText = processText(m.text);
+                     html += `${isGroupStart && !isDirect ? `<div class="msg-header"><span class="msg-user">${esc(displayName)}</span></div>` : ''}<div>${processedText}</div><span class="msg-time">${timeString}${isEdited ? '<span class="edited-tag">(Edited)</span>' : ''}</span>`;
+                 }
+                 html += `</div>`;
+                 return html;
+             };
+         
+             const handleScroll = () => { const container = $('chat-messages'); if (!container) return; if (container.scrollTop < 50 && !state.isLoadingHistory && state.hasMoreHistory) loadMoreHistory(); };
+         
+             const loadMoreHistory = async () => {
+                 if (!state.oldestMessageTimestamp || !state.currentRoomId) return;
+                 state.isLoadingHistory = true; const container = $('chat-messages'); const oldScrollHeight = container.scrollHeight;
+                 container.insertAdjacentHTML('afterbegin', '<div id="history-loader" style="text-align:center;padding:10px;font-size:11px;color:var(--text-mute)">Loading...</div>');
+                 const { data, error } = await db.from('messages').select('*').eq('room_id', state.currentRoomId).lt('created_at', state.oldestMessageTimestamp).order('created_at', { ascending: false }).limit(CONFIG.historyLoadLimit);
+                 const loader = $('history-loader'); if (loader) loader.remove();
+                 if (error || !data || data.length === 0) { state.hasMoreHistory = false; state.isLoadingHistory = false; return; }
+                 data.reverse();
+                 try {
+                     const res = await workerExec('decryptHistory', { messages: data, keyId: state.currentRoomId });
+                     const validMsgs = res.results.filter(m => !m.error);
+                     if (validMsgs.length > 0) {
+                         state.oldestMessageTimestamp = validMsgs[0].created_at;
+                         let html = "", prev = null;
+                         validMsgs.forEach(m => { html += renderMsg(m, prev, state.currentRoomData?.is_direct); prev = m; });
+                         container.insertAdjacentHTML('afterbegin', html);
+                         container.scrollTop = container.scrollHeight - oldScrollHeight;
+                         await localDB.putAll('messages', validMsgs.map(m => ({ ...m, room_id: state.currentRoomId })));
+                     }
+                 } catch (e) {}
+                 state.isLoadingHistory = false;
+             };
+         
+             window.openRoomInfo = async () => {
+                 if (!state.currentRoomData) return; window.setLoading(true, "Loading info..."); const room = state.currentRoomData;
+                 const delBtn = $('info-delete-btn'); const creatorRow = $('info-creator-row');
+                 delBtn.style.display = 'none'; delBtn.innerText = "Delete Chat"; delBtn.classList.remove('active');
+                 if (state.deleteConfirmTimeout) clearTimeout(state.deleteConfirmTimeout);
+                 $('info-id').innerText = room.id;
+                 const date = new Date(room.created_at); $('info-date').innerText = `${String(date.getDate()).padStart(2, '0')}/${String(date.getMonth() + 1).padStart(2, '0')}/${date.getFullYear()}`;
+                 const display = await resolveRoomDisplay(room); $('info-name').innerText = display.name;
+                 const avEl = $('info-avatar'); if (display.avatar) avEl.innerHTML = `<img src="${display.avatar}">`; else avEl.innerText = display.name.charAt(0);
+                 if (room.is_direct) { $('info-type').innerText = "Direct Message"; creatorRow.style.display = 'none'; delBtn.style.display = 'flex'; }
+                 else {
+                     $('info-type').innerText = "Group Chat"; creatorRow.style.display = 'flex';
+                     if (room.created_by) { let profile = state.profileCache[room.created_by]; if (!profile) { const { data } = await db.from('profiles').select('full_name').eq('id', room.created_by).single(); profile = data; if (data) state.profileCache[room.created_by] = data; } $('info-creator').innerText = profile?.full_name || 'Unknown'; }
+                     else $('info-creator').innerText = 'Unknown';
+                     if (room.created_by === state.user.id) delBtn.style.display = 'flex';
+                 }
+                 updatePresenceUI(); window.setLoading(false); window.showOverlayView('room-info'); window.openOverlay();
+             };
+         
+             window.initiateDeleteRoom = () => { const btn = $('info-delete-btn'); if (btn.classList.contains('active')) window.deleteRoom(); else { btn.classList.add('active'); btn.innerText = "Tap again to confirm"; state.deleteConfirmTimeout = setTimeout(() => { btn.classList.remove('active'); btn.innerText = "Delete Chat"; }, 3000); } };
+         
+             window.openRoomSettings = async () => {
+                 window.closeOverlay(); if (!state.currentRoomId || !state.currentRoomData || state.currentRoomData.created_by !== state.user.id) return window.toast("Access denied.");
+                 window.setLoading(true, "Loading..."); const room = state.currentRoomData;
+                 state.currentStep.edit = 1; updateStepUI('edit');
+                 $('edit-room-name').value = room.name; $('edit-room-visible').checked = room.is_visible; $('edit-room-pass').value = '';
+                 const passStatusLabel = $('pass-status-label'); const removePassBtn = $('btn-remove-pass');
+                 if (room.has_password) { passStatusLabel.innerText = "Active"; passStatusLabel.style.color = "var(--success)"; removePassBtn.style.display = 'block'; }
+                 else { passStatusLabel.innerText = "Not Set"; passStatusLabel.style.color = "var(--text-mute)"; removePassBtn.style.display = 'none'; }
+                 state.removePasswordFlag = false; state.selectedAllowedUsers = [];
+                 const ids = room.allowed_users;
+                 if (ids && !ids.includes('*')) {
+                     const { data: profiles } = await db.from('profiles').select('id, full_name, avatar_url').in('id', ids);
+                     state.selectedAllowedUsers = ids.map(id => { const p = profiles?.find(pro => pro.id === id); return { id: id, name: p?.full_name || 'Unknown', avatar: p?.avatar_url }; });
+                 }
+                 window.showOverlayView('room-settings'); window.openOverlay(); window.setLoading(false);
+             };
+         
+             window.prepareRemovePassword = () => { state.removePasswordFlag = true; $('pass-status-label').innerText = "Will be removed"; $('pass-status-label').style.color = "var(--danger)"; $('edit-room-pass').value = ''; $('edit-room-pass').disabled = true; };
+         
+             window.saveRoomSettings = async (e) => {
+                 if (!e || !e.isTrusted) return; if (state.processingAction) return; state.processingAction = true;
+                 const name = $('edit-room-name').value.trim(); const isVisible = $('edit-room-visible').checked; const newPass = $('edit-room-pass').value;
+                 let allowedUsers = state.selectedAllowedUsers.length > 0 ? state.selectedAllowedUsers.map(u => u.id) : ['*'];
+                 if (!allowedUsers.includes(state.user.id)) allowedUsers.push(state.user.id);
+                 if (!name) { window.toast("Name required."); state.processingAction = false; return; }
+                 const room = state.currentRoomData; const isChangingPass = newPass.length > 0; const isRemovingPass = state.removePasswordFlag;
+                 window.setLoading(true, "Saving..."); const updates = { name, is_visible: isVisible, allowed_users: allowedUsers };
+                 if (isRemovingPass) updates.has_password = false; else if (isChangingPass) updates.has_password = true;
+                 const { error: updateError } = await db.from('rooms').update(updates).eq('id', state.currentRoomId);
+                 if (updateError) { window.toast("Save failed."); window.setLoading(false); state.processingAction = false; return; }
+                 if (isRemovingPass) { await db.rpc('set_room_password', { p_room_id: state.currentRoomId, p_hash: null }); state.currentRoomData.has_password = false; }
+                 else if (isChangingPass) { const roomSalt = state.currentRoomData.salt; const accessHash = await sha256(newPass + roomSalt); await db.rpc('set_room_password', { p_room_id: state.currentRoomId, p_hash: accessHash }); state.currentRoomData.has_password = true; }
+                 const { data: updatedRoom } = await db.from('rooms').select('*').eq('id', state.currentRoomId).single();
+                 state.currentRoomData = updatedRoom; state.currentRoomDisplay = await resolveRoomDisplay(updatedRoom); $('chat-title').innerText = state.currentRoomDisplay.name;
+                 window.toast("Saved."); window.closeOverlay(); state.processingAction = false; window.setLoading(false);
+             };
+         
+             window.deleteRoom = async () => { if (!state.currentRoomId) return; window.setLoading(true, "Deleting..."); const { error } = await db.from('rooms').delete().eq('id', state.currentRoomId); if (error) { window.toast("Delete failed."); window.setLoading(false); return; } window.toast("Deleted."); state.currentRoomId = null; state.currentRoomData = null; window.closeOverlay(); window.nav('scr-lobby'); window.loadRooms(); window.setLoading(false); };
+         
+             window.openVault = async (id, n, rawPassword, roomSalt, cachedData = null) => {
+                 if (!state.user) return window.toast("Please log in."); if (state.isCapacityBlocked) return;
+                 window.setLoading(true, "Opening chat..."); state.currentRoomPassword = rawPassword;
+                 
+                 await cleanupChannels(true);
+                 
+                 if (!state.isOfflineMode) {
+                     try { if (db.realtime && typeof db.realtime.connect === 'function') db.realtime.connect(); } catch (e) {}
+                 }
+         
+                 state.currentRoomId = id; state.lastRenderedDateLabel = null; state.oldestMessageTimestamp = null; state.hasMoreHistory = true; state.isLoadingHistory = false;
+                 const chatContainer = $('chat-messages'); chatContainer.innerHTML = ''; chatContainer.onscroll = handleScroll;
+                 let roomData = null;
+                 if (state.isOfflineMode) {
+                     roomData = await localDB.get('rooms', id);
+                     if (!roomData) { window.setLoading(false); return window.toast("Chat not found locally."); }
+                     state.currentRoomData = roomData; const isDirect = roomData?.is_direct;
+                     state.currentRoomDisplay = await resolveRoomDisplay(roomData); $('chat-title').innerText = state.currentRoomDisplay.name;
+                     const avEl = $('chat-avatar-display'); if (state.currentRoomDisplay.avatar) avEl.innerHTML = `<img src="${state.currentRoomDisplay.avatar}">`; else avEl.innerText = state.currentRoomDisplay.name.charAt(0).toUpperCase();
+                     const editBtn = $('info-edit-btn'); if (!isDirect && roomData?.created_by === state.user.id) editBtn.style.display = 'flex'; else editBtn.style.display = 'none';
+                     const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; // Mark key as available
+                     let localMessages = await localDB.getRoomMessages(id); let renderedHtml = '';
+                     if (localMessages.length > 0) { let prev = null; localMessages.forEach(m => { renderedHtml += renderMsg(m, prev, isDirect); prev = m; }); chatContainer.innerHTML = renderedHtml; chatContainer.scrollTop = chatContainer.scrollHeight; }
+                     checkChatEmpty(); $('chat-input').style.display = 'block'; $('send-btn').style.display = 'flex'; setConnectionVisuals('offline'); window.nav('scr-chat'); window.setLoading(false); return;
+                 }
+                 if (cachedData) { roomData = cachedData; }
+                 else { try { const { data: netRoom } = await execQuery(db.from('rooms').select('*').eq('id', id).single()); if (netRoom && netRoom.id) { roomData = netRoom; await localDB.put('rooms', roomData); } } catch (e) {} }
+                 if (!roomData) { window.setLoading(false); return window.toast("Chat not found."); }
+                 state.currentRoomData = roomData; const isDirect = roomData?.is_direct;
+                 state.currentRoomDisplay = await resolveRoomDisplay(roomData); $('chat-title').innerText = state.currentRoomDisplay.name;
+                 const avEl = $('chat-avatar-display'); if (state.currentRoomDisplay.avatar) avEl.innerHTML = `<img src="${state.currentRoomDisplay.avatar}">`; else avEl.innerText = state.currentRoomDisplay.name.charAt(0).toUpperCase();
+                 const editBtn = $('info-edit-btn'); if (!isDirect && roomData.created_by === state.user.id) editBtn.style.display = 'flex'; else editBtn.style.display = 'none';
+                 const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; // Mark key as available
+                 let finalMessages = [];
+                 try {
+                     const { data } = await execQuery(db.from('messages').select('*').eq('room_id', id).order('created_at', { ascending: false }).limit(CONFIG.maxMessages));
+                     if (data && data.length > 0) {
+                         data.reverse(); const res = await workerExec('decryptHistory', { messages: data, keyId: id }); const validMsgs = res.results.filter(m => !m.error);
+                         await localDB.clearRoomMessages(id); const messagesWithRoomId = validMsgs.map(m => ({ ...m, room_id: id })); await localDB.putAll('messages', messagesWithRoomId); finalMessages = validMsgs; }
+                    } catch (e) { console.error("Fetch error", e); }
+                    window.nav('scr-chat');
+                    if (finalMessages.length > 0) { state.oldestMessageTimestamp = finalMessages[0].created_at; let html = '', prev = null; finalMessages.forEach(m => { html += renderMsg(m, prev, isDirect); prev = m; }); chatContainer.innerHTML = html; }
+                    checkChatEmpty(); $('chat-input').style.display = 'block'; $('send-btn').style.display = 'flex'; setConnectionVisuals('connecting');
+                    await initRoomPresence(id); await setupChatChannel(id);
+                    setTimeout(() => { chatContainer.scrollTop = chatContainer.scrollHeight; window.setLoading(false); }, 100);
+                };
+
+                const applyRateLimit = () => { const now = Date.now(); if (now - state.lastMessageTime < CONFIG.rateLimitMs) return false; return true; };
+
+                window.sendMsg = async (e) => {
+                    if (!e || !e.isTrusted) return; if (!state.user || !state.currentRoomId || state.processingAction) return;
+                    if (state.isOfflineMode) return window.toast("You are offline."); if (!state.isChatChannelReady) return; if (state.isCapacityBlocked) return window.toast("Server full."); if (!applyRateLimit()) return;
+                    const v = $('chat-input').value.trim(); if (!v) return; if (v.length > CONFIG.maxMessageLength) return window.toast(`Message too long (max ${CONFIG.maxMessageLength} chars).`);
+                    state.processingAction = true; $('chat-input').value = ''; state.lastMessageTime = Date.now();
+                    try { const enc = await encryptMessage(v, state.currentRoomId); const { data, error } = await db.from('messages').insert([{ room_id: state.currentRoomId, user_id: state.user.id, user_name: state.user.user_metadata?.full_name, content: enc }]).select().single(); if (error) window.toast("Failed to send."); } catch (err) { window.toast("Send failed."); }
+                    state.processingAction = false;
+                };
+
+                window.leaveChat = async () => { window.setLoading(true, "Leaving..."); state.currentRoomId = null; state.currentRoomData = null; await cleanupChannels(true); setConnectionVisuals('offline'); if ($('info-edit-btn')) $('info-edit-btn').style.display = 'none'; window.nav('scr-lobby'); window.loadRooms(); window.setLoading(false); };
+
+                window.handleLogin = async (e) => {
+                    if (!e || !e.isTrusted) return; if (state.processingAction) return; state.processingAction = true;
+                    const em = $('l-email').value, p = $('l-pass').value; if (!em || !p) { window.toast("Missing fields."); state.processingAction = false; return; }
+                    window.setLoading(true, "Signing In...");
+                    if (!navigator.onLine) {
+                        const knownUser = await localDB.get('known_users', em);
+                        if (knownUser && knownUser.metadata) { const hashInput = await sha256(p + em); if (knownUser.pass_hash && knownUser.pass_hash === hashInput) { state.user = { id: knownUser.userId, email: knownUser.email, user_metadata: knownUser.metadata }; setAppMode(true); window.nav('scr-lobby'); window.loadRooms(); window.setLoading(false); state.processingAction = false; window.toast("Offline login successful."); return; } }
+                        window.toast("No internet and no offline account found."); window.setLoading(false); state.processingAction = false; return;
+                    }
+                    const success = await attemptLogin(em, p);
+                    if (success) { localStorage.setItem('hrn_auth_email', em); localStorage.setItem('hrn_auth_pass', p); setAppMode(false); if (state.user) setupGlobalPresence(state.user.id); window.nav('scr-lobby'); window.loadRooms(); window.toast("Connected."); }
+                    else { window.toast("Invalid credentials!"); }
+                    window.setLoading(false); state.processingAction = false;
+                };
+
+                window.handleRegister = async (e) => {
+                    if (!e || !e.isTrusted) return; if (state.processingAction) return; state.processingAction = true;
+                    const n = $('r-name').value, em = $('r-email').value.trim().toLowerCase(), p = $('r-pass').value;
+                    const customAvatar = $('r-avatar-url').value.trim(); const avatarUrl = customAvatar || state.selectedAvatar;
+                    if (!n || !em || p.length < 8) { window.toast("Invalid input."); state.processingAction = false; return; }
+                    if (!navigator.onLine) { window.toast("Internet connection required to register."); state.processingAction = false; return; }
+                    window.setLoading(true, "Sending Code...");
+                    try {
+                        const [r, err] = await safeAwait(fetch(CONFIG.mailApi, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "send", email: em }) }));
+                        if (err) throw err;
+                        if (r) {
+                            if (r.status === 429) { window.toast("Too many attempts."); state.processingAction = false; window.setLoading(false); return; }
+                            const j = await r.json();
+                            if (j.message === "Code sent") { sessionStorage.setItem('temp_reg', JSON.stringify({ n, em, p, avatar: avatarUrl })); window.nav('scr-verify'); startVTimer(); window.setLoading(false); }
+                            else { window.toast("Could not send code."); window.setLoading(false); }
+                        }
+                    } catch (err) { window.toast("Network error."); window.setLoading(false); }
+                    state.processingAction = false;
+                };
+
+                const startVTimer = () => { let left = CONFIG.verificationCodeExpiry; if (state.vTimer) clearInterval(state.vTimer); state.vTimer = setInterval(() => { left--; $('v-timer').innerText = `${Math.floor(left/60)}:${(left%60).toString().padStart(2,'0')}`; if (left <= 0) { clearInterval(state.vTimer); window.nav('scr-register'); } }, 1000); };
+
+                window.handleVerify = async (e) => {
+                    if (!e || !e.isTrusted) return; if (state.processingAction) return; state.processingAction = true;
+                    const code = $('v-code').value, temp = JSON.parse(sessionStorage.getItem('temp_reg'));
+                    if (!temp) { window.toast("Session expired."); state.processingAction = false; return; }
+                    window.setLoading(true, "Verifying...");
+                    try {
+                        const r = await fetch(CONFIG.mailApi, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "verify", email: temp.em, code: code }) });
+                        if (r.status === 429) { window.toast("Too many attempts."); state.processingAction = false; window.setLoading(false); return; }
+                        const j = await r.json();
+                        if (j.message === "Verified") await finishReg(temp); else { window.toast("Invalid code."); window.setLoading(false); }
+                    } catch (err) { window.toast("Verification failed."); window.setLoading(false); }
+                    state.processingAction = false;
+                };
+
+                const finishReg = async (temp) => {
+                    const { error } = await db.auth.signUp({ email: temp.em, password: temp.p, options: { data: { full_name: temp.n, avatar_url: temp.avatar } } });
+                    if (error) { window.toast("Registration failed."); window.setLoading(false); }
+                    else { localStorage.setItem('hrn_auth_email', temp.em); localStorage.setItem('hrn_auth_pass', temp.p); window.nav('scr-lobby'); window.loadRooms(); window.setLoading(false); }
+                };
+
+                window.handleCreate = async (e) => {
+                    if (!e || !e.isTrusted) return; if (state.processingAction) return; state.processingAction = true;
+                    const isDirect = state.createType === 'direct';
+                    let n, isVisible = true, targetUser = null; let avatarUrl = null; let rawPass = null;
+                    if (isDirect) {
+                        targetUser = $('c-target-user').value.trim(); if (!targetUser) { window.toast("User ID required."); state.processingAction = false; return; }
+                        const { data: profile, error } = await db.from('profiles').select('id, full_name, avatar_url, updated_at').eq('id', targetUser).single();
+                        if (error || !profile) { window.toast("User not found."); state.processingAction = false; return; }
+                        await localDB.put('profiles', profile); state.profileCache[profile.id] = profile; n = "Direct Message"; isVisible = true;
+                    } else {
+                        n = $('c-name').value.trim(); const inputUrl = $('c-avatar').value.trim(); if (inputUrl) avatarUrl = inputUrl; else avatarUrl = null;
+                        rawPass = $('c-pass').value; isVisible = $('c-visible').checked; if (!n) { window.toast("Name required."); state.processingAction = false; window.setLoading(false); return; }
+                    }
+                    let allowedUsers = ['*'];
+                    if (isDirect) allowedUsers = [state.user.id, targetUser];
+                    else { if (state.selectedAllowedUsers.length > 0) { allowedUsers = state.selectedAllowedUsers.map(u => u.id); if (!allowedUsers.includes(state.user.id)) allowedUsers.push(state.user.id); } }
+                    window.setLoading(true, "Creating..."); const roomSalt = generateSalt();
+                    const insertData = { name: n, avatar_url: avatarUrl, has_password: !!rawPass, is_visible: isVisible, salt: roomSalt, created_by: state.user.id, allowed_users: allowedUsers, is_direct: isDirect };
+                    const { data, error } = await db.from('rooms').insert([insertData]).select();
+                    if (error) { window.toast("Creation failed."); state.processingAction = false; window.setLoading(false); return; }
+                    if (data && data.length > 0) {
+                        const newRoom = data[0];
+                        if (rawPass) { const accessHash = await sha256(rawPass + roomSalt); await db.rpc('set_room_password', { p_room_id: newRoom.id, p_hash: accessHash }); }
+                        await localDB.put('rooms', newRoom); state.lastCreated = newRoom; state.lastCreatedPass = rawPass;
+                        $('s-id').innerText = newRoom.id; window.nav('scr-success'); state.selectedAllowedUsers = [];
+                    }
+                    state.processingAction = false; window.setLoading(false);
+                };
+
+                window.submitGate = async (e) => {
+                    if (!e || !e.isTrusted) return; const inputPass = $('gate-pass').value;
+                    if (state.isOfflineMode) { window.openVault(state.pending.id, state.pending.name, inputPass, state.pending.salt, state.pending); return; }
+                    const inputHash = await sha256(inputPass + state.pending.salt); window.setLoading(true, "Verifying...");
+                    const { data } = await db.rpc('verify_room_password', { p_room_id: state.pending.id, p_hash: inputHash }); window.setLoading(false);
+                    if (data === true) window.openVault(state.pending.id, state.pending.name, inputPass, state.pending.salt, state.pending); else window.toast("Incorrect password.");
+                };
+
+                window.handleLogout = async (e) => {
+                    if (!e || !e.isTrusted) return; window.setLoading(true, "Leaving...");
+                    state.currentRoomId = null; state.user = null; await fullDisconnect();
+                    localStorage.removeItem('hrn_auth_email'); localStorage.removeItem('hrn_auth_pass');
+                    setAppMode(false); state.isCapacityBlocked = false; await db.auth.signOut();
+                    if (state.authListener) { state.authListener.unsubscribe(); state.authListener = null; }
+                    window.nav('scr-start'); window.setLoading(false);
+                };
+
+                window.copySId = () => { if (!state.lastCreated) return; navigator.clipboard.writeText(state.lastCreated.id); window.toast("ID copied."); };
+                const processAvatarUrl = async (url) => { if (!url || url.startsWith('data:')) return url; return url; };
+                window.enterCreated = () => { if (!state.lastCreated) return; window.openVault(state.lastCreated.id, state.lastCreated.name, state.lastCreatedPass, state.lastCreated.salt, state.lastCreated); state.lastCreatedPass = null; };
+
+                const { data: { subscription } } = db.auth.onAuthStateChange(async (ev, ses) => {
+                    if (state.isOfflineMode && !ses) return; state.user = ses?.user;
+                    if (state.user && !state.isOfflineMode) setupGlobalPresence(state.user.id);
+                    const createBtn = $('icon-plus-lobby'); if (createBtn) createBtn.style.display = 'flex';
+                    if (ev === 'SIGNED_OUT') { await fullDisconnect(); window.nav('scr-start'); }
+                });
+                state.authListener = subscription;
+
+                window.nav = (id, direction = null) => {
+                    if (state.isNavigating) return; state.isNavigating = true;
+                    requestAnimationFrame(() => {
+                        const current = document.querySelector('.screen.active'); const next = $(id);
+                        if (!next) { state.isNavigating = false; return; }
+                        if (id === 'scr-create') { state.currentStep.create = 1; state.selectedAllowedUsers = []; state.createType = 'group'; updateStepUI('create'); $('c-name').value = ''; $('c-target-user').value = ''; $('c-pass').value = ''; $('c-avatar').value = ''; document.querySelectorAll('.type-card').forEach(el => el.classList.remove('selected')); $('type-group').classList.add('selected'); }
+                        if (id === 'scr-register') { state.currentStep.reg = 1; state.selectedAvatar = null; $('r-name').value = ''; $('r-email').value = ''; $('r-pass').value = ''; $('r-avatar-url').value = ''; updateStepUI('reg'); }
+                        if (id === 'scr-account') window.prepareAccountPage();
+                        document.querySelectorAll('.screen').forEach(s => s.classList.remove('slide-left', 'slide-right'));
+                        if (direction === 'left') { if (current) current.classList.add('slide-left'); next.classList.remove('slide-right'); }
+                        else if (direction === 'right') { if (current) current.classList.add('slide-right'); next.classList.remove('slide-left'); }
+                        else document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+                        next.classList.add('active');
+                        const createBtn = $('icon-plus-lobby'); if (createBtn) createBtn.style.display = 'flex';
+                        if (id === 'scr-lobby') updateLobbyAvatar();
+                        setTimeout(() => { state.isNavigating = false; }, 400);
+                    });
+                };
+
+                window.refreshLobby = async () => { const now = Date.now(); if (now - state.lastLobbyRefresh < 10000) return window.toast("Please wait."); state.lastLobbyRefresh = now; await window.loadRooms(); };
+
+                
+
+                window.loadRooms = async () => {
+                    if (!state.user) return; const uid = state.user.id;
+                    
+                    const processAndRender = async (rooms) => { 
+                        const processed = []; 
+                        
+                        // Stap 1: Laad sleutels voor openbare kamers
+                        const keyPromises = rooms.map(r => {
+                            if (!r.has_password && r.salt) return ensureLobbyKey(r.id, r.salt);
+                            return Promise.resolve();
+                        });
+                        await Promise.all(keyPromises);
+
+                        // Stap 2: Verwerk kamers
+                        const previewPromises = rooms.map(async (r) => {
+                            if (!r || !r.id) return null;
+                            const display = await resolveRoomDisplay(r); 
+                            
+                            let previewText = "No messages yet";
+                            
+                            if (r.last_message_content) {
+                                let rawText = "New message";
+                                try {
+                                    if (state.derivedKeys && state.derivedKeys[r.id]) {
+                                        const res = await workerExec('decryptSingle', { content: r.last_message_content, keyId: r.id });
+                                        if (res.result && res.result.text) rawText = res.result.text;
+                                        else if (res.result && res.result.deleted) rawText = "Message deleted";
+                                    }
+                                } catch (e) { rawText = "New message"; }
+                                
+                                // Formatteer: "User: Message"
+                                previewText = formatPreview(rawText, r.last_message_user_name, r.last_message_user_id, r.is_direct, state.user.id);
+                            }
+
+                            return { 
+                                ...r, 
+                                display_name: display.name, 
+                                display_avatar: display.avatar,
+                                preview: previewText // Hier slaan we de definitieve tekst op
+                            };
+                        });
+
+                        const results = await Promise.all(previewPromises);
+                        state.allRooms = results.filter(r => r !== null).sort((a, b) => new Date(b.last_message_at || 0) - new Date(a.last_message_at || 0));
+                        
+                        if(!state.isOfflineMode) setupLobbyListener(state.allRooms.map(r => r.id));
+                        window.filterRooms(); 
+                    };
+
+                    if (state.isOfflineMode) { const localRooms = await localDB.getAll('rooms'); await processAndRender(localRooms); updateLobbyAvatar(); return; }
+                    window.setLoading(true, "Syncing...");
+                    try { 
+                        const { data: rooms, error } = await execQuery(db.from('rooms').select('*').order('last_message_at', { ascending: false })); 
+                        if (error) throw error; 
+                        if (rooms) { 
+                            await localDB.clear('rooms'); 
+                            if (rooms.length > 0) await localDB.putAll('rooms', rooms); 
+                            await localDB.saveUserTree(uid, rooms); 
+                            await processAndRender(rooms); 
+                        } 
+                    } catch (e) { window.toast("Sync failed."); }
+                    window.setLoading(false); updateLobbyAvatar();
+                };
+                       // Helper om sleutels voor openbare chats in memory te laden zodat lobby previews kunnen decrypten
+            const ensureLobbyKey = async (roomId, salt) => {
+                if (!roomId || !salt) return false;
+                if (state.derivedKeys && state.derivedKeys[roomId]) return true; // Al gedaan
+                
+                // Alleen afleiden als er geen wachtwoord is (openbare kamers)
+                // De sleutel is voor openbare kamers: roomId
+                try {
+                    await workerExec('deriveKey', { password: roomId, salt: salt, keyId: roomId });
+                    if (!state.derivedKeys) state.derivedKeys = {};
+                    state.derivedKeys[roomId] = true;
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            };
+
+                window.filterRooms = () => {
+                    const q = $('search-bar').value.toLowerCase(); const list = $('room-list'); 
+                    const filtered = state.allRooms.filter(r => { 
+                        if (!r.is_direct && !r.is_visible) return false; 
+                        const name = r.display_name || r.name || ''; 
+                        if (!name.toLowerCase().includes(q)) return false; 
+                        return true; 
+                    });
+                    
+                    if (filtered.length === 0) list.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-mute)">No chats found.</div>`;
+                    else list.innerHTML = filtered.map(r => {
+                        const preview = r.preview || "No messages yet";
+                        const time = r.last_message_at ? getRelativeTime(r.last_message_at) : "";
+                        
+                        return `<div class="room-card" onclick="window.joinAttempt('${r.id}')">
+                            <div class="chat-avatar" style="width:36px;height:36px;margin-right:10px;font-size:13px">${r.display_avatar ? `<img src="${r.display_avatar}">` : (r.display_name||'G').charAt(0)}</div>
+                            <div class="room-card-content">
+                                <div class="room-name">${esc(r.display_name)}</div>
+                                <div class="room-preview">
+                                    <span class="room-preview-text">${esc(preview)}</span>
+                                    <span class="room-time">${time}</span>
+                                </div>
+                            </div>
+                            <div class="room-icon">${r.is_direct ? '<i data-lucide="user" style="width:14px;height:14px"></i>' : ''}${r.has_password ? '<i data-lucide="lock" style="width:14px;height:14px"></i>' : ''}</div>
+                        </div>`;
+                    }).join('');
+                };
+
+                window.joinAttempt = async (id) => {
+                    const openLocal = async () => { const meta = await localDB.get('rooms', id); if (meta && meta.id) { state.pending = meta; if (meta.has_password) { updateGateUI(meta); window.nav('scr-gate'); } else await window.openVault(meta.id, meta.name, null, meta.salt, meta); } else window.toast("Chat not found locally."); };
+                    if (state.isOfflineMode) { await openLocal(); return; }
+                    window.setLoading(true, "Accessing...");
+                    try {
+                        const { data: canAccess, error: rpcError } = await execQuery(db.rpc('can_access_room', { p_room_id: id })); if (rpcError) throw rpcError; if (!canAccess) throw new Error("Access denied");
+                        const { data, error } = await execQuery(db.from('rooms').select('*').eq('id', id).single()); if (error) throw error;
+                        window.setLoading(false); if (data && data.id) await localDB.put('rooms', data); state.pending = data;
+                        if (data.has_password) { updateGateUI(data); window.nav('scr-gate'); } else window.openVault(data.id, data.name, null, data.salt, data);
+                    } catch (e) { window.setLoading(false); window.toast("Connection lost."); setAppMode(true); await openLocal(); }
+                };
+
+                window.joinPrivate = async () => {
+                    if (!state.user) return window.toast("Please log in."); const id = $('join-id').value.trim(); if (!id) return;
+                    if (state.isOfflineMode) { const meta = await localDB.get('rooms', id); if (meta) window.joinAttempt(id); else window.toast("Connection required."); return; }
+                    window.setLoading(true, "Checking...");
+                    try {
+                        const { data: canAccess } = await execQuery(db.rpc('can_access_room', { p_room_id: id })); if (!canAccess) { window.setLoading(false); return window.toast("Access denied."); }
+                        const { data } = await execQuery(db.from('rooms').select('*').eq('id', id).single()); window.setLoading(false);
+                        if (data) { await localDB.put('rooms', data); state.pending = data; if (data.has_password) { updateGateUI(data); window.nav('scr-gate'); } else window.openVault(data.id, data.name, null, data.salt, data); }
+                        else window.toast("Chat not found.");
+                    } catch (e) { window.setLoading(false); window.toast("Network error."); }
+                };
+
+                const init = async () => {
+                    await localDB.init(); monitorConnection(); if (navigator.onLine) { await warmUpAvatarCache(); }
+                    const storedEmail = localStorage.getItem('hrn_auth_email'); const storedPass = localStorage.getItem('hrn_auth_pass');
+                    if (navigator.onLine) {
+                        setAppMode(false); setupGlobalPresence(null);
+                        if (storedEmail && storedPass) {
+                            window.setLoading(true, "Auto-logging in..."); const success = await attemptLogin(storedEmail, storedPass); window.setLoading(false);
+                            if (success) { setupGlobalPresence(state.user.id); window.nav('scr-lobby'); window.loadRooms(); }
+                            else { const knownUser = await localDB.get('known_users', storedEmail); const hashInput = await sha256(storedPass + storedEmail); if (knownUser && knownUser.pass_hash === hashInput) { state.user = { id: knownUser.userId, email: knownUser.email, user_metadata: knownUser.metadata }; setAppMode(true); window.nav('scr-lobby'); window.loadRooms(); window.toast("You are offline."); } else { localStorage.removeItem('hrn_auth_email'); localStorage.removeItem('hrn_auth_pass'); window.nav('scr-start'); } }
+                        } else window.nav('scr-start');
+                    } else {
+                        setAppMode(true); startInternetCheck();
+                        if (storedEmail && storedPass) { const knownUser = await localDB.get('known_users', storedEmail); const hashInput = await sha256(storedPass + storedEmail); if (knownUser && knownUser.pass_hash === hashInput) { state.user = { id: knownUser.userId, email: knownUser.email, user_metadata: knownUser.metadata }; window.nav('scr-lobby'); window.loadRooms(); window.toast("You are offline."); } else { window.nav('scr-login'); $('l-email').value = storedEmail; $('l-pass').value = storedPass; } } else window.nav('scr-start');
+                    }
+                    window.setLoading(false);
+                };
+
+                const warmUpAvatarCache = async () => { if (state.isOfflineMode) return; const profiles = await localDB.getAll('profiles'); if (!profiles || profiles.length === 0) return; profiles.forEach(p => { if (p && p.id) state.profileCache[p.id] = p; }); };
+
+                init();
+            }
+
+            initHRNchat({ maxUsers: 150, maxMessageLength: 5000, maxMessages: 50, rateLimitMs: 1000, historyLoadLimit: 20, backgroundDisconnectMs: 1000 });
+            if("serviceWorker"in navigator){window.addEventListener("load",async()=>{try{await navigator.serviceWorker.register("./service-worker.js")}catch(e){}})}
+      </script>
+   </body>
+</html>
