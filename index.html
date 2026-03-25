@@ -4,223 +4,271 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>TUN</title>
-<!-- Default Fallback Icon -->
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23000' width='100' height='100'/></svg>">
 <style>
-*{box-sizing:border-box;margin:0;padding:0;border-radius:0;-webkit-font-smoothing:antialiased}
-::-webkit-scrollbar{width:6px;height:6px}
-::-webkit-scrollbar-track{background:transparent}
-::-webkit-scrollbar-thumb{background:#333}
-::-webkit-scrollbar-thumb:hover{background:#fff}
-:root{--bg:#050505;--panel:#0a0a0a;--input:#000;--text:#e0e0e0;--muted:#666;--accent:#fff;--border:#222;--hover:#333}
-body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-.bg{position:fixed;inset:0;z-index:-1;background:radial-gradient(circle at 15% 50%,rgba(255,255,255,.02),transparent 25%),radial-gradient(circle at 85% 30%,rgba(255,255,255,.02),transparent 25%) var(--bg)}
-.c{max-width:1400px;margin:0 auto;padding:40px 24px}
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:40px;border-bottom:1px solid var(--border);padding-bottom:20px;flex-wrap:wrap;gap:20px}
-h1{font-size:16px;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text)}
-h1 span{color:var(--muted);font-weight:400;margin-left:10px;display:none}
-@media (min-width:600px){h1 span{display:inline}}
-nav{display:flex;gap:20px}
-nav button{background:none;border:none;color:var(--muted);font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:1px;cursor:pointer;padding:5px 0;border-bottom:2px solid transparent;transition:all .2s}
-nav button.active{color:var(--text);border-bottom-color:var(--accent)}
-nav button:hover{color:var(--text)}
-.view{display:none;opacity:0;transition:opacity .2s}
-.view.active{display:block;opacity:1}
-.search{margin-bottom:32px;display:flex;gap:12px}
-input,select{background:var(--input);border:1px solid var(--border);color:var(--text);padding:12px 16px;font-size:14px;outline:none;transition:border-color .2s;width:100%}
-input:focus,select:focus{border-color:var(--accent)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:1px;background:transparent}
-.card{background:var(--panel);border:1px solid var(--border);padding:24px 12px;aspect-ratio:1;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;cursor:pointer;transition:all .2s;position:relative}
-.card:hover{background:#0f0f0f;border-color:var(--hover);transform:translateY(-2px);box-shadow:0 10px 20px rgba(0,0,0,.5)}
-.card-t{font-size:13px;font-weight:500;margin-top:8px;color:var(--text);pointer-events:none}
-.card-s{font-size:10px;color:var(--muted);margin-top:4px;text-transform:uppercase;letter-spacing:.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;pointer-events:none}
-.card-i{width:40px;height:40px;background:#000;border:1px solid #222;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:700;color:var(--accent);pointer-events:none}
-.del{position:absolute;top:8px;right:8px;background:transparent;border:1px solid transparent;color:#ff3333;width:20px;height:20px;font-size:14px;cursor:pointer;opacity:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
-.card:hover .del{opacity:.6;border-color:#ff3333}
-.del:hover{opacity:1!important;background:#ff3333;color:#000}
-.set-g{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
-.p{background:var(--panel);border:1px solid var(--border);padding:24px;display:flex;flex-direction:column;gap:16px}
-.p-h{border-bottom:1px solid var(--border);padding-bottom:12px;margin-bottom:8px}
-.p-t{font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.5px}
-.p-d{font-size:12px;color:var(--muted);margin-top:4px}
-.lbl{display:block;font-size:11px;color:var(--muted);text-transform:uppercase;margin-bottom:6px}
-.row{display:flex;gap:12px}
-.row>*{flex:1}
-.t-w{display:flex;justify-content:space-between;align-items:center;padding:8px 0}
-.t-l h4{font-size:14px;color:var(--text)}
-.t-l p{font-size:11px;color:var(--muted)}
-.t{width:40px;height:20px;background:#222;border:1px solid #333;cursor:pointer;position:relative;transition:background .2s}
-.t.on{background:var(--accent);border-color:var(--accent)}
-.t::after{content:'';position:absolute;width:14px;height:14px;background:#555;top:2px;left:2px;transition:all .2s}
-.t.on::after{left:22px;background:#000}
-.btn{background:var(--accent);color:#000;border:none;padding:12px 24px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;cursor:pointer;transition:all .2s;border:1px solid transparent}
-.btn:hover{opacity:.9;box-shadow:0 0 15px rgba(255,255,255,.1)}
-.btn.o{background:transparent;color:var(--text);border:1px solid var(--border)}
-.btn.o:hover{border-color:var(--accent);background:rgba(255,255,255,.05)}
-.btn.d{background:#ff3333;color:#fff}
-#modal{position:fixed;inset:0;background:rgba(0,0,0,.95);backdrop-filter:blur(10px);display:none;justify-content:center;align-items:center;z-index:100;padding:20px}
-.m-c{background:var(--panel);border:1px solid var(--border);width:100%;max-width:450px;padding:32px}
-.m-h{margin-bottom:24px;border-bottom:1px solid var(--border);padding-bottom:16px}
-.m-t{font-size:18px;text-transform:uppercase;letter-spacing:1px}
-.m-f{margin-top:24px;display:flex;justify-content:flex-end;gap:12px}
-#ov{position:fixed;inset:0;z-index:200;background:#000;display:none;flex-direction:column}
-#ov.on{display:flex}
-#ov-f{width:100%;height:100%;border:none;background:#000}
-.ov-x{position:fixed;top:20px;right:20px;z-index:201;background:rgba(0,0,0,.8);border:1px solid rgba(255,255,255,.1);color:#fff;width:40px;height:40px;font-size:24px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;opacity:.5}
-.ov-x:hover{opacity:1;background:#fff;color:#000;border-color:#fff}
+/* Dark & Subtle Theme */
+:root {
+  --bg: #000000; --panel: #0a0a0a; --card: #0f0f0f; --input: #050505;
+  --text: #cccccc; --muted: #555555; --accent: #aaaaaa; --border: #1a1a1a; --hover: #222222;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0; -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+
+/* Smooth Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #222; }
+::-webkit-scrollbar-thumb:hover { background: #333; }
+
+body { font-family: 'Inter', 'Segoe UI', system-ui, sans-serif; background-color: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+/* Subtle Animated Backgrounds */
+.bg { position: fixed; inset: 0; z-index: -2; background-color: var(--bg); opacity: 0.8; }
+.bg.anim { background: radial-gradient(circle at 50% 50%, #111, #000); animation: pulse 20s infinite; }
+.bg.dots { background-image: radial-gradient(#111 1px, transparent 1px); background-size: 25px 25px; }
+.bg.grid { background-image: linear-gradient(#0a0a0a 1px, transparent 1px), linear-gradient(90deg, #0a0a0a 1px, transparent 1px); background-size: 50px 50px; }
+@keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 0.8; } 100% { opacity: 0.5; } }
+
+/* Layout */
+.c { max-width: 1400px; margin: 0 auto; padding: 0 24px 40px; }
+
+/* Full Width Sticky Header */
+header { position: sticky; top: 0; z-index: 50; background: rgba(0,0,0,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); margin-bottom: 40px; width: 100%; }
+.h-in { max-width: 1400px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; padding: 18px 24px; }
+h1 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: var(--text); }
+h1 span { color: var(--muted); font-weight: 400; margin-left: 8px; font-size: 12px; display: none; }
+@media (min-width: 600px) { h1 span { display: inline; } }
+
+nav { display: flex; gap: 24px; }
+nav button { background: none; border: none; color: var(--muted); font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; padding: 4px 0; border-bottom: 1px solid transparent; transition: all .2s; }
+nav button.active { color: var(--text); border-bottom-color: var(--accent); }
+nav button:hover { color: var(--text); }
+
+.view { display: none; opacity: 0; transition: opacity .3s ease; }
+.view.active { display: block; opacity: 1; }
+
+/* Search */
+.search { margin-bottom: 32px; }
+input, select { background: var(--input); border: 1px solid var(--border); color: var(--text); padding: 12px 14px; font-size: 13px; outline: none; transition: border-color .2s; width: 100%; }
+input:focus, select:focus { border-color: #333; background: #080808; }
+
+/* Grid */
+.grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 2px; background: transparent; }
+.card { background: var(--card); border: 1px solid transparent; padding: 20px 12px; aspect-ratio: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+.card:hover { background: var(--hover); border-color: var(--border); }
+.card-t { font-size: 12px; font-weight: 500; margin-top: 8px; color: var(--text); pointer-events: none; }
+.card-s { font-size: 9px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; pointer-events: none; }
+.card-i { width: 32px; height: 32px; background: #000; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; color: var(--accent); pointer-events: none; }
+.del { position: absolute; top: 6px; right: 6px; background: transparent; border: none; color: #ff3333; width: 16px; height: 16px; font-size: 12px; cursor: pointer; opacity: 0; transition: all .2s; display: flex; align-items: center; justify-content: center; }
+.card:hover .del { opacity: .5; }
+.del:hover { opacity: 1 !important; color: #ff5555; }
+
+/* Settings */
+.set-g { display: grid; grid-template-columns: 1fr; gap: 24px; max-width: 900px; margin: 0 auto; }
+@media (min-width: 800px) { .set-g { grid-template-columns: 1fr 1fr; } }
+.p { background: var(--panel); border: 1px solid var(--border); padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+.p-h { border-bottom: 1px solid var(--border); padding-bottom: 12px; margin-bottom: 4px; }
+.p-t { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; color: var(--text); }
+.p-d { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.lbl { display: block; font-size: 10px; color: var(--muted); text-transform: uppercase; margin-bottom: 6px; letter-spacing: .5px; }
+.row { display: flex; gap: 10px; }
+.row > * { flex: 1; }
+
+/* Toggle Switch */
+.t-w { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #0f0f0f; }
+.t-w:last-child { border-bottom: none; }
+.t-l h4 { font-size: 12px; color: var(--text); font-weight: 500; }
+.t-l p { font-size: 10px; color: var(--muted); margin-top: 1px; }
+.t { width: 36px; height: 20px; background: #111; border: 1px solid #222; cursor: pointer; position: relative; transition: background .2s; flex-shrink: 0; }
+.t.on { background: var(--accent); border-color: var(--accent); }
+.t::after { content: ''; position: absolute; width: 14px; height: 14px; background: #333; top: 2px; left: 2px; transition: all .2s; }
+.t.on::after { left: 18px; background: #000; }
+
+/* Buttons */
+.btn { background: var(--accent); color: #000; border: none; padding: 10px 20px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; cursor: pointer; transition: all .2s; border: 1px solid transparent; }
+.btn:hover { opacity: .85; }
+.btn.o { background: transparent; color: var(--text); border: 1px solid #222; }
+.btn.o:hover { border-color: var(--accent); background: rgba(255,255,255,0.02); }
+.btn.d { background: transparent; border: 1px solid #ff3333; color: #ff3333; }
+.btn.d:hover { background: #ff3333; color: #fff; }
+
+/* Modal */
+#modal { position: fixed; inset: 0; background: rgba(0,0,0,0.98); backdrop-filter: blur(15px); display: none; justify-content: center; align-items: center; z-index: 100; padding: 20px; }
+.m-c { background: var(--panel); border: 1px solid var(--border); width: 100%; max-width: 400px; padding: 24px; }
+.m-h { margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 12px; }
+.m-t { font-size: 14px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700; }
+.m-f { margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; }
+
+/* Overlay */
+#ov { position: fixed; inset: 0; z-index: 200; background: #000; display: none; flex-direction: column; }
+#ov.on { display: flex; }
+#ov-f { width: 100%; height: 100%; border: none; background: #000; }
+.ov-x { position: fixed; top: 15px; right: 15px; z-index: 201; background: rgba(0,0,0,0.8); border: 1px solid #222; color: #fff; width: 32px; height: 32px; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all .2s; opacity: .4; }
+.ov-x:hover { opacity: 1; background: #fff; color: #000; border-color: #fff; }
 </style>
 </head>
 <body>
-<div class="bg"></div>
-<div class="c">
+<div class="bg" id="bg"></div>
+
 <header>
-<h1>TUN <span>v2.0</span></h1>
-<nav>
-<button class="active" data-view="games">Games</button>
-<button data-view="links">Shortcuts</button>
-<button data-view="settings">Settings</button>
-</nav>
+  <div class="h-in">
+    <h1>TUN <span>v2.5</span></h1>
+    <nav>
+      <button class="active" data-view="games">Games</button>
+      <button data-view="links">Shortcuts</button>
+      <button data-view="settings">Settings</button>
+    </nav>
+  </div>
 </header>
 
-<div id="view-games" class="view active">
-<div class="search"><input type="text" id="search-games" placeholder="Search library..."></div>
-<div class="grid" id="grid-games"></div>
-</div>
+<div class="c">
+  <!-- Games -->
+  <div id="view-games" class="view active">
+    <div class="search"><input type="text" id="search-games" placeholder="Search..."></div>
+    <div class="grid" id="grid-games"></div>
+  </div>
 
-<div id="view-links" class="view">
-<div class="search"><input type="text" id="search-links" placeholder="Search shortcuts..."></div>
-<div class="grid" id="grid-links"></div>
-<div style="margin-top:24px"><button class="btn" onclick="openModal()">+ Add Shortcut</button></div>
-</div>
+  <!-- Shortcuts -->
+  <div id="view-links" class="view">
+    <div class="search"><input type="text" id="search-links" placeholder="Search..."></div>
+    <div class="grid" id="grid-links"></div>
+    <div style="margin-top:20px"><button class="btn" onclick="openModal()">+ Add</button></div>
+  </div>
 
-<div id="view-settings" class="view">
-<div class="set-g">
-<div class="p">
-<div class="p-h"><div class="p-t">Launch Behavior</div><div class="p-d">Control how games and apps are opened.</div></div>
-<div class="t-w"><div class="t-l"><h4>Stealth Cloak</h4><p>Opens in 'about:blank' window.</p></div><div class="t" id="s-cloak" onclick="toggle('cloak')"></div></div>
-<div class="t-w"><div class="t-l"><h4>Cloak Parent</h4><p>Disguises this page after opening.</p></div><div class="t" id="s-hide" onclick="toggle('hide')"></div></div>
-<div class="t-w"><div class="t-l"><h4>Clickoff Cloak</h4><p>Disguises when you leave tab.</p></div><div class="t" id="s-clickoff" onclick="toggle('clickoff')"></div></div>
-<div class="t-w"><div class="t-l"><h4>Instant Launch</h4><p>Skips loading animations.</p></div><div class="t" id="s-instant" onclick="toggle('instant')"></div></div>
-<div class="lbl">Cloaked Window Title</div>
-<input type="text" id="s-title" placeholder="Loading..." oninput="save()">
-</div>
+  <!-- Settings -->
+  <div id="view-settings" class="view">
+    <div class="set-g">
+      <!-- Col 1 -->
+      <div class="col">
+        <div class="p">
+          <div class="p-h"><div class="p-t">Cloak System</div><div class="p-d">Window behavior.</div></div>
+          <div class="t-w"><div class="t-l"><h4>Stealth Cloak</h4><p>Opens in blank window.</p></div><div class="t" id="s-cloak" onclick="toggle('cloak')"></div></div>
+          <div class="t-w"><div class="t-l"><h4>Popup Mode</h4><p>Opens in small window.</p></div><div class="t" id="s-popup" onclick="toggle('popup')"></div></div>
+          <div class="t-w"><div class="t-l"><h4>Cloak Parent</h4><p>Disguises this page after launch.</p></div><div class="t" id="s-hide" onclick="toggle('hide')"></div></div>
+          <div class="t-w"><div class="t-l"><h4>Clickoff Cloak</h4><p>Disguises when you switch tabs.</p></div><div class="t" id="s-clickoff" onclick="toggle('clickoff')"></div></div>
+          <div class="lbl">Window Title</div>
+          <input type="text" id="s-title" placeholder="" oninput="save()">
+        </div>
+      </div>
 
-<div class="p">
-<div class="p-h"><div class="p-t">Tab Disguise</div><div class="p-d">Make this page look like something else.</div></div>
-<div class="lbl">Disguise As</div>
-<select id="s-disguise" onchange="save()">
-<option value="default">TUN (Default)</option>
-<option value="google">Google Search</option>
-<option value="classroom">Google Classroom</option>
-<option value="drive">Google Drive</option>
-<option value="docs">Google Docs</option>
-</select>
-<div class="lbl" style="margin-top:16px">Accent Color</div>
-<div class="row">
-<input type="color" id="s-accent" value="#ffffff" oninput="save()" style="padding:0;height:42px;border:1px solid var(--border)">
-<button class="btn o" onclick="resetAccent()">Reset</button>
-</div>
-</div>
+      <!-- Col 2 -->
+      <div class="col">
+        <div class="p">
+          <div class="p-h"><div class="p-t">Appearance</div><div class="p-d">Customize UI.</div></div>
+          <div class="lbl">Tab Disguise</div>
+          <select id="s-disguise" onchange="save()">
+            <option value="default">TUN (Default)</option>
+            <option value="google">Google</option>
+            <option value="classroom">Classroom</option>
+            <option value="drive">Drive</option>
+            <option value="docs">Docs</option>
+          </select>
+          <div class="lbl" style="margin-top:12px">Background</div>
+          <select id="s-bg" onchange="save()">
+            <option value="none">Solid Black</option>
+            <option value="anim">Subtle Gradient</option>
+            <option value="dots">Dots</option>
+            <option value="grid">Grid</option>
+          </select>
+          <div class="lbl" style="margin-top:12px">Accent Color</div>
+          <div class="row">
+            <input type="color" id="s-accent" value="#aaaaaa" oninput="save()" style="padding:0;height:36px;border:1px solid var(--border)">
+            <button class="btn o" onclick="resetAccent()">Reset</button>
+          </div>
+        </div>
 
-<div class="p">
-<div class="p-h"><div class="p-t">Data</div><div class="p-d">Manage local configuration.</div></div>
-<div class="lbl">Backup</div>
-<div class="row">
-<button class="btn o" onclick="exportData()">Export</button>
-<button class="btn o" onclick="importData()">Import</button>
-<input type="file" id="f-import" accept=".json" style="display:none" onchange="handleFile(event)">
-</div>
-<div class="lbl" style="margin-top:12px">Danger Zone</div>
-<button class="btn d" style="width:100%" onclick="clearAll()">Clear All Data</button>
-</div>
-</div>
-</div>
+        <div class="p">
+          <div class="p-h"><div class="p-t">Data</div><div class="p-d">Backup settings.</div></div>
+          <div class="row">
+            <button class="btn o" onclick="exportData()">Export</button>
+            <button class="btn o" onclick="importData()">Import</button>
+            <input type="file" id="f-import" accept=".json" style="display:none" onchange="handleFile(event)">
+          </div>
+          <div class="lbl" style="margin-top:12px">Danger Zone</div>
+          <button class="btn d" style="width:100%" onclick="clearAll()">Clear All Data</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <div id="modal">
-<div class="m-c">
-<div class="m-h"><div class="m-t">Add Shortcut</div></div>
-<div class="lbl">Name</div><input type="text" id="i-name" placeholder="e.g. YouTube">
-<div class="lbl" style="margin-top:12px">URL</div><input type="text" id="i-url" placeholder="https://youtube.com">
-<div class="m-f"><button class="btn o" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveLink()">Save</button></div>
-</div>
+  <div class="m-c">
+    <div class="m-h"><div class="m-t">Add Shortcut</div></div>
+    <div class="lbl">Name</div><input type="text" id="i-name" placeholder="Name">
+    <div class="lbl" style="margin-top:10px">URL</div><input type="text" id="i-url" placeholder="https://url.com">
+    <div class="m-f"><button class="btn o" onclick="closeModal()">Cancel</button><button class="btn" onclick="saveLink()">Save</button></div>
+  </div>
 </div>
 
 <div id="ov"><div class="ov-x" onclick="closeOv()">×</div><iframe id="ov-f" allowfullscreen></iframe></div>
 
 <script>
-const C={cloak:1,hide:0,clickoff:0,instant:1,title:"Loading...",disguise:"default",accent:"#ffffff"};
+const C={cloak:1,popup:0,hide:0,clickoff:0,title:"",disguise:"default",accent:"#aaaaaa",bg:"none"};
 const B="https://cdn.jsdelivr.net/gh/HyperRushNet/c6xc@96e8e4e333a69bb2cc9f3df1794607296b55be33/";
 let G=[],L=[],cfg={};
 const $=s=>document.getElementById(s),esc=s=>s.replace(/&/g,'&amp;').replace(/"/g,'&quot;');
 
 function init(){
-cfg=JSON.parse(localStorage.getItem("tun_cfg"))||C;
-Object.keys(C).forEach(k=>{if(cfg[k]===undefined)cfg[k]=C[k]});
-L=JSON.parse(localStorage.getItem("tun_links"))||[{name:"Google",url:"https://google.com"},{name:"YouTube",url:"https://youtube.com"}];
-applyUI();loadG();renderL();bindEvents();
-document.addEventListener("visibilitychange",()=>{
-if(document.hidden&&cfg.clickoff)applyDisguise(true);
-else if(!document.hidden&&cfg.clickoff)applyDisguise(false);
-});
+  cfg=JSON.parse(localStorage.getItem("tun_cfg"))||C;
+  Object.keys(C).forEach(k=>{if(cfg[k]===undefined)cfg[k]=C[k]});
+  L=JSON.parse(localStorage.getItem("tun_links"))||[{name:"Google",url:"https://google.com"},{name:"YouTube",url:"https://youtube.com"}];
+  applyUI();loadG();renderL();bindEvents();
+  document.addEventListener("visibilitychange",()=>{
+    if(document.hidden&&cfg.clickoff)applyDisguise(true);
+    else if(!document.hidden&&cfg.clickoff)applyDisguise(false);
+  });
 }
 
 function applyUI(){
- $("s-cloak").className="t "+(cfg.cloak?"on":"");
- $("s-hide").className="t "+(cfg.hide?"on":"");
- $("s-clickoff").className="t "+(cfg.clickoff?"on":"");
- $("s-instant").className="t "+(cfg.instant?"on":"");
- $("s-title").value=cfg.title;
- $("s-disguise").value=cfg.disguise;
- $("s-accent").value=cfg.accent;
-applyTheme();applyDisguise(false);
+  $("s-cloak").className="t "+(cfg.cloak?"on":"");
+  $("s-popup").className="t "+(cfg.popup?"on":"");
+  $("s-hide").className="t "+(cfg.hide?"on":"");
+  $("s-clickoff").className="t "+(cfg.clickoff?"on":"");
+  $("s-title").value=cfg.title;
+  $("s-disguise").value=cfg.disguise;
+  $("s-accent").value=cfg.accent;
+  $("s-bg").value=cfg.bg;
+  applyTheme();applyBg();applyDisguise(false);
 }
 
 function save(){
-cfg.title=$("s-title").value;
-cfg.disguise=$("s-disguise").value;
-cfg.accent=$("s-accent").value;
-localStorage.setItem("tun_cfg",JSON.stringify(cfg));
-applyTheme();applyDisguise(false);
+  cfg.title=$("s-title").value;
+  cfg.disguise=$("s-disguise").value;
+  cfg.accent=$("s-accent").value;
+  cfg.bg=$("s-bg").value;
+  localStorage.setItem("tun_cfg",JSON.stringify(cfg));
+  applyTheme();applyBg();applyDisguise(false);
 }
 
 function toggle(k){cfg[k]=!cfg[k];save();applyUI();}
-
 function applyTheme(){document.documentElement.style.setProperty("--accent",cfg.accent)}
+function resetAccent(){$("s-accent").value="#aaaaaa";save()}
+function applyBg(){const b=$("bg");b.className="bg "+cfg.bg;}
 
-function resetAccent(){$("s-accent").value="#ffffff";save()}
-
-// Disguise Logic: true = disguised state, false = normal state
 function applyDisguise(forceDisguise){
-// If forceDisguise is boolean (from clickoff), use it. Else use disguise setting.
-const isDisguised = typeof forceDisguise === 'boolean' ? forceDisguise : (cfg.disguise !== 'default');
-
-const m={
-default:["TUN","data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23000' width='100' height='100'/></svg>"],
-google:["Google","https://www.google.com/favicon.ico"],
-classroom:["Home","https://www.gstatic.com/classroom/logo_square_rounded.svg"],
-drive:["My Drive","https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png"],
-docs:["Google Docs","https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"]
-};
-
-// If we are disguised, use the selected mask. If not, use default.
-let d;
-if(isDisguised) {
-d = m[cfg.disguise] || m.default;
-// If the selected disguise IS default, but we are forced disguised (clickoff), show Google as fallback
-if(cfg.disguise === 'default') d = m.google; 
-} else {
-d = m.default;
-}
-
-document.title=d[0];
-let l=document.querySelector("link[rel='icon']");
-if(!l){l=document.createElement("link");l.rel="icon";document.head.appendChild(l)}
-l.href=d[1];
+  const isDisguised = typeof forceDisguise === 'boolean' ? forceDisguise : (cfg.disguise !== 'default');
+  const m={
+    default:["TUN","data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%23000' width='100' height='100'/></svg>"],
+    google:["Google","https://www.google.com/favicon.ico"],
+    classroom:["Home","https://www.gstatic.com/classroom/logo_square_rounded.svg"],
+    drive:["My Drive","https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png"],
+    docs:["Google Docs","https://www.gstatic.com/images/branding/product/1x/docs_2020q4_48dp.png"]
+  };
+  let d;
+  if(isDisguised) {
+    d = m[cfg.disguise] || m.default;
+    if(cfg.disguise === 'default') d = m.google; 
+  } else {
+    d = m.default;
+  }
+  document.title=d[0];
+  let l=document.querySelector("link[rel='icon']");
+  if(!l){l=document.createElement("link");l.rel="icon";document.head.appendChild(l)}
+  l.href=d[1];
 }
 
 function loadG(){
-fetch(B+"game-data.json").then(r=>r.json()).then(d=>{G=d.sort((a,b)=>a.name.localeCompare(b.name));renderG()}).catch(()=>$("grid-games").innerHTML="<div class='card' style='grid-column:1/-1;aspect-ratio:auto'>Error loading games.</div>");
+  fetch(B+"game-data.json").then(r=>r.json()).then(d=>{G=d.sort((a,b)=>a.name.localeCompare(b.name));renderG()}).catch(()=>$("grid-games").innerHTML="<div class='card' style='grid-column:1/-1;aspect-ratio:auto'>Error.</div>");
 }
 
 function renderG(){$("grid-games").innerHTML=G.map(g=>`<div class="card" data-n="${g.name.toLowerCase()}" onclick="launch('${g.path}')"><div class="card-t">${g.name}</div></div>`).join("")}
@@ -228,77 +276,63 @@ function renderG(){$("grid-games").innerHTML=G.map(g=>`<div class="card" data-n=
 function renderL(){$("grid-links").innerHTML=L.map((l,i)=>`<div class="card" data-n="${l.name.toLowerCase()}"><button class="del" onclick="delL(event,${i})">×</button><div class="card-i">${l.name.charAt(0)}</div><div class="card-t">${l.name}</div><div class="card-s">${new URL(l.url).hostname}</div><div style="position:absolute;inset:0" onclick="openU('${l.url}')"></div></div>`).join("")}
 
 function launch(p){
-const u=B+p+"/index.html";
-fetch(u).then(r=>r.text()).then(h=>{
-const fh=h.replace("<head>",`<head><base href="${B}${p}/">`);
-if(cfg.cloak){
-const w=window.open("about:blank","_blank");
-if(!w)return alert("Popup blocked!");
-w.document.write(`<html><head><title>${cfg.title}</title></head><body style="margin:0;overflow:hidden;background:#000"><iframe style="border:none;width:100%;height:100vh" srcdoc="${esc(fh)}"></iframe></body></html>`);
-w.document.close();
-if(cfg.hide)applyDisguise(true);
-}else{
- $("ov-f").srcdoc=fh;$("ov").classList.add("on");
-}
-}).catch(e=>alert("Failed to load game."));
+  const u=B+p+"/index.html";
+  fetch(u).then(r=>r.text()).then(h=>{
+    const fh=h.replace("<head>",`<head><base href="${B}${p}/">`);
+    if(cfg.cloak){
+      let ws = "width=" + window.innerWidth + ",height=" + window.innerHeight;
+      if(cfg.popup) ws = "width=800,height=600";
+      const w=window.open("about:blank","_blank", ws);
+      if(!w)return alert("Popup blocked!");
+      w.document.write(`<html><head><title>${cfg.title}</title></head><body style="margin:0;overflow:hidden;background:#000"><iframe style="border:none;width:100%;height:100vh" srcdoc="${esc(fh)}"></iframe></body></html>`);
+      w.document.close();
+      if(cfg.hide)applyDisguise(true);
+    }else{
+      $("ov-f").srcdoc=fh;$("ov").classList.add("on");
+    }
+  }).catch(e=>alert("Failed."));
 }
 
 function openU(u){
-if(cfg.cloak){
-const w=window.open("about:blank","_blank");
-if(!w)return alert("Popup blocked!");
-w.document.write(`<html><head><title>${cfg.title}</title></head><body style="margin:0;overflow:hidden;background:#fff"><iframe style="border:none;width:100%;height:100vh" src="${u}"></iframe></body></html>`);
-w.document.close();
-if(cfg.hide)applyDisguise(true);
-}else{window.open(u,"_blank");}
+  if(cfg.cloak){
+    let ws = "width=" + window.innerWidth + ",height=" + window.innerHeight;
+    if(cfg.popup) ws = "width=800,height=600";
+    const w=window.open("about:blank","_blank", ws);
+    if(!w)return alert("Popup blocked!");
+    w.document.write(`<html><head><title>${cfg.title}</title></head><body style="margin:0;overflow:hidden;background:#fff"><iframe style="border:none;width:100%;height:100vh" src="${u}"></iframe></body></html>`);
+    w.document.close();
+    if(cfg.hide)applyDisguise(true);
+  }else{window.open(u,"_blank");}
 }
 
 function closeOv(){$("ov").classList.remove("on");$("ov-f").srcdoc=""}
-
 function delL(e,i){e.stopPropagation();if(confirm("Delete?")){L.splice(i,1);localStorage.setItem("tun_links",JSON.stringify(L));renderL()}}
-
 function openModal(){$("modal").style.display="flex"}
 function closeModal(){$("modal").style.display="none";$("i-name").value="";$("i-url").value=""}
-
 function saveLink(){
-let n=$("i-name").value.trim(),u=$("i-url").value.trim();
-if(!n||!u)return alert("Fill all fields");
-if(!u.startsWith("http"))u="https://"+u;
-L.push({name:n,url:u});localStorage.setItem("tun_links",JSON.stringify(L));renderL();closeModal();
+  let n=$("i-name").value.trim(),u=$("i-url").value.trim();
+  if(!n||!u)return alert("Fill all fields");
+  if(!u.startsWith("http"))u="https://"+u;
+  L.push({name:n,url:u});localStorage.setItem("tun_links",JSON.stringify(L));renderL();closeModal();
 }
-
-function exportData(){
-const data={cfg:cfg,links:L};
-const blob=new Blob([JSON.stringify(data)],{type:"application/json"});
-const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download="tun_backup.json";a.click();
-}
-
+function exportData(){const d={cfg:cfg,links:L};const b=new Blob([JSON.stringify(d)],{type:"application/json"});const a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="tun_backup.json";a.click()}
 function importData(){$("f-import").click()}
-
 function handleFile(e){
-const file=e.target.files[0];if(!file)return;
-const reader=new FileReader();
-reader.onload=function(ev){
-try{
-const d=JSON.parse(ev.target.result);
-if(d.cfg){cfg=d.cfg;localStorage.setItem("tun_cfg",JSON.stringify(cfg));}
-if(d.links){L=d.links;localStorage.setItem("tun_links",JSON.stringify(L));}
-init();alert("Import successful!");
-}catch(err){alert("Invalid backup file");}
-};
-reader.readAsText(file);
-e.target.value="";
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{const d=JSON.parse(ev.target.result);if(d.cfg){cfg=d.cfg;localStorage.setItem("tun_cfg",JSON.stringify(cfg));}if(d.links){L=d.links;localStorage.setItem("tun_links",JSON.stringify(L));}init();alert("Imported!");}catch(err){alert("Invalid file");}
+  };
+  reader.readAsText(file);e.target.value="";
 }
-
-function clearAll(){if(confirm("Reset everything?")){localStorage.removeItem("tun_cfg");localStorage.removeItem("tun_links");location.reload()}}
-
+function clearAll(){if(confirm("Reset?")){localStorage.removeItem("tun_cfg");localStorage.removeItem("tun_links");location.reload()}}
 function bindEvents(){
-document.querySelectorAll("nav button").forEach(b=>b.onclick=function(){
-document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
-this.classList.add("active");$("view-"+this.dataset.view).classList.add("active");
-});
- $("search-games").oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#grid-games .card").forEach(c=>c.style.display=c.dataset.n.includes(q)?"":"none")};
- $("search-links").oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#grid-links .card").forEach(c=>c.style.display=c.dataset.n.includes(q)?"":"none")};
+  document.querySelectorAll("nav button").forEach(b=>b.onclick=function(){
+    document.querySelectorAll("nav button").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".view").forEach(x=>x.classList.remove("active"));
+    this.classList.add("active");$("view-"+this.dataset.view).classList.add("active");
+  });
+  $("search-games").oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#grid-games .card").forEach(c=>c.style.display=c.dataset.n.includes(q)?"":"none")};
+  $("search-links").oninput=e=>{const q=e.target.value.toLowerCase();document.querySelectorAll("#grid-links .card").forEach(c=>c.style.display=c.dataset.n.includes(q)?"":"none")};
 }
 
 init();
