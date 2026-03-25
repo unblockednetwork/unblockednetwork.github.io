@@ -687,20 +687,31 @@
                  if (dot && dot.classList.contains('online-dot')) dot.style.background = dotColor;
              };
                        // Helper om preview tekst te formatteren (Naam: Bericht)
+            // Helper om preview tekst te formatteren
             const formatPreview = (text, userName, userId, isDirect, currentUserId) => {
-                const displayName = truncateText(userName || 'User', 12);
-                const displayText = truncateText(text, 20);
+                // Truncate tekst
+                const displayText = truncateText(text, 25);
                 
-                // Als het een DM is:
+                // Als bericht verwijderd is
+                if (text === "Message deleted") {
+                     // Bij DM's tonen we gewoon "Message deleted", bij groepen "Name: Message deleted"
+                     return isDirect ? displayText : `${truncateText(userName || 'User', 12)}: ${displayText}`;
+                }
+
+                // DM Logica
                 if (isDirect) {
-                    // Als wij het stuurden: "You: Message"
+                    // Als wij stuurden: "You: Message"
                     if (userId === currentUserId) return `You: ${displayText}`;
-                    // Als de ander stuurt: Gewoon "Message" (standaard WhatsApp gedrag)
+                    // Als ander stuurt: Gewoon "Message" (Geen naam)
                     return displayText;
                 }
                 
-                // Als het een Groep is: "Name: Message"
-                return `${displayName}: ${displayText}`;
+                // Groep Logica
+                // Als wij stuurden: "You: Message"
+                if (userId === currentUserId) return `You: ${displayText}`;
+                
+                // Als ander stuurt: "Name: Message"
+                return `${truncateText(userName || 'User', 12)}: ${displayText}`;
             };
          
              const processToastQueue = () => {
@@ -1065,28 +1076,42 @@
                 const filter = `room_id=in.(${roomIds.join(',')})`;
                 
                 state.lobbyChannel = db.channel('lobby-updates');
-                state.lobbyChannel.on('postgres_changes', 
-                    { event: 'INSERT', schema: 'public', table: 'messages', filter: filter }, 
-                    async (payload) => {
-                        const msg = payload.new;
-                        const roomId = msg.room_id;
-                        
-                        await localDB.put('messages', { id: msg.id, room_id: roomId, created_at: msg.created_at, content: msg.content });
+                
+                // Handler voor zowel nieuwe berichten als bewerkingen
+                const handleChange = async (payload) => {
+                    const msg = payload.new;
+                    const roomId = msg.room_id;
+                    
+                    // Update lokale cache
+                    await localDB.put('messages', { id: msg.id, room_id: roomId, created_at: msg.created_at, content: msg.content, user_id: msg.user_id, user_name: msg.user_name });
 
-                        let rawText = "New message";
+                    let rawText = "New message";
+                    
+                    // Check voor delete
+                    if (msg.content === '/') {
+                        rawText = "Message deleted";
+                    } else {
                         try {
                             const res = await workerExec('decryptSingle', { content: msg.content, keyId: roomId });
                             if (res.result && res.result.text) rawText = res.result.text;
                         } catch(e) {}
-
-                        // Formatteer live update
-                        const roomData = state.allRooms.find(r => r.id === roomId);
-                        const isDirect = roomData ? roomData.is_direct : false;
-                        const previewText = formatPreview(rawText, msg.user_name, msg.user_id, isDirect, state.user.id);
-
-                        updateLobbyRow(roomId, previewText, msg.created_at);
                     }
-                ).subscribe();
+
+                    // Haal room info op voor is_direct check
+                    const roomData = state.allRooms.find(r => r.id === roomId);
+                    const isDirect = roomData ? roomData.is_direct : false;
+                    
+                    // Formatteer
+                    const previewText = formatPreview(rawText, msg.user_name, msg.user_id, isDirect, state.user.id);
+
+                    // Update UI
+                    updateLobbyRow(roomId, previewText, msg.created_at);
+                };
+
+                state.lobbyChannel
+                .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: filter }, handleChange)
+                .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: filter }, handleChange)
+                .subscribe();
              };
 
              const updateLobbyRow = (roomId, text, time) => {
@@ -1098,14 +1123,16 @@
                  state.allRooms.unshift(room);
 
                  room.preview = text; 
-                 room.last_message_at = time;
+                 // Update tijd alleen als het een insert was (in de listener logica sturen we de msg time mee)
+                 // Maar bij edits willen we de tijd niet resetten als die al oud is. 
+                 // De listener stuurt created_at mee. Dat is prima.
+                 room.last_message_at = time; 
 
                  const list = $('room-list');
                  if (list && document.querySelector('.screen.active#scr-lobby')) {
                      window.filterRooms(); 
                  }
              };
-
              const setupChatChannel = (id) => {
                  if (state.isOfflineMode) return;
                  if (state.chatChannel) state.chatChannel.unsubscribe();
@@ -1731,14 +1758,13 @@
                     const processAndRender = async (rooms) => { 
                         const processed = []; 
                         
-                        // Stap 1: Laad sleutels voor openbare kamers
+                        // Laad sleutels
                         const keyPromises = rooms.map(r => {
                             if (!r.has_password && r.salt) return ensureLobbyKey(r.id, r.salt);
                             return Promise.resolve();
                         });
                         await Promise.all(keyPromises);
 
-                        // Stap 2: Verwerk kamers
                         const previewPromises = rooms.map(async (r) => {
                             if (!r || !r.id) return null;
                             const display = await resolveRoomDisplay(r); 
@@ -1747,15 +1773,19 @@
                             
                             if (r.last_message_content) {
                                 let rawText = "New message";
-                                try {
-                                    if (state.derivedKeys && state.derivedKeys[r.id]) {
-                                        const res = await workerExec('decryptSingle', { content: r.last_message_content, keyId: r.id });
-                                        if (res.result && res.result.text) rawText = res.result.text;
-                                        else if (res.result && res.result.deleted) rawText = "Message deleted";
-                                    }
-                                } catch (e) { rawText = "New message"; }
+                                // Check of verwijderd
+                                if (r.last_message_content === '/') {
+                                    rawText = "Message deleted";
+                                } else {
+                                    try {
+                                        if (state.derivedKeys && state.derivedKeys[r.id]) {
+                                            const res = await workerExec('decryptSingle', { content: r.last_message_content, keyId: r.id });
+                                            if (res.result && res.result.text) rawText = res.result.text;
+                                        }
+                                    } catch (e) { rawText = "New message"; }
+                                }
                                 
-                                // Formatteer: "User: Message"
+                                // Formatteer
                                 previewText = formatPreview(rawText, r.last_message_user_name, r.last_message_user_id, r.is_direct, state.user.id);
                             }
 
@@ -1763,7 +1793,7 @@
                                 ...r, 
                                 display_name: display.name, 
                                 display_avatar: display.avatar,
-                                preview: previewText // Hier slaan we de definitieve tekst op
+                                preview: previewText
                             };
                         });
 
