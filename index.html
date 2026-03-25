@@ -6,55 +6,51 @@
     <title>Portal</title>
     <style>
         :root {
-            --bg-color: #000000;
-            --text-color: #ffffff;
-            --card-bg: rgba(255, 255, 255, 0.05);
-            --border-color: #333;
+            --bg-color: #050505;
+            --text-color: #e0e0e0;
             --accent: #ffffff;
+            --border-color: #222;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; border-radius: 0 !important; }
 
         /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: #333; }
         ::-webkit-scrollbar-thumb:hover { background: #444; }
 
+        /* Animated Background */
         body {
             font-family: 'Segoe UI', system-ui, sans-serif;
-            background-color: var(--bg-color);
             color: var(--text-color);
             min-height: 100vh;
             padding: 24px;
-            transition: background 0.3s;
+            overflow-x: hidden;
+            background-color: var(--bg-color);
+            background: linear-gradient(-45deg, #000000, #0a0a0a, #050505, #0f0f0f);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
         }
 
-        /* Background Patterns */
-        body.bg-grid {
-            background-image: 
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-        body.bg-dots {
-            background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
-            background-size: 20px 20px;
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        .container { max-width: 1200px; margin: 0 auto; }
+        .container { max-width: 1200px; margin: 0 auto; position: relative; z-index: 1; }
 
         /* Tabs */
         .tabs {
             display: flex;
-            gap: 0;
             margin-bottom: 32px;
             border-bottom: 2px solid var(--border-color);
         }
         .tab {
             background: none;
             border: none;
-            color: #666;
+            color: #555;
             padding: 12px 24px;
             font-size: 14px;
             font-weight: 600;
@@ -76,7 +72,7 @@
         .search {
             width: 100%;
             padding: 14px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.6);
             border: 1px solid var(--border-color);
             color: var(--text-color);
             margin-bottom: 24px;
@@ -85,28 +81,36 @@
         }
         .search:focus { border-color: var(--accent); }
 
-        /* Grid */
+        /* Grid - Transparent Empty Space */
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 1px; /* Minimalist grid lines */
-            background-color: var(--border-color);
-            border: 1px solid var(--border-color);
+            gap: 12px;
         }
-        .grid > * { background-color: var(--bg-color); }
 
         /* Card */
         .card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-color);
             padding: 32px 16px;
             text-align: center;
             cursor: pointer;
             font-size: 14px;
             color: var(--text-color);
-            transition: background 0.2s;
+            transition: all 0.2s;
             position: relative;
-            border: none; /* Part of grid layout */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            min-height: 120px;
         }
-        .card:hover { background: rgba(255,255,255,0.08); }
+        .card:hover { 
+            background: rgba(255,255,255,0.08); 
+            border-color: #444; 
+            transform: translateY(-2px);
+        }
         .card small { opacity: 0.5; font-size: 11px; display: block; margin-top: 8px; }
 
         /* Tool Card Actions */
@@ -114,7 +118,7 @@
             position: absolute;
             top: 8px;
             right: 8px;
-            background: #000;
+            background: rgba(0,0,0,0.8);
             border: 1px solid #333;
             color: #ff5555;
             width: 20px;
@@ -126,6 +130,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            z-index: 10;
         }
         .card:hover .delete-btn { opacity: 1; }
         .card .delete-btn:hover { background: #ff5555; color: #000; border-color: #ff5555; }
@@ -135,9 +140,9 @@
             border: 1px solid var(--border-color);
             padding: 20px;
             margin-bottom: 16px;
-            background: rgba(0,0,0,0.2);
+            background: rgba(0,0,0,0.3);
         }
-        .setting-group h4 { font-size: 14px; margin-bottom: 4px; color: var(--text-color); text-transform: uppercase; letter-spacing: 0.5px; }
+        .setting-group h4 { font-size: 14px; margin-bottom: 4px; color: #fff; text-transform: uppercase; letter-spacing: 0.5px; }
         .setting-group p { font-size: 12px; color: #666; margin-bottom: 16px; }
 
         input[type="text"], input[type="url"], select, input[type="color"] {
@@ -151,9 +156,6 @@
         }
         input[type="color"] { height: 42px; padding: 2px; cursor: pointer; }
         
-        .row { display: flex; gap: 12px; }
-        .row > * { flex: 1; }
-
         /* Toggle */
         .toggle-wrap { display: flex; justify-content: space-between; align-items: center; }
         .toggle { 
@@ -170,10 +172,10 @@
             position: absolute;
             width: 18px;
             height: 18px;
-            background: #888;
+            background: #555;
             top: 2px;
             left: 2px;
-            transition: left 0.2s;
+            transition: left 0.2s, background 0.2s;
         }
         .toggle.on::after { left: 26px; background: #000; }
 
@@ -193,11 +195,23 @@
         .btn-ghost { background: transparent; border: 1px solid #333; color: #fff; }
         .btn-danger { background: transparent; border: 1px solid #ff3333; color: #ff3333; }
 
+        /* Instructions Box */
+        .instructions {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed #333;
+            padding: 16px;
+            margin-bottom: 24px;
+            font-size: 13px;
+            color: #888;
+            line-height: 1.6;
+        }
+        .instructions strong { color: #fff; display: block; margin-bottom: 8px; }
+
         /* Modal */
         #modal {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.95);
+            background: rgba(0,0,0,0.9);
             display: none;
             justify-content: center;
             align-items: center;
@@ -205,11 +219,11 @@
             z-index: 100;
         }
         .modal-box {
-            background: #050505;
+            background: #0a0a0a;
             border: 1px solid #333;
             padding: 24px;
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
         }
         .modal-box h3 { margin-bottom: 20px; font-size: 16px; text-transform: uppercase; }
         .modal-box input, .modal-box textarea {
@@ -234,13 +248,13 @@
         }
         #game-overlay.active { display: block; }
         
-        /* Floating X Close Button */
+        /* Floating X */
         .close-overlay-btn {
             position: fixed;
             top: 20px;
             right: 20px;
             z-index: 201;
-            background: rgba(0, 0, 0, 0.6);
+            background: rgba(0, 0, 0, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.2);
             color: #fff;
             width: 32px;
@@ -261,7 +275,7 @@
         }
     </style>
 </head>
-<body class="bg-grid">
+<body>
 
     <div class="container">
         <div class="tabs">
@@ -270,24 +284,33 @@
             <button class="tab" data-view="settings">Settings</button>
         </div>
 
+        <!-- Games View -->
         <div id="view-games" class="view active">
             <input type="text" class="search" id="search" placeholder="Search games...">
             <div class="grid" id="games-grid"></div>
         </div>
 
+        <!-- Tools View -->
         <div id="view-tools" class="view">
+            <div class="instructions">
+                <strong>How to use Tools</strong>
+                1. <u>Drag</u> a tool card to your bookmarks bar to save it permanently.<br>
+                2. <u>Click</u> a tool to run it instantly on the current page.<br>
+                3. Add custom scripts via the button below.
+            </div>
             <div class="grid" id="tools-grid"></div>
             <div style="margin-top:24px;">
                 <button class="btn" onclick="openModal()">+ Add Tool</button>
             </div>
         </div>
 
+        <!-- Settings View -->
         <div id="view-settings" class="view">
             <div class="setting-group">
                 <div class="toggle-wrap">
                     <div>
                         <h4>About:Blank Cloak</h4>
-                        <p>Opens games in a detached blank window</p>
+                        <p>Opens games in a detached, untraceable window.</p>
                     </div>
                     <div class="toggle on" id="toggle-ab" onclick="toggleAB()"></div>
                 </div>
@@ -295,13 +318,13 @@
 
             <div class="setting-group">
                 <h4>Window Title</h4>
-                <p>Title for the About:Blank window</p>
+                <p>Custom title for the cloaked window.</p>
                 <input type="text" id="ab-title" placeholder="Loading...">
             </div>
 
             <div class="setting-group">
                 <h4>Tab Cloak</h4>
-                <p>Change the look of this tab</p>
+                <p>Disguise this page in browser history.</p>
                 <select id="cloak-select">
                     <option value="default">Portal</option>
                     <option value="google">Google</option>
@@ -313,32 +336,13 @@
 
             <div class="setting-group">
                 <h4>Theme Color</h4>
-                <p>Accent color for UI elements</p>
+                <p>Primary accent color.</p>
                 <input type="color" id="theme-color" value="#ffffff">
             </div>
 
             <div class="setting-group">
-                <h4>Background Style</h4>
-                <p>Visual background pattern</p>
-                <select id="bg-select">
-                    <option value="bg-grid">Grid</option>
-                    <option value="bg-dots">Dots</option>
-                    <option value="none">None</option>
-                </select>
-            </div>
-
-            <div class="setting-group">
-                <h4>Panic Key</h4>
-                <p>Press key to escape immediately</p>
-                <div class="row">
-                    <input type="text" id="panic-key" placeholder="Key" style="flex: 0 0 80px; text-align:center;" readonly>
-                    <input type="url" id="panic-url" placeholder="https://google.com">
-                </div>
-            </div>
-
-            <div class="setting-group">
                 <h4>Data Management</h4>
-                <p>Clear all saved settings and tools</p>
+                <p>Reset all custom settings and tools.</p>
                 <button class="btn btn-danger" onclick="clearData()">Clear All Data</button>
             </div>
         </div>
@@ -357,9 +361,7 @@
     </div>
 
     <div id="game-overlay">
-        <!-- Floating Close Button -->
         <div class="close-overlay-btn" onclick="closeOverlay()">×</div>
-        
         <iframe id="overlay-frame" allowfullscreen></iframe>
     </div>
 
@@ -368,6 +370,7 @@
         
         var games = [];
         
+        // Default Tools
         var defaultTools = [
             { name: "Google", code: "javascript:window.location.href='https://google.com'" },
             { name: "Calculator", code: "javascript:alert(eval(prompt('Calc:')))" },
@@ -376,13 +379,10 @@
 
         var tools = [];
         var cfg = { 
-            panicKey: '`', 
-            panicUrl: 'https://google.com', 
             cloak: 'default', 
             abOn: true, 
             abTitle: '',
-            theme: '#ffffff',
-            bgStyle: 'bg-grid'
+            theme: '#ffffff'
         };
 
         // Init
@@ -397,10 +397,7 @@
             
             document.getElementById('ab-title').value = cfg.abTitle || '';
             document.getElementById('cloak-select').value = cfg.cloak || 'default';
-            document.getElementById('panic-key').value = cfg.panicKey || '`';
-            document.getElementById('panic-url').value = cfg.panicUrl || '';
             document.getElementById('theme-color').value = cfg.theme || '#ffffff';
-            document.getElementById('bg-select').value = cfg.bgStyle || 'bg-grid';
             document.getElementById('toggle-ab').className = cfg.abOn ? 'toggle on' : 'toggle';
             
             applyTheme();
@@ -410,10 +407,7 @@
         function saveCfg() {
             cfg.abTitle = document.getElementById('ab-title').value;
             cfg.cloak = document.getElementById('cloak-select').value;
-            cfg.panicKey = document.getElementById('panic-key').value;
-            cfg.panicUrl = document.getElementById('panic-url').value;
             cfg.theme = document.getElementById('theme-color').value;
-            cfg.bgStyle = document.getElementById('bg-select').value;
             localStorage.setItem('portal_cfg', JSON.stringify(cfg));
             applyTheme();
             applyCloak();
@@ -421,8 +415,6 @@
 
         function applyTheme() {
             document.documentElement.style.setProperty('--accent', cfg.theme);
-            document.body.className = '';
-            if(cfg.bgStyle !== 'none') document.body.classList.add(cfg.bgStyle);
         }
 
         function clearData() {
@@ -475,23 +467,10 @@
                 });
             };
 
-            var inputs = ['ab-title', 'cloak-select', 'panic-url', 'theme-color', 'bg-select'];
+            var inputs = ['ab-title', 'cloak-select', 'theme-color'];
             inputs.forEach(function(id) {
                 document.getElementById(id).onchange = saveCfg;
             });
-
-            document.getElementById('panic-key').onkeydown = function(e) {
-                e.preventDefault();
-                e.target.value = e.key.toUpperCase();
-                cfg.panicKey = e.key;
-                saveCfg();
-            };
-
-            document.onkeydown = function(e) {
-                if (e.key === cfg.panicKey && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
-                    window.location.replace(cfg.panicUrl);
-                }
-            };
         }
 
         function loadGames() {
@@ -513,24 +492,21 @@
             document.getElementById('games-grid').innerHTML = html;
         }
 
-        // Universal Loader: Always fetch first, then use srcdoc or document.write
+        // Loader Logic: Always Fetch -> Srcdoc
         function launch(path) {
             var url = BASE + path + '/index.html';
 
             fetch(url).then(function(r) { return r.text(); }).then(function(html) {
-                // Inject base tag to fix relative paths
                 var base = '<base href="' + BASE + path + '/">';
                 var finalHtml = html.replace('<head>', '<head>' + base);
 
                 if (cfg.abOn) {
-                    // About:Blank Method
                     var win = window.open('about:blank', '_blank');
                     if (!win) return alert('Pop-up blocked! Please allow pop-ups.');
                     
-                    win.document.write('<html><head><title>' + (cfg.abTitle || 'Loading...') + '</title></head><body style="background:#000;margin:0;"><iframe style="border:none;width:100%;height:100%;" srcdoc="' + escapeHtml(finalHtml) + '"></iframe></body></html>');
+                    win.document.write('<html><head><title>' + (cfg.abTitle || 'Loading...') + '</title></head><body style="margin:0;padding:0;overflow:hidden;"><iframe style="border:none;width:100%;height:100vh;" srcdoc="' + escapeHtml(finalHtml) + '"></iframe></body></html>');
                     win.document.close();
                 } else {
-                    // Overlay Method (Srcdoc)
                     document.getElementById('overlay-frame').srcdoc = finalHtml;
                     document.getElementById('game-overlay').classList.add('active');
                 }
@@ -545,7 +521,7 @@
 
         function closeOverlay() {
             document.getElementById('game-overlay').classList.remove('active');
-            document.getElementById('overlay-frame').srcdoc = ''; // Clear memory
+            document.getElementById('overlay-frame').srcdoc = '';
         }
 
         function loadTools() {
@@ -561,30 +537,43 @@
 
         function renderTools() {
             if (tools.length === 0) {
-                document.getElementById('tools-grid').innerHTML = '<div style="padding:20px;color:#555; grid-column: 1/-1;">No tools added yet.</div>';
+                document.getElementById('tools-grid').innerHTML = '';
                 return;
             }
             
             var html = tools.map(function(t, index) {
-                return '<div class="card" onclick="runTool(\'' + index + '\')">' +
+                // Using an <a> tag inside the card enables Drag & Drop to Bookmarks
+                return '<div class="card">' +
                             '<button class="delete-btn" onclick="deleteTool(event, ' + index + ')">×</button>' +
-                            '<div>' + t.name + '</div>' +
-                            '<small>Click to run</small>' +
+                            // Draggable Link
+                            '<a href="' + t.code + '" style="color:inherit; text-decoration:none; cursor:move;" draggable="true" onclick="runTool(event, \'' + index + '\')">' +
+                                '<div>' + t.name + '</div>' +
+                                '<small>Drag to Bookmarks</small>' +
+                            '</a>' +
                        '</div>';
             }).join('');
             
             document.getElementById('tools-grid').innerHTML = html;
         }
 
-        function runTool(index) {
+        function runTool(e, index) {
+            e.preventDefault(); // Prevent default link navigation
             var code = tools[index].code;
-            var a = document.createElement('a');
-            a.href = code;
-            a.click();
+            // Execute JS
+            try {
+                // Create a temporary anchor to run the javascript: URI
+                var a = document.createElement('a');
+                a.href = code;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            } catch(e) {
+                console.error(e);
+            }
         }
 
         function deleteTool(e, index) {
-            e.stopPropagation();
+            e.stopPropagation(); e.preventDefault();
             if(confirm('Delete this tool?')) {
                 tools.splice(index, 1);
                 localStorage.setItem('portal_tools', JSON.stringify(tools));
