@@ -687,7 +687,7 @@
                  if (dot && dot.classList.contains('online-dot')) dot.style.background = dotColor;
              };
 
-                        const getCheckIcon = (isRead) => {
+            const getCheckIcon = (isRead) => {
                 if (isRead) {
                     // Double Check Blue
                     return `<svg class="msg-status read" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>`;
@@ -1184,7 +1184,7 @@
                                  // Update Lobby
                                  updateLobbyRow(id, msgObj.text, m.created_at, true);
                                  
-                                 // If message is from someone else, mark as read immediately (because we are in chat)
+                                 // If message is from someone else, mark as read immediately
                                  if (msgObj.user_id !== state.user.id) {
                                      db.rpc('mark_room_read', { p_room_id: id }).catch(e => console.warn("Mark read err", e));
                                  }
@@ -1217,9 +1217,48 @@
                      }
                  });
 
-                 // 3. Listener for READ RECEIPTS (Others reading my messages)
-                 // Listens to changes in 'receipts' table for this room
-                 state.chatChannel.on('postgres
+                 // 3. Listener for READ RECEIPTS
+                 state.chatChannel.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'receipts', filter: `room_id=eq.${id}` }, async (payload) => {
+                     const receipt = payload.new;
+                     if (receipt.user_id !== state.user.id) {
+                         const container = $('chat-messages');
+                         const myMessages = container.querySelectorAll('.msg.me');
+                         if (myMessages.length > 0) {
+                             const lastMyMsg = myMessages[myMessages.length - 1];
+                             const msgTime = new Date(lastMyMsg.dataset.time);
+                             const readTime = new Date(receipt.last_read_at);
+                             
+                             if (msgTime <= readTime) {
+                                 const statusWrapper = lastMyMsg.querySelector('.msg-status-wrapper');
+                                 if (statusWrapper && !statusWrapper.classList.contains('read')) {
+                                     statusWrapper.innerHTML = getCheckIcon(true);
+                                     statusWrapper.classList.add('read');
+                                 }
+                             }
+                         }
+                     }
+                 }).subscribe((status) => {
+                     const wasReady = state.isChatChannelReady;
+                     state.isChatChannelReady = (status === 'SUBSCRIBED');
+                     
+                     if (status === 'SUBSCRIBED') {
+                         if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                         state.connectionTimeoutTimer = null; state.isHardReconnecting = false;
+                         if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                         setConnectionVisuals('connected');
+                         hardRefreshRoomMessages(id);
+                     } else if (status === 'CLOSED' || status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+                         if (state.connectionTimeoutTimer) clearTimeout(state.connectionTimeoutTimer);
+                         state.connectionTimeoutTimer = null;
+                         if (!state.isOfflineMode && !state.isCapacityBlocked && !state.isBackgroundDisconnectActive && !document.hidden && state.currentRoomId) {
+                             state.isChatChannelReady = false;
+                             if (!state.isHardReconnecting) { state.isHardReconnecting = true; setConnectionVisuals('connecting'); state.reconnectTimer = setTimeout(attemptHardReconnect, 2000); }
+                         }
+                     }
+                     
+                     if (wasReady !== state.isChatChannelReady) updateSendButtonState();
+                 });
+             };
          
              const initRoomPresence = async (roomId) => {
                  if (!state.user || state.isOfflineMode) return;
@@ -1486,10 +1525,10 @@
                  let statusHtml = '';
                  if (m.user_id === state.user?.id && !isDeleted) {
                      if (isOptimistic) {
-                         statusHtml = `<svg class="msg-status" style="opacity:0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`; // Single clock/check
+                         // Single clock/check voor optimistic
+                         statusHtml = `<svg class="msg-status" style="opacity:0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
                      } else {
                          // Default is Received (Double Check Grey)
-                         // We voegen een data attribute toe om dit later te kunnen updaten via JS
                          statusHtml = `<span class="msg-status-wrapper" data-msg-id="${m.id}">${getCheckIcon(m.is_read === true)}</span>`;
                      }
                  }
@@ -1772,6 +1811,19 @@
                     if (state.authListener) { state.authListener.unsubscribe(); state.authListener = null; }
                     window.nav('scr-start'); window.setLoading(false);
                 };
+                            // Helper om sleutels voor openbare chats in memory te laden
+            const ensureLobbyKey = async (roomId, salt) => {
+                if (!roomId || !salt) return false;
+                if (state.derivedKeys && state.derivedKeys[roomId]) return true;
+                try {
+                    await workerExec('deriveKey', { password: roomId, salt: salt, keyId: roomId });
+                    if (!state.derivedKeys) state.derivedKeys = {};
+                    state.derivedKeys[roomId] = true;
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            };
 
                 window.copySId = () => { if (!state.lastCreated) return; navigator.clipboard.writeText(state.lastCreated.id); window.toast("ID copied."); };
                 const processAvatarUrl = async (url) => { if (!url || url.startsWith('data:')) return url; return url; };
@@ -1822,7 +1874,7 @@
                         });
                         await Promise.all(keyPromises);
 
-                        // 2. Fetch MY receipts (High Water Marks) efficiently
+                        // 2. Fetch MY receipts (High Water Marks)
                         let myReceipts = {};
                         if (!state.isOfflineMode) {
                             const { data: receiptsData } = await db.from('receipts').select('room_id, last_read_at').eq('user_id', state.user.id);
@@ -1837,11 +1889,10 @@
                             const display = await resolveRoomDisplay(r); 
                             
                             let previewText = "No messages yet";
-                            let isRead = true; // Default assumption
+                            let isRead = true;
                             
                             if (r.last_message_content) {
                                 let rawText = "New message";
-                                // Check deleted content marker
                                 if (r.last_message_content === '/') {
                                     rawText = "Message deleted";
                                 } else {
@@ -1853,27 +1904,17 @@
                                     } catch (e) { /* ignore */ }
                                 }
                                 
-                                // Format preview
                                 previewText = formatPreview(rawText, r.last_message_user_name, r.last_message_user_id, r.is_direct, state.user.id);
 
                                 // --- READ STATUS LOGIC ---
-                                
-                                // Case A: Last message was MINE
                                 if (r.last_message_user_id === state.user.id) {
-                                    // We need to know if the OTHER person read it.
-                                    // Without a heavy column update on the rooms table, we default to 'Received' (Grey).
-                                    // We can optimize this later with a trigger on 'receipts' that updates 'rooms.read_count'.
-                                    // For now: Show Grey Check for my messages in Lobby.
-                                    isRead = false; 
-                                } 
-                                // Case B: Last message was from SOMEONE ELSE
-                                else {
-                                    // Check if I have read it
+                                    isRead = false; // Default grey for own messages
+                                } else {
                                     const myLastRead = myReceipts[r.id];
                                     if (myLastRead && new Date(myLastRead) >= new Date(r.last_message_at)) {
-                                        isRead = true; // I read it
+                                        isRead = true;
                                     } else {
-                                        isRead = false; // Unread (Bold usually, but here just logic)
+                                        isRead = false;
                                     }
                                 }
                             }
@@ -1898,23 +1939,16 @@
                     window.setLoading(true, "Syncing...");
                     try { 
                         const { data: rooms, error } = await execQuery(db.from('rooms').select('*').order('last_message_at', { ascending: false })); 
-                        if
-                       // Helper om sleutels voor openbare chats in memory te laden zodat lobby previews kunnen decrypten
-            const ensureLobbyKey = async (roomId, salt) => {
-                if (!roomId || !salt) return false;
-                if (state.derivedKeys && state.derivedKeys[roomId]) return true; // Al gedaan
-                
-                // Alleen afleiden als er geen wachtwoord is (openbare kamers)
-                // De sleutel is voor openbare kamers: roomId
-                try {
-                    await workerExec('deriveKey', { password: roomId, salt: salt, keyId: roomId });
-                    if (!state.derivedKeys) state.derivedKeys = {};
-                    state.derivedKeys[roomId] = true;
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            };
+                        if (error) throw error; 
+                        if (rooms) { 
+                            await localDB.clear('rooms'); 
+                            if (rooms.length > 0) await localDB.putAll('rooms', rooms); 
+                            await localDB.saveUserTree(uid, rooms); 
+                            await processAndRender(rooms); 
+                        } 
+                    } catch (e) { window.toast("Sync failed."); }
+                    window.setLoading(false); updateLobbyAvatar();
+                };
 
                 window.filterRooms = () => {
                     const q = $('search-bar').value.toLowerCase(); const list = $('room-list'); 
