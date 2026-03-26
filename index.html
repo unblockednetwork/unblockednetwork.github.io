@@ -1,466 +1,244 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" href="./logo.svg">
-<title>ZYNQ (UN) - Games</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<!-- Cloudflare Web Analytics -->
-<script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script>
-<!-- End Cloudflare Web Analytics -->
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg-color: #09090b;
-    --bg-secondary: #111113;
-    --card-bg: #18181b;
-    --card-border: #27272a;
-    --text-primary: #fafafa;
-    --text-secondary: #a1a1aa;
-    --text-muted: #71717a;
-    --accent-color: #3b82f6;
-    --accent-secondary: #2563eb;
-    --accent-glow: rgba(59, 130, 246, 0.2);
-    --radius-sm: 8px;
-    --radius-md: 12px;
-    --radius-lg: 16px;
-  }
-
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
-
-  body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background-color: var(--bg-color);
-    color: var(--text-primary);
-    min-height: 100vh;
-    line-height: 1.5;
-    overflow-x: hidden;
-    position: relative;
-  }
-
-  /* Subtle Background Pattern */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: 
-      radial-gradient(circle at 15% 50%, rgba(59, 130, 246, 0.08), transparent 25%),
-      radial-gradient(circle at 85% 30%, rgba(139, 92, 246, 0.05), transparent 25%);
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  /* Noise Texture Overlay */
-  body::after {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-    opacity: 0.03;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  header {
-    text-align: center;
-    padding: 5rem 1rem 3rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  h1 {
-    font-size: clamp(2.5rem, 6vw, 4rem);
-    font-weight: 800;
-    letter-spacing: -0.03em;
-    margin-bottom: 1rem;
-    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: 0 0 40px rgba(255, 255, 255, 0.1);
-  }
-
-  #game-count {
-    font-size: 0.85rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(10px);
-    padding: 0.5rem 1.25rem;
-    border-radius: 50px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-  }
-
-  /* Search Bar Styles */
-  .search-wrapper {
-    position: relative;
-    max-width: 600px;
-    margin: 0 auto 3rem;
-    padding: 0 1rem;
-    z-index: 1;
-  }
-
-  #search {
-    width: 100%;
-    padding: 1.25rem 1.5rem 1.25rem 3.5rem;
-    border-radius: var(--radius-lg);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    background-color: rgba(24, 24, 27, 0.8);
-    color: var(--text-primary);
-    font-size: 1rem;
-    font-family: inherit;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    outline: none;
-    backdrop-filter: blur(12px);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  }
-
-  #search::placeholder {
-    color: var(--text-muted);
-  }
-
-  #search:focus {
-    border-color: var(--accent-color);
-    background-color: rgba(39, 39, 42, 0.9);
-    box-shadow: 0 0 0 4px var(--accent-glow), 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-  }
-
-  .search-icon {
-    position: absolute;
-    left: 2rem;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--text-muted);
-    pointer-events: none;
-    transition: color 0.2s ease;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./logo.svg">
+  <title>ZYNQ Hub | Games</title>
   
-  #search:focus + .search-icon {
-    color: var(--accent-color);
-  }
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
 
-  /* Main Grid Styles */
-  main {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 0 1.5rem 4rem;
-    position: relative;
-    z-index: 1;
-  }
-
-  #games-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-    gap: 1.5rem;
-  }
-
-  /* Card Styles */
-  .game-card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    background: linear-gradient(180deg, rgba(39, 39, 42, 0.6) 0%, rgba(24, 24, 27, 0.8) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: var(--radius-md);
-    padding: 2.5rem 1.5rem;
-    text-decoration: none;
-    color: var(--text-primary);
-    font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    overflow: hidden;
-    z-index: 1;
-    backdrop-filter: blur(5px);
-    cursor: pointer;
-  }
-
-  .game-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-    opacity: 0.5;
-    transition: opacity 0.3s;
-  }
-
-  .game-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: rgba(59, 130, 246, 0.5);
-    background: rgba(39, 39, 42, 0.9);
-    box-shadow: 
-      0 20px 40px -15px rgba(0, 0, 0, 0.8),
-      0 0 0 1px rgba(59, 130, 246, 0.3),
-      inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  }
-  
-  .game-card:hover::before {
-    opacity: 1;
-  }
-
-  .game-card .card-icon {
-    width: 48px;
-    height: 48px;
-    margin-bottom: 1rem;
-    opacity: 0.8;
-    color: var(--text-secondary);
-    transition: transform 0.3s ease, color 0.3s ease;
-    transform: scale(0.9);
-  }
-
-  .game-card:hover .card-icon {
-    color: var(--accent-color);
-    transform: scale(1);
-  }
-
-  .game-card span {
-    position: relative;
-    z-index: 2;
-    letter-spacing: 0.01em;
-    transition: color 0.2s;
-  }
-  
-  /* Animation Keyframes */
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
+  <style>
+    :root {
+      --bg: #09090b;
+      --card: #18181b;
+      --border: #27272a;
+      --text: #fafafa;
+      --text-muted: #a1a1aa;
+      --accent: #3b82f6;
+      --radius: 12px;
     }
-    to {
-      opacity: 1;
-      transform: translateY(0);
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
     }
-  }
 
-  .game-card {
-    opacity: 0;
-    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  }
+    /* Animated background glow */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at 50% 0%, rgba(59, 130, 246, 0.15), transparent 50%);
+      pointer-events: none;
+      z-index: -1;
+    }
 
-  /* Loading State */
-  .loader {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
-    width: 100%;
-    color: var(--text-secondary);
-  }
-  
-  .loader-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid var(--card-border);
-    border-top-color: var(--accent-color);
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-  }
-  
-  @keyframes spin {
-    to { transform: rotate(360deg); }
-  }
-
-  /* Empty State */
-  .empty-state {
-    grid-column: 1 / -1;
-    text-align: center;
-    padding: 4rem 2rem;
-    color: var(--text-secondary);
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    background: rgba(24, 24, 27, 0.5);
-    border-radius: var(--radius-md);
-    border: 1px dashed var(--card-border);
-  }
-
-  .empty-state.visible {
-    display: flex;
-  }
-  
-  .empty-state svg {
-    width: 48px;
-    height: 48px;
-    stroke: var(--text-muted);
-    margin-bottom: 0.5rem;
-  }
-
-  /* Responsive Adjustments */
-  @media (max-width: 600px) {
     header {
-      padding: 3rem 1rem 2rem;
+      text-align: center;
+      padding: 4rem 1rem 2rem;
     }
-    
+
     h1 {
-      font-size: 2rem;
+      font-size: clamp(2.5rem, 8vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(to bottom, #fff, #64748b);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
     }
-    
-    #games-container {
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 1rem;
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .search-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 0 1rem;
+      position: relative;
+    }
+
+    #search {
+      width: 100%;
+      padding: 1rem 1.25rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: white;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+      outline: none;
+    }
+
+    #search:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+    }
+
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1.25rem;
     }
 
     .game-card {
-      padding: 1.75rem 1rem;
-      font-size: 0.9rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 2rem 1rem;
+      text-decoration: none;
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      animation: fadeIn 0.4s ease forwards;
     }
-    
-    .game-card .card-icon {
-      width: 36px;
-      height: 36px;
-      margin-bottom: 0.75rem;
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      border-color: var(--accent);
+      background: #202023;
     }
-  }
-</style>
+
+    .game-icon {
+      width: 40px;
+      height: 40px;
+      margin-bottom: 1rem;
+      color: var(--text-muted);
+    }
+
+    .game-card:hover .game-icon { color: var(--accent); }
+
+    .game-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    /* States */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 4rem 0;
+      color: var(--text-muted);
+      display: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 600px) {
+      header { padding: 2rem 1rem; }
+      #grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
 </head>
 <body>
 
 <header>
-  <h1>ZYNQ Games</h1>
-  <div id="game-count">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 12h4m-2-2v4m7-1h.01"/></svg>
-    <span id="count-text">Verbinding maken...</span>
+  <h1>ZYNQ</h1>
+  <div class="badge">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 12h4m-2-2v4m7-1h.01M2 6a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6z"/></svg>
+    <span id="counter">Initializing...</span>
   </div>
 </header>
 
-<div class="search-wrapper">
-  <input type="text" id="search" placeholder="Zoek games..." autocomplete="off" />
-  <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+<div class="search-container">
+  <input type="text" id="search" placeholder="Search for games..." spellcheck="false">
 </div>
 
 <main>
-  <div id="games-container">
-    <!-- Loader shown initially -->
-    <div class="loader" id="loader"><div class="loader-spinner"></div></div>
-  </div>
+  <div id="grid"></div>
   <div id="empty-state" class="empty-state">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/><path d="M8 11h6"/></svg>
-    <h3>Geen games gevonden</h3>
-    <p style="opacity: 0.7; font-size: 0.9rem;">Probeer een andere zoekterm.</p>
+    <p>No games found matching your search.</p>
   </div>
 </main>
 
 <script>
-  const container = document.getElementById('games-container');
+  const grid = document.getElementById('grid');
   const searchInput = document.getElementById('search');
-  const gameCountEl = document.getElementById('count-text');
+  const counter = document.getElementById('counter');
   const emptyState = document.getElementById('empty-state');
-  const loader = document.getElementById('loader');
 
-  let allGameData = {};
-  let allGames = [];
+  let gamesStore = [];
+  let rawData = {};
 
-  // Icon for cards (Gamepad)
-  const cardIconSVG = `
-  <svg class="card-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-    <rect x="2" y="6" width="20" height="12" rx="2"/>
-    <path d="M6 12h4m-2-2v4"/>
-    <circle cx="17" cy="10" r="1" fill="currentColor"/>
-    <circle cx="15" cy="13" r="1" fill="currentColor"/>
-  </svg>`;
+  const iconSVG = `
+    <svg class="game-icon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+      <path d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+      <path d="M9 10a1 1 0 11-2 0 1 1 0 012 0zm8 0a1 1 0 11-2 0 1 1 0 012 0z" />
+      <path d="M15 15a3 3 0 01-6 0" />
+    </svg>`;
 
-  // Helper to format game names nicely
-  function formatName(name) {
-    return name.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  function formatTitle(str) {
+    return str.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
   }
 
-  // Helper to find the category (g1, g2, etc.)
-  function getGamePath(gameName) {
-    return ['g1','g2','g3','g4'].find(g => allGameData[g]?.includes(gameName)) || 'g1';
+  function getPath(name) {
+    return Object.keys(rawData).find(key => rawData[key].includes(name)) || 'g1';
   }
 
-  function renderGames(games) {
-    // Clear loader and content
-    container.innerHTML = '';
+  function render(list) {
+    grid.innerHTML = '';
+    emptyState.style.display = list.length ? 'none' : 'block';
     
-    if (games.length === 0) {
-      emptyState.classList.add('visible');
-      return;
-    }
-    
-    emptyState.classList.remove('visible');
-
-    const fragment = document.createDocumentFragment();
-
-    games.forEach((game, index) => {
-      const link = document.createElement('a');
-      link.href = `./${getGamePath(game)}/${game}`;
-      link.target = "_blank";
-      link.className = 'game-card';
-      // Stagger animation delay
-      link.style.animationDelay = `${index * 30}ms`;
-      
-      link.innerHTML = `
-        ${cardIconSVG}
-        <span>${formatName(game)}</span>
-      `;
-      
-      link.title = `Speel ${formatName(game)}`;
-      
-      fragment.appendChild(link);
+    list.forEach((game, i) => {
+      const card = document.createElement('a');
+      card.className = 'game-card';
+      card.href = `./${getPath(game)}/${game}`;
+      card.style.animationDelay = `${i * 20}ms`;
+      card.innerHTML = `${iconSVG}<span class="game-name">${formatTitle(game)}</span>`;
+      grid.appendChild(card);
     });
-
-    container.appendChild(fragment);
   }
 
-  async function init() {
+  async function loadGames() {
     try {
-      const response = await fetch('./games.json');
-      if (!response.ok) throw new Error('Network response was not ok');
+      const res = await fetch('./games.json');
+      rawData = await res.json();
+      gamesStore = Object.values(rawData).flat().sort();
       
-      allGameData = await response.json();
-      allGames = Object.values(allGameData).flat();
-      
-      gameCountEl.textContent = `${allGames.length} Games Beschikbaar`;
-      renderGames(allGames);
-
-    } catch (error) {
-      console.error("Failed to fetch games:", error);
-      container.innerHTML = '';
-      gameCountEl.textContent = "Fout bij laden";
-      emptyState.querySelector('h3').textContent = "Kan games niet laden";
-      emptyState.querySelector('p').textContent = "Controleer je internetverbinding en probeer het opnieuw.";
-      emptyState.classList.add('visible');
+      counter.textContent = `${gamesStore.length} Games Available`;
+      render(gamesStore);
+    } catch (err) {
+      counter.textContent = "Error loading database";
+      console.error(err);
     }
   }
 
-  // Search Event Listener
   searchInput.addEventListener('input', (e) => {
-    const query = e.target.value.toLowerCase().trim();
-    
-    if (!query) {
-      renderGames(allGames);
-      return;
-    }
-
-    const filtered = allGames.filter(game => game.toLowerCase().includes(query));
-    renderGames(filtered);
+    const term = e.target.value.toLowerCase();
+    const filtered = gamesStore.filter(g => g.toLowerCase().includes(term));
+    render(filtered);
   });
 
-  // Initialize
-  init();
+  loadGames();
 </script>
 
 </body>
