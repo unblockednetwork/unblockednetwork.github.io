@@ -686,16 +686,6 @@
                  const dot = roomCountEl?.previousElementSibling;
                  if (dot && dot.classList.contains('online-dot')) dot.style.background = dotColor;
              };
-
-            const getCheckIcon = (isRead) => {
-                if (isRead) {
-                    // Double Check Blue
-                    return `<svg class="msg-status read" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>`;
-                } else {
-                    // Double Check Grey
-                    return `<svg class="msg-status" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 6 7 17l-5-5"/><path d="m22 10-7.5 7.5L13 16"/></svg>`;
-                }
-            };
                        // Helper om preview tekst te formatteren (Naam: Bericht)
             // Helper om preview tekst te formatteren
             const formatPreview = (text, userName, userId, isDirect, currentUserId) => {
@@ -1163,10 +1153,7 @@
                  if (state.isOfflineMode) return;
                  if (state.chatChannel) state.chatChannel.unsubscribe();
                  const isDirect = state.currentRoomData?.is_direct;
-                 
                  state.chatChannel = db.channel(`room_chat_${id}`, { config: { broadcast: { self: true } } });
-                 
-                 // 1. Listener for new messages (INSERT)
                  state.chatChannel.on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'messages', filter: `room_id=eq.${id}` }, async (payload) => {
                      const m = payload.new;
                      if (m && state.currentRoomId) {
@@ -1176,25 +1163,16 @@
                                  const msgObj = { ...m, ...decRes.result, room_id: m.room_id };
                                  const container = $('chat-messages'); const lastMsg = container.querySelector('.msg:last-of-type');
                                  let prevMsg = null; if (lastMsg) prevMsg = { user_id: lastMsg.dataset.uid, created_at: lastMsg.dataset.time };
-                                 
                                  container.insertAdjacentHTML('beforeend', renderMsg(msgObj, prevMsg, isDirect));
                                  container.scrollTop = container.scrollHeight; checkChatEmpty();
                                  await localDB.put('messages', msgObj);
                                  
-                                 // Update Lobby
-                                 updateLobbyRow(id, msgObj.text, m.created_at, true);
-                                 
-                                 // If message is from someone else, mark as read immediately
-                                 if (msgObj.user_id !== state.user.id) {
-                                     db.rpc('mark_room_read', { p_room_id: id }).catch(e => console.warn("Mark read err", e));
-                                 }
+                                 // Also update lobby preview immediately
+                                 updateLobbyRow(id, msgObj.text, m.created_at, m.user_name);
                              }
                          } catch (e) {}
                      }
-                 });
-                 
-                 // 2. Listener for edits/deletes (UPDATE)
-                 state.chatChannel.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: `room_id=eq.${id}` }, async (payload) => {
+                 }).on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: `room_id=eq.${id}` }, async (payload) => {
                      const m = payload.new; const msgEl = document.querySelector(`.msg[data-id="${m.id}"]`);
                      if (msgEl) {
                          try {
@@ -1214,28 +1192,6 @@
                              const cached = await localDB.get('messages', m.id);
                              if (cached) { cached.deleted = deleted; cached.text = decRes.result?.text; await localDB.put('messages', cached); }
                          } catch (e) {}
-                     }
-                 });
-
-                 // 3. Listener for READ RECEIPTS
-                 state.chatChannel.on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'receipts', filter: `room_id=eq.${id}` }, async (payload) => {
-                     const receipt = payload.new;
-                     if (receipt.user_id !== state.user.id) {
-                         const container = $('chat-messages');
-                         const myMessages = container.querySelectorAll('.msg.me');
-                         if (myMessages.length > 0) {
-                             const lastMyMsg = myMessages[myMessages.length - 1];
-                             const msgTime = new Date(lastMyMsg.dataset.time);
-                             const readTime = new Date(receipt.last_read_at);
-                             
-                             if (msgTime <= readTime) {
-                                 const statusWrapper = lastMyMsg.querySelector('.msg-status-wrapper');
-                                 if (statusWrapper && !statusWrapper.classList.contains('read')) {
-                                     statusWrapper.innerHTML = getCheckIcon(true);
-                                     statusWrapper.classList.add('read');
-                                 }
-                             }
-                         }
                      }
                  }).subscribe((status) => {
                      const wasReady = state.isChatChannelReady;
@@ -1518,25 +1474,11 @@
                  const safeText = isDeleted ? '' : esc(m.text || '').replace(/"/g, '&quot;');
                  const dataAttrs = `data-id="${m.id}" data-uid="${m.user_id}" data-time="${m.created_at}" data-text="${safeText}"`;
                  const timeString = m.time || getTimeFromDate(m.created_at);
-                 
                  html += `<div class="msg ${sideClass} ${msgClass} ${isDeleted ? 'msg-deleted' : ''} ${isOptimistic ? 'msg-pending' : ''} pop-in" ${dataAttrs}>`;
-                 
-                 // Status Bepaling
-                 let statusHtml = '';
-                 if (m.user_id === state.user?.id && !isDeleted) {
-                     if (isOptimistic) {
-                         // Single clock/check voor optimistic
-                         statusHtml = `<svg class="msg-status" style="opacity:0.5" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
-                     } else {
-                         // Default is Received (Double Check Grey)
-                         statusHtml = `<span class="msg-status-wrapper" data-msg-id="${m.id}">${getCheckIcon(m.is_read === true)}</span>`;
-                     }
-                 }
-
                  if (isDeleted) html += `${isGroupStart && !isDirect ? `<div class="msg-header"><span class="msg-user">${esc(displayName)}</span></div>` : ''}<div class="deleted-text">Message deleted</div><span class="msg-time">${timeString}</span>`;
                  else {
                      const processedText = processText(m.text);
-                     html += `${isGroupStart && !isDirect ? `<div class="msg-header"><span class="msg-user">${esc(displayName)}</span></div>` : ''}<div>${processedText}</div><span class="msg-time">${timeString}${isEdited ? '<span class="edited-tag">(Edited)</span>' : ''} ${statusHtml}</span>`;
+                     html += `${isGroupStart && !isDirect ? `<div class="msg-header"><span class="msg-user">${esc(displayName)}</span></div>` : ''}<div>${processedText}</div><span class="msg-time">${timeString}${isEdited ? '<span class="edited-tag">(Edited)</span>' : ''}</span>`;
                  }
                  html += `</div>`;
                  return html;
@@ -1640,7 +1582,6 @@
                  state.currentRoomId = id; state.lastRenderedDateLabel = null; state.oldestMessageTimestamp = null; state.hasMoreHistory = true; state.isLoadingHistory = false;
                  const chatContainer = $('chat-messages'); chatContainer.innerHTML = ''; chatContainer.onscroll = handleScroll;
                  let roomData = null;
-                 
                  if (state.isOfflineMode) {
                      roomData = await localDB.get('rooms', id);
                      if (!roomData) { window.setLoading(false); return window.toast("Chat not found locally."); }
@@ -1648,23 +1589,19 @@
                      state.currentRoomDisplay = await resolveRoomDisplay(roomData); $('chat-title').innerText = state.currentRoomDisplay.name;
                      const avEl = $('chat-avatar-display'); if (state.currentRoomDisplay.avatar) avEl.innerHTML = `<img src="${state.currentRoomDisplay.avatar}">`; else avEl.innerText = state.currentRoomDisplay.name.charAt(0).toUpperCase();
                      const editBtn = $('info-edit-btn'); if (!isDirect && roomData?.created_by === state.user.id) editBtn.style.display = 'flex'; else editBtn.style.display = 'none';
-                     const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; state.derivedKeys[id] = true;
+                     const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; // Mark key as available
                      let localMessages = await localDB.getRoomMessages(id); let renderedHtml = '';
                      if (localMessages.length > 0) { let prev = null; localMessages.forEach(m => { renderedHtml += renderMsg(m, prev, isDirect); prev = m; }); chatContainer.innerHTML = renderedHtml; chatContainer.scrollTop = chatContainer.scrollHeight; }
                      checkChatEmpty(); $('chat-input').style.display = 'block'; $('send-btn').style.display = 'flex'; setConnectionVisuals('offline'); window.nav('scr-chat'); window.setLoading(false); return;
                  }
-                 
                  if (cachedData) { roomData = cachedData; }
                  else { try { const { data: netRoom } = await execQuery(db.from('rooms').select('*').eq('id', id).single()); if (netRoom && netRoom.id) { roomData = netRoom; await localDB.put('rooms', roomData); } } catch (e) {} }
                  if (!roomData) { window.setLoading(false); return window.toast("Chat not found."); }
-                 
                  state.currentRoomData = roomData; const isDirect = roomData?.is_direct;
                  state.currentRoomDisplay = await resolveRoomDisplay(roomData); $('chat-title').innerText = state.currentRoomDisplay.name;
                  const avEl = $('chat-avatar-display'); if (state.currentRoomDisplay.avatar) avEl.innerHTML = `<img src="${state.currentRoomDisplay.avatar}">`; else avEl.innerText = state.currentRoomDisplay.name.charAt(0).toUpperCase();
                  const editBtn = $('info-edit-btn'); if (!isDirect && roomData.created_by === state.user.id) editBtn.style.display = 'flex'; else editBtn.style.display = 'none';
-                 
-                 const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; state.derivedKeys[id] = true;
-                 
+                 const keySource = rawPassword ? (rawPassword + id) : id; await deriveKey(keySource, roomData?.salt, id); state.roomKeys[id] = true; // Mark key as available
                  let finalMessages = [];
                  try {
                      const { data } = await execQuery(db.from('messages').select('*').eq('room_id', id).order('created_at', { ascending: false }).limit(CONFIG.maxMessages));
@@ -1672,26 +1609,9 @@
                          data.reverse(); const res = await workerExec('decryptHistory', { messages: data, keyId: id }); const validMsgs = res.results.filter(m => !m.error);
                          await localDB.clearRoomMessages(id); const messagesWithRoomId = validMsgs.map(m => ({ ...m, room_id: id })); await localDB.putAll('messages', messagesWithRoomId); finalMessages = validMsgs; }
                     } catch (e) { console.error("Fetch error", e); }
-                    
                     window.nav('scr-chat');
                     if (finalMessages.length > 0) { state.oldestMessageTimestamp = finalMessages[0].created_at; let html = '', prev = null; finalMessages.forEach(m => { html += renderMsg(m, prev, isDirect); prev = m; }); chatContainer.innerHTML = html; }
                     checkChatEmpty(); $('chat-input').style.display = 'block'; $('send-btn').style.display = 'flex'; setConnectionVisuals('connecting');
-                    
-                    // MARK AS READ
-                    if (state.user) {
-                        db.rpc('mark_room_read', { p_room_id: id }).then(async () => {
-                             // Update lokale state voor lobby preview
-                             const roomIndex = state.allRooms.findIndex(r => r.id === id);
-                             if (roomIndex > -1) {
-                                 state.allRooms[roomIndex].last_read_at = new Date().toISOString();
-                                 // Als preview "New message" was, refresh preview tekst
-                                 if(state.allRooms[roomIndex].preview === "New message") {
-                                    // Her-laad preview via cache? Voor nu simuleren we dat het ok is.
-                                 }
-                             }
-                        }).catch(e => console.warn("Mark read failed", e));
-                    }
-
                     await initRoomPresence(id); await setupChatChannel(id);
                     setTimeout(() => { chatContainer.scrollTop = chatContainer.scrollHeight; window.setLoading(false); }, 100);
                 };
@@ -1811,19 +1731,6 @@
                     if (state.authListener) { state.authListener.unsubscribe(); state.authListener = null; }
                     window.nav('scr-start'); window.setLoading(false);
                 };
-                            // Helper om sleutels voor openbare chats in memory te laden
-            const ensureLobbyKey = async (roomId, salt) => {
-                if (!roomId || !salt) return false;
-                if (state.derivedKeys && state.derivedKeys[roomId]) return true;
-                try {
-                    await workerExec('deriveKey', { password: roomId, salt: salt, keyId: roomId });
-                    if (!state.derivedKeys) state.derivedKeys = {};
-                    state.derivedKeys[roomId] = true;
-                    return true;
-                } catch (e) {
-                    return false;
-                }
-            };
 
                 window.copySId = () => { if (!state.lastCreated) return; navigator.clipboard.writeText(state.lastCreated.id); window.toast("ID copied."); };
                 const processAvatarUrl = async (url) => { if (!url || url.startsWith('data:')) return url; return url; };
@@ -1865,31 +1772,19 @@
                     if (!state.user) return; const uid = state.user.id;
                     
                     const processAndRender = async (rooms) => { 
-                        const processed = []; 
-                        
-                        // 1. Load keys for public rooms
+                        // 1. Laad alle openbare sleutels in de worker
                         const keyPromises = rooms.map(r => {
                             if (!r.has_password && r.salt) return ensureLobbyKey(r.id, r.salt);
                             return Promise.resolve();
                         });
                         await Promise.all(keyPromises);
 
-                        // 2. Fetch MY receipts (High Water Marks)
-                        let myReceipts = {};
-                        if (!state.isOfflineMode) {
-                            const { data: receiptsData } = await db.from('receipts').select('room_id, last_read_at').eq('user_id', state.user.id);
-                            if (receiptsData) {
-                                receiptsData.forEach(r => myReceipts[r.room_id] = r.last_read_at);
-                            }
-                        }
-
-                        // 3. Process rooms
+                        // 2. Verwerk kamers
                         const previewPromises = rooms.map(async (r) => {
                             if (!r || !r.id) return null;
                             const display = await resolveRoomDisplay(r); 
                             
                             let previewText = "No messages yet";
-                            let isRead = true;
                             
                             if (r.last_message_content) {
                                 let rawText = "New message";
@@ -1901,34 +1796,21 @@
                                             const res = await workerExec('decryptSingle', { content: r.last_message_content, keyId: r.id });
                                             if (res.result && res.result.text) rawText = res.result.text;
                                         }
-                                    } catch (e) { /* ignore */ }
+                                    } catch (e) { rawText = "New message"; }
                                 }
-                                
                                 previewText = formatPreview(rawText, r.last_message_user_name, r.last_message_user_id, r.is_direct, state.user.id);
-
-                                // --- READ STATUS LOGIC ---
-                                if (r.last_message_user_id === state.user.id) {
-                                    isRead = false; // Default grey for own messages
-                                } else {
-                                    const myLastRead = myReceipts[r.id];
-                                    if (myLastRead && new Date(myLastRead) >= new Date(r.last_message_at)) {
-                                        isRead = true;
-                                    } else {
-                                        isRead = false;
-                                    }
-                                }
                             }
 
                             return { 
                                 ...r, 
                                 display_name: display.name, 
                                 display_avatar: display.avatar,
-                                preview: previewText,
-                                is_read: isRead
+                                preview: previewText
                             };
                         });
 
                         const results = await Promise.all(previewPromises);
+                        // Sorteer op last_message_at (nieuwste bovenaan)
                         state.allRooms = results.filter(r => r !== null).sort((a, b) => new Date(b.last_message_at || 0) - new Date(a.last_message_at || 0));
                         
                         if(!state.isOfflineMode) setupLobbyListener(state.allRooms.map(r => r.id));
@@ -1949,6 +1831,22 @@
                     } catch (e) { window.toast("Sync failed."); }
                     window.setLoading(false); updateLobbyAvatar();
                 };
+                       // Helper om sleutels voor openbare chats in memory te laden zodat lobby previews kunnen decrypten
+            const ensureLobbyKey = async (roomId, salt) => {
+                if (!roomId || !salt) return false;
+                if (state.derivedKeys && state.derivedKeys[roomId]) return true; // Al gedaan
+                
+                // Alleen afleiden als er geen wachtwoord is (openbare kamers)
+                // De sleutel is voor openbare kamers: roomId
+                try {
+                    await workerExec('deriveKey', { password: roomId, salt: salt, keyId: roomId });
+                    if (!state.derivedKeys) state.derivedKeys = {};
+                    state.derivedKeys[roomId] = true;
+                    return true;
+                } catch (e) {
+                    return false;
+                }
+            };
 
                 window.filterRooms = () => {
                     const q = $('search-bar').value.toLowerCase(); const list = $('room-list'); 
