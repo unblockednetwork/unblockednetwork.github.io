@@ -504,10 +504,10 @@
                  const hrs = Math.floor(mins / 60);
                  const days = Math.floor(hrs / 24);
                  
-                 if (secs < 60) return `${secs}s`; // Seconds
-                 if (mins < 60) return `${mins}m`; // Minutes
-                 if (hrs < 24) return `${hrs}h`; // Hours
-                 if (days < 7) return `${days}d`; // Days
+                 if (secs < 60) return `${secs}s`; // Toont seconden
+                 if (mins < 60) return `${mins}m`;
+                 if (hrs < 24) return `${hrs}h`;
+                 if (days < 7) return `${days}d`;
                  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
              };
          
@@ -528,26 +528,6 @@
              const localDB = {
                  db: null,
                  async init() {
-                setInterval(() => {
-                    const list = $('room-list');
-                    if (list && document.querySelector('.screen.active#scr-lobby')) {
-                        const timeEls = list.querySelectorAll('.room-time');
-                        timeEls.forEach(el => {
-                            // Haal de originele tijd uit de state of update de tekst
-                            // We moeten de roomId vinden die bij het element hoort
-                            // De makkelijkste manier is de state.allRooms opnieuw doorlopen
-                            // Maar efficienter: we slaan de timestamp op in een data-attribuut op het element
-                            // dat besparen we hier op voor de eenvoud
-                            const card = el.closest('.room-card');
-                            if(card && card.dataset.id) {
-                                const room = state.allRooms.find(r => r.id === card.dataset.id);
-                                if(room && room.last_message_at) {
-                                     el.innerText = getRelativeTime(room.last_message_at);
-                                }
-                            }
-                        });
-                    }
-                }, 60000); // Elke minuut (60 seconden)
                      return new Promise((resolve, reject) => {
                          const request = indexedDB.open(DB_NAME, DB_VERSION);
                          request.onerror = (e) => reject(request.error);
@@ -1948,6 +1928,24 @@
                         setAppMode(true); startInternetCheck();
                         if (storedEmail && storedPass) { const knownUser = await localDB.get('known_users', storedEmail); const hashInput = await sha256(storedPass + storedEmail); if (knownUser && knownUser.pass_hash === hashInput) { state.user = { id: knownUser.userId, email: knownUser.email, user_metadata: knownUser.metadata }; window.nav('scr-lobby'); window.loadRooms(); window.toast("You are offline."); } else { window.nav('scr-login'); $('l-email').value = storedEmail; $('l-pass').value = storedPass; } } else window.nav('scr-start');
                     }
+                    
+                    // START TIMER VOOR LOBBY TIJD UPDATES
+                    setInterval(() => {
+                        const list = $('room-list');
+                        if (list && document.querySelector('.screen.active#scr-lobby')) {
+                            const timeEls = list.querySelectorAll('.room-time');
+                            timeEls.forEach(el => {
+                                const card = el.closest('.room-card');
+                                if(card && card.dataset.id) {
+                                    const room = state.allRooms.find(r => r.id === card.dataset.id);
+                                    if(room && room.last_message_at) {
+                                         el.innerText = getRelativeTime(room.last_message_at);
+                                    }
+                                }
+                            });
+                        }
+                    }, 60000); // Elke minuut
+
                     window.setLoading(false);
                 };
 
