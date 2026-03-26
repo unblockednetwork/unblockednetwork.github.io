@@ -1077,11 +1077,11 @@
                 
                 state.lobbyChannel = db.channel('lobby-updates');
                 
-                // Centrale handler voor zowel INSERT als UPDATE
+                // Centrale handler: Werkt voor zowel INSERT (nieuw) als UPDATE (edit/delete)
                 const handleChange = async (payload) => {
                     const msg = payload.new;
                     const roomId = msg.room_id;
-                    const isInsert = payload.event === 'INSERT'; // We onderscheiden INSERT van UPDATE
+                    const isInsert = payload.event === 'INSERT';
 
                     // 1. Lokaal opslaan
                     await localDB.put('messages', { 
@@ -1099,22 +1099,20 @@
                         rawText = "Message deleted";
                     } else {
                         try {
-                            // We gebruiken altijd de worker. De key moet in memory zijn (door loadRooms of openVault)
+                            // Probeer te decrypten met de sleutel die in memory moet zijn
                             const res = await workerExec('decryptSingle', { content: msg.content, keyId: roomId });
                             if (res.result && res.result.text) rawText = res.result.text;
                         } catch(e) { 
-                            // Als key niet in memory is, toon "Encrypted"
                             rawText = "Encrypted"; 
                         }
                     }
 
-                    // 3. Formatteer Preview
+                    // 3. Formatteer Preview (naam + bericht)
                     const roomData = state.allRooms.find(r => r.id === roomId);
                     const isDirect = roomData ? roomData.is_direct : false;
                     const previewText = formatPreview(rawText, msg.user_name, msg.user_id, isDirect, state.user.id);
 
-                    // 4. Update UI
-                    // we geven 'isInsert' mee om te bepalen of we de tijd/sortering updaten
+                    // 4. Update UI (Forceer update)
                     updateLobbyRow(roomId, previewText, msg.created_at, isInsert);
                 };
 
@@ -1134,16 +1132,15 @@
                  state.allRooms.splice(roomIndex, 1);
                  state.allRooms.unshift(room);
 
-                 // Update Preview Altijd
+                 // 1. Update Preview Tekst (ALTIJD doen, van jou of ander)
                  room.preview = text; 
                  
-                 // Update Tijd Alleen als het een nieuw bericht is (sortering)
-                 // De SQL trigger doet dit ook, maar we doen het hier lokaal direct voor snelle UI
+                 // 2. Update Tijd (Alleen bij INSERT, zodat edits je chat niet naar boven duwen)
                  if (isInsert) {
                      room.last_message_at = time;
                  }
                  
-                 // Her-render
+                 // 3. Her-render de lijst
                  const list = $('room-list');
                  if (list && document.querySelector('.screen.active#scr-lobby')) {
                      window.filterRooms(); 
