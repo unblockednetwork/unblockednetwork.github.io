@@ -499,13 +499,15 @@
                  const now = new Date();
                  const d = new Date(date);
                  const diff = now - d;
-                 const mins = Math.floor(diff / 60000);
+                 const secs = Math.floor(diff / 1000);
+                 const mins = Math.floor(secs / 60);
                  const hrs = Math.floor(mins / 60);
                  const days = Math.floor(hrs / 24);
-                 if (mins < 1) return 'Now';
-                 if (mins < 60) return `${mins}m`;
-                 if (hrs < 24) return `${hrs}h`;
-                 if (days < 7) return `${days}d`;
+                 
+                 if (secs < 60) return `${secs}s`; // Seconds
+                 if (mins < 60) return `${mins}m`; // Minutes
+                 if (hrs < 24) return `${hrs}h`; // Hours
+                 if (days < 7) return `${days}d`; // Days
                  return d.toLocaleDateString('en-GB', { day: '2-digit', month: 'short' });
              };
          
@@ -526,6 +528,26 @@
              const localDB = {
                  db: null,
                  async init() {
+                setInterval(() => {
+                    const list = $('room-list');
+                    if (list && document.querySelector('.screen.active#scr-lobby')) {
+                        const timeEls = list.querySelectorAll('.room-time');
+                        timeEls.forEach(el => {
+                            // Haal de originele tijd uit de state of update de tekst
+                            // We moeten de roomId vinden die bij het element hoort
+                            // De makkelijkste manier is de state.allRooms opnieuw doorlopen
+                            // Maar efficienter: we slaan de timestamp op in een data-attribuut op het element
+                            // dat besparen we hier op voor de eenvoud
+                            const card = el.closest('.room-card');
+                            if(card && card.dataset.id) {
+                                const room = state.allRooms.find(r => r.id === card.dataset.id);
+                                if(room && room.last_message_at) {
+                                     el.innerText = getRelativeTime(room.last_message_at);
+                                }
+                            }
+                        });
+                    }
+                }, 60000); // Elke minuut (60 seconden)
                      return new Promise((resolve, reject) => {
                          const request = indexedDB.open(DB_NAME, DB_VERSION);
                          request.onerror = (e) => reject(request.error);
@@ -1121,35 +1143,38 @@
                 .subscribe();
              };
 
-             const updateLobbyRow = (roomId, text, time, isInsert = true) => {
+
+
+                         const updateLobbyRow = (roomId, text, time, isInsert = true) => {
                  const roomIndex = state.allRooms.findIndex(r => r.id === roomId);
                  if (roomIndex === -1) return;
                  
                  const room = state.allRooms[roomIndex];
 
-                 // 1. Update Sortering (verplaats naar bovenaan) alleen bij INSERT
+                 // 1. Update sortering (verplaats naar bovenaan)
                  if (isInsert) {
                      state.allRooms.splice(roomIndex, 1);
                      state.allRooms.unshift(room);
-                     // Update de tijd in de state
-                     room.last_message_at = time;
-                     // Her-render de hele lijst om sortering visueel te fixen
-                     window.filterRooms(); 
-                 } else {
-                     // Bij EDIT: Update alleen de data, niet de sortering
-                     room.preview = text;
-                     
-                     // Update de DOM direct zonder volledige refresh
-                     const card = document.querySelector(`.room-card[onclick="window.joinAttempt('${roomId}')"]`);
-                     if (card) {
-                         const previewEl = card.querySelector('.room-preview-text');
-                         if (previewEl) previewEl.innerText = text;
-                     }
+                     room.last_message_at = time; // Update tijd voor sortering
                  }
-                 
-                 // Update altijd de lokale preview data
+
+                 // 2. Update Preview Tekst
                  room.preview = text;
+                 
+                 // 3. DOM Update (Zonder volle filterRooms refresh)
+                 const card = document.querySelector(`.room-card[data-id="${roomId}"]`);
+                 if (card) {
+                     const previewEl = card.querySelector('.room-preview-text');
+                     const timeEl = card.querySelector('.room-time');
+                     if (previewEl) previewEl.innerText = text;
+                     if (timeEl && time) timeEl.innerText = getRelativeTime(time);
+                 } else {
+                     // Als kaart niet bestaat, toch, doe dan volledige render
+                     window.filterRooms();
+                 }
              };
+
+            
              const setupChatChannel = (id) => {
                  if (state.isOfflineMode) return;
                  if (state.chatChannel) state.chatChannel.unsubscribe();
@@ -1871,7 +1896,7 @@
                         const preview = r.preview || "No messages yet";
                         const time = r.last_message_at ? getRelativeTime(r.last_message_at) : "";
                         
-                        return `<div class="room-card" onclick="window.joinAttempt('${r.id}')">
+                        return `<div class="room-card" data-id="${r.id}" onclick="window.joinAttempt('${r.id}')">
                             <div class="chat-avatar" style="width:36px;height:36px;margin-right:10px;font-size:13px">${r.display_avatar ? `<img src="${r.display_avatar}">` : (r.display_name||'G').charAt(0)}</div>
                             <div class="room-card-content">
                                 <div class="room-name">${esc(r.display_name)}</div>
