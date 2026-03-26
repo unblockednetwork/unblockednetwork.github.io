@@ -1089,7 +1089,6 @@
                         content: msg.content, user_id: msg.user_id, user_name: msg.user_name 
                     });
 
-                    // Zoek de kamer data op
                     const roomData = state.allRooms.find(r => r.id === roomId);
                     if (!roomData) return;
 
@@ -1099,21 +1098,28 @@
                     if (roomData.has_password) {
                         previewText = "🔒 Unlock to view";
                     } else {
-                        // Decrypt logica
+                        // DECRPT LOGICA
                         let rawText = "New message";
                         if (msg.content === '/') {
                             rawText = "Message deleted";
                         } else {
                             try {
+                                // BELANGRIJK: Zorg dat de sleutel in de worker zit!
+                                // We gebruiken ensureLobbyKey hier ook.
+                                if (roomData.salt) await ensureLobbyKey(roomId, roomData.salt);
+                                
+                                // Nu pas decrypten
                                 const res = await workerExec('decryptSingle', { content: msg.content, keyId: roomId });
                                 if (res.result && res.result.text) rawText = res.result.text;
-                            } catch(e) { rawText = "Encrypted"; }
+                            } catch(e) { 
+                                rawText = "Encrypted"; 
+                            }
                         }
                         const isDirect = roomData ? roomData.is_direct : false;
                         previewText = formatPreview(rawText, msg.user_name, msg.user_id, isDirect, state.user.id);
                     }
 
-                    // Update de rij (preview + tijd)
+                    // Update de rij
                     updateLobbyRow(roomId, previewText, msg.created_at, isInsert);
                 };
 
@@ -1122,7 +1128,6 @@
                 .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'messages', filter: filter }, handleChange)
                 .subscribe();
              };
-
 
 
                          const updateLobbyRow = (roomId, text, time, isInsert = true) => {
@@ -1944,7 +1949,7 @@
                                 }
                             });
                         }
-                    }, 60000); // Elke minuut
+                    }, 10000); // Elke 10 seconden (was 60000)
 
                     window.setLoading(false);
                 };
