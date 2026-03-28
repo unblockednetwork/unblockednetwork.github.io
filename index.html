@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repo Explorer Pro</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root{--p:#8b5cf6;--bg:#09090b;--c:#18181b;--b:#27272a;--t:#fafafa;--tm:#a1a1aa}
+        *{box-sizing:border-box}
+        body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--bg);color:var(--t);margin:0;padding:20px;display:flex;justify-content:center;line-height:1.5}
+        .container{width:100%;max-width:900px}
+        header{text-align:center;margin:40px 0}
+        h1{font-size:clamp(1.5rem, 5vw, 2.5rem);font-weight:800;letter-spacing:-1px;margin:0 0 10px}
+        .badge{background:var(--p);padding:4px 12px;border-radius:20px;font-size:0.7rem;vertical-align:middle;text-transform:uppercase}
+        .controls{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:30px;background:var(--c);padding:15px;border-radius:16px;border:1px solid var(--b)}
+        input{flex:1;min-width:200px;background:#000;border:1px solid var(--b);border-radius:10px;padding:12px 15px;color:#fff;outline:none;transition:border-color .2s}
+        input:focus{border-color:var(--p)}
+        button{padding:10px 20px;border-radius:10px;border:none;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap}
+        .bp{background:var(--p);color:#fff}
+        .bp:hover{opacity:0.9;transform:translateY(-1px)}
+        .rt{width:100%;border-collapse:separate;border-spacing:0 8px}
+        th{text-align:left;padding:10px 20px;color:var(--tm);font-size:0.75rem;text-transform:uppercase}
+        .ri td{padding:16px 20px;border-top:1px solid var(--b);border-bottom:1px solid var(--b);background:var(--c)}
+        .ri td:first-child{border-left:1px solid var(--b);border-radius:12px 0 0 12px}
+        .ri td:last-child{border-right:1px solid var(--b);border-radius:0 12px 12px 0;text-align:right}
+        .tag{font-size:0.65rem;font-weight:800;padding:2px 6px;border-radius:4px;background:var(--b);color:#d4d4d8;margin-right:8px}
+        .fn{font-weight:600;display:block}
+        .fc{color:var(--tm);font-size:0.8rem}
+        .ov{position:fixed;inset:0;background:rgba(0,0,0,0.85);backdrop-filter:blur(8px);display:none;flex-direction:column;justify-content:center;align-items:center;z-index:100;padding:20px}
+        .pb{width:100%;max-width:350px;text-align:center}
+        .bb{height:8px;background:var(--b);border-radius:4px;margin:20px 0;overflow:hidden}
+        .bf{height:100%;background:var(--p);width:0%;transition:width .3s ease}
+        @media(max-width:600px){
+            .rt thead{display:none}
+            .ri td{display:block;width:100%;text-align:left!important;border:none!important;padding:8px 20px}
+            .ri td:first-child{padding-top:20px}
+            .ri td:last-child{padding-bottom:20px}
+            .ri{display:block;background:var(--c);border:1px solid var(--b);border-radius:16px;margin-bottom:15px}
+            button{width:100%}
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>Repo Explorer <span class="badge">Unified</span></h1>
+        <p style="color:var(--tm)">Access all repositories from g1 to g4 in one dashboard</p>
+    </header>
+    <div class="controls">
+        <input type="text" id="fi" placeholder="Search folders..." oninput="fR()">
+        <button class="bp" onclick="lA()">Refresh List</button>
+    </div>
+    <table class="rt">
+        <thead>
+            <tr><th>Folder</th><th>Source</th><th>Items</th><th>Action</th></tr>
+        </thead>
+        <tbody id="tb"></tbody>
+    </table>
+</div>
+<div id="ov" class="ov">
+    <div class="pb">
+        <h3 id="pt" style="margin:0">Initializing...</h3>
+        <div class="bb"><div id="bf" class="bf"></div></div>
+        <div id="px" style="font-size:0.85rem;color:var(--tm)">0 / 0</div>
+    </div>
+</div>
+<script>
+    const R=['g1','g2','g3','g4'],tb=document.getElementById('tb'),ov=document.getElementById('ov'),bf=document.getElementById('bf'),pt=document.getElementById('pt'),px=document.getElementById('px');
+    window.onload=lA;
+    async function lA(){
+        tb.innerHTML='<tr><td colspan="4" style="text-align:center;padding:100px 0">Fetching repositories...</td></tr>';
+        let a=[];
+        for(const r of R){
+            try{
+                const res=await fetch(`https://cdn.jsdelivr.net/gh/un-zynq/metadata/${r}-tree.json`),d=await res.json(),g={};
+                d.forEach(i=>{if(i.type==='blob'){const f=i.path.split('/')[0];if(!g[f])g[f]=[];g[f].push(i.path)}});
+                Object.keys(g).forEach(n=>a.push({r,n,f:g[n]}));
+            }catch(e){}
+        }
+        rT(a);
+    }
+    function rT(fs){
+        fs.sort((a,b)=>a.n.localeCompare(b.n));
+        tb.innerHTML=fs.map(f=>`
+            <tr class="ri" data-n="${f.n.toLowerCase()}">
+                <td><span class="fn">${f.n}</span></td>
+                <td><span class="tag">${f.r}</span></td>
+                <td><span class="fc">${f.f.length} files</span></td>
+                <td><button class="bp" onclick="dF('${f.r}','${f.n}',${JSON.stringify(f.f).replace(/"/g,'&quot;')})">Download</button></td>
+            </tr>`).join('');
+    }
+    function fR(){
+        const q=document.getElementById('fi').value.toLowerCase();
+        document.querySelectorAll('.ri').forEach(r=>r.style.display=r.dataset.n.includes(q)?'':'none');
+    }
+    async function dF(r,n,ps){
+        ov.style.display='flex';const z=new JSZip();let d=0;const t=ps.length;pt.innerText=`Fetching ${n}`;
+        const w=Array(30).fill(null).map(async()=>{
+            while(ps.length>0){
+                const p=ps.shift();
+                try{
+                    const res=await fetch(`https://cdn.jsdelivr.net/gh/un-zynq/${r}/${p}`),b=await res.blob();
+                    z.file(p.includes('/')?p.split('/').slice(1).join('/'):p,b);
+                }catch(e){}
+                d++;bf.style.width=(d/t*100)+'%';px.innerText=`${d} / ${t}`;
+            }
+        });
+        await Promise.all(w);pt.innerText="Generating ZIP...";
+        const c=await z.generateAsync({type:'blob'});saveAs(c,`${n}.zip`);ov.style.display='none';bf.style.width='0%';
+    }
+</script>
+</body>
+</html>
