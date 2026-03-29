@@ -2,13 +2,16 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Game Loader Debug</title>
+    <title>Game Loader 404 Router</title>
     <style>
         html, body {
             margin: 0;
             padding: 0;
             height: 100%;
             overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: sans-serif;
         }
         iframe {
             width: 100%;
@@ -23,7 +26,7 @@
             color: lime;
             padding: 10px;
             font-family: monospace;
-            font-size: 14px;
+            font-size: 12px;
             max-height: 50%;
             overflow-y: auto;
             z-index: 9999;
@@ -37,8 +40,7 @@
     <script>
         const debugLog = (msg) => {
             console.log(msg);
-            const debugDiv = document.getElementById("debug");
-            debugDiv.innerHTML += msg + "<br>";
+            document.getElementById("debug").innerHTML += msg + "<br>";
         };
 
         const path = window.location.pathname;
@@ -58,12 +60,13 @@
                 });
         }
 
+        // Alleen /game/... routes
         if (path.startsWith("/game/")) {
-            let suffix = path.slice(6).replace(/\/+$/, "");
-            debugLog("Suffix na /game/: " + suffix);
+            let suffix = path.slice(6).replace(/\/+$/, ""); // na /game/, geen trailing slash
+            debugLog("Suffix: " + suffix);
 
             if (!suffix) {
-                debugLog("Suffix leeg → redirect naar /");
+                debugLog("Leeg suffix → redirect naar /");
                 window.location.href = "/";
             } else {
                 fetch("/games.json")
@@ -73,11 +76,9 @@
                         for (const group in data) {
                             debugLog("Check group: " + group);
                             if (data[group].includes(suffix)) {
-                                debugLog(`Game gevonden in ${group}: ${suffix}`);
+                                debugLog("Game gevonden: " + suffix + " in " + group);
                                 found = true;
-                                document.body.innerHTML = `
-                                    <iframe src="/games/${group}/${suffix}"></iframe>
-                                `;
+                                document.body.innerHTML = `<iframe src="/games/${group}/${suffix}"></iframe>`;
                                 break;
                             }
                         }
@@ -92,7 +93,7 @@
                     });
             }
         } else {
-            debugLog("Path start niet met /game/ → 404");
+            debugLog("Niet /game/... → 404");
             load404();
         }
     </script>
