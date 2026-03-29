@@ -43,7 +43,7 @@
             width: 36px;
             height: 36px;
             border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: #fff;
+            border-top-color: #00e68a;
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
@@ -52,92 +52,65 @@
             to { transform: rotate(360deg); }
         }
 
-        .loader-label {
-            font-size: 13px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: rgba(255, 255, 255, 0.35);
-        }
-
         #content {
             width: 100%;
             height: 100%;
             opacity: 0;
-            transition: opacity 0.6s ease 0.1s;
+            transition: opacity 0.4s ease;
         }
 
         #content.visible {
             opacity: 1;
         }
 
-        #content iframe {
+        iframe {
             width: 100%;
             height: 100%;
             border: none;
-            display: block;
         }
 
+        /* Modern Inline 404 Styling */
         .error-page {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            height: 100%;
+            height: 100vh;
             text-align: center;
-            padding: 24px;
         }
 
         .error-code {
-            font-size: clamp(80px, 15vw, 160px);
+            font-size: clamp(100px, 15vw, 150px);
             font-weight: 900;
-            line-height: 1;
-            background: linear-gradient(135deg, #00e68a, #00bfff, #a855f7);
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #eee;
         }
 
         .error-msg {
-            margin-top: 16px;
-            font-size: clamp(15px, 3vw, 18px);
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
         }
 
-        .error-link {
-            margin-top: 32px;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 12px 28px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.06);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            color: #fff;
+        .btn-home {
+            padding: 12px 24px;
+            background: #fff;
+            color: #000;
             text-decoration: none;
-            font-size: 14px;
-            font-weight: 500;
-            transition: background 0.25s, border-color 0.25s, transform 0.2s;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s;
         }
 
-        .error-link:hover {
-            background: rgba(0, 230, 138, 0.1);
-            border-color: rgba(0, 230, 138, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .error-link:active {
-            transform: translateY(0);
-        }
-
-        .error-link svg {
-            width: 16px;
-            height: 16px;
-            stroke: currentColor;
-            fill: none;
-            stroke-width: 2;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            flex-shrink: 0;
+        .btn-home:hover {
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -145,15 +118,14 @@
 
     <div id="loader">
         <div class="spinner"></div>
-        <div class="loader-label">Loading</div>
     </div>
 
     <div id="content"></div>
 
     <script>
         (function() {
-            var loader = document.getElementById('loader');
-            var content = document.getElementById('content');
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('content');
 
             function reveal() {
                 loader.classList.add('hidden');
@@ -161,74 +133,62 @@
             }
 
             function show404() {
-                content.innerHTML =
-                    '<div class="error-page">' +
-                        '<div class="error-code">404</div>' +
-                        '<p class="error-msg">The page you are looking for doesn\'t exist or has been moved.</p>' +
-                        '<a class="error-link" href="/">' +
-                            '<svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>' +
-                            'Back to home' +
-                        '</a>' +
-                    '</div>';
+                document.title = "404 - Page Not Found";
+                content.innerHTML = `
+                    <div class="error-page">
+                        <div class="error-code">404</div>
+                        <h1 class="error-title">Page Not Found</h1>
+                        <p class="error-msg">The requested URL was not found on this server.</p>
+                        <a href="/" class="btn-home">Back to Home</a>
+                    </div>
+                `;
                 reveal();
             }
 
-            function load404() {
-                fetch('/404-main.txt')
-                    .then(function(res) {
-                        if (!res.ok) throw new Error('not found');
-                        return res.text();
-                    })
-                    .then(function(html) {
-                        content.innerHTML = html;
-                        reveal();
-                    })
-                    .catch(function() {
-                        show404();
-                    });
-            }
+            const path = window.location.pathname;
 
-            var path = window.location.pathname;
+            // STAP 1: Check of het path begint met /game/
+            if (path.startsWith('/game/')) {
+                const parts = path.split('/').filter(Boolean); // splitst "/game/naam" naar ["game", "naam"]
+                const slug = parts[1];
 
-            if (path.indexOf('/game/') === 0) {
-                var suffix = path.slice(6).replace(/\/+$/, '');
-
-                if (!suffix) {
+                if (!slug) {
                     window.location.href = '/';
-                } else {
-                    fetch('/games.json')
-                        .then(function(res) {
-                            if (!res.ok) throw new Error('json error');
-                            return res.json();
-                        })
-                        .then(function(data) {
-                            var found = false;
-                            var groupFound = null;
-
-                            for (var group in data) {
-                                if (data[group].indexOf(suffix) !== -1) {
-                                    found = true;
-                                    groupFound = group;
-                                    break;
-                                }
-                            }
-
-                            if (found) {
-                                var iframe = document.createElement('iframe');
-                                iframe.src = '/' + groupFound + '/' + suffix;
-                                iframe.addEventListener('load', reveal);
-                                setTimeout(reveal, 8000);
-                                content.appendChild(iframe);
-                            } else {
-                                show404();
-                            }
-                        })
-                        .catch(function() {
-                            show404();
-                        });
+                    return;
                 }
+
+                // STAP 2: Fetch games.json (nog steeds extern zoals gevraagd)
+                fetch('/games.json')
+                    .then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.json();
+                    })
+                    .then(data => {
+                        let foundPath = null;
+                        
+                        // Zoek de slug in de json categorieën
+                        for (const category in data) {
+                            if (data[category].includes(slug)) {
+                                foundPath = `/${category}/${slug}`;
+                                break;
+                            }
+                        }
+
+                        if (foundPath) {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = foundPath;
+                            iframe.onload = reveal;
+                            // Fallback voor als de game traag laadt
+                            setTimeout(reveal, 6000);
+                            content.appendChild(iframe);
+                        } else {
+                            show404();
+                        }
+                    })
+                    .catch(() => show404());
             } else {
-                load404();
+                // Als het GEEN /game/ path is, toon direct de 404
+                show404();
             }
         })();
     </script>
