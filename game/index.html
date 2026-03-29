@@ -60,7 +60,7 @@
                 for (const group in data) {
                     if (data[group].includes(hash)) {
                         debugLog(`Game gevonden in ${group}: ${hash}`);
-                        document.body.innerHTML = `<iframe src="/games/${group}/${hash}"></iframe>`;
+                        document.body.innerHTML = `<iframe src="/${group}/${hash}"></iframe>`;
                         found = true;
                         break;
                     }
