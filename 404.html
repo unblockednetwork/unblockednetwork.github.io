@@ -2,27 +2,32 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Game Path Extractor</title>
+    <title>Game Router</title>
 </head>
 <body>
-    <h1>Game Path:</h1>
-    <p id="gamePath">Laden...</p>
+    <div id="content">Laden...</div>
 
     <script>
-        // Pak de huidige URL
-        const url = window.location.pathname;
-
-        // Zoek naar "/game/" en pak alles erna
+        const path = window.location.pathname;
         const prefix = "/game/";
-        let path = "";
-        if (url.includes(prefix)) {
-            path = url.split(prefix)[1]; // alles na /game/
-        } else {
-            path = "Geen game pad gevonden";
-        }
 
-        // Zet het in de paragraaf
-        document.getElementById("gamePath").textContent = path;
+        if (path.includes(prefix) && path.split(prefix)[1]) {
+            // Er is een path na /game/
+            const gamePath = path.split(prefix)[1];
+            document.getElementById("content").textContent = gamePath;
+        } else {
+            // Geen path → fetch 404-main.txt en vervang hele pagina
+            fetch("/404-main.txt")
+                .then(res => res.text())
+                .then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                })
+                .catch(() => {
+                    document.getElementById("content").textContent = "Kon 404 pagina niet laden 😢";
+                });
+        }
     </script>
 </body>
 </html>
