@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Game Loader</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎮</text></svg>">
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -98,12 +99,15 @@
 
         .error-msg {
             margin-top: 16px;
-            font-size: 18px;
+            font-size: clamp(15px, 3vw, 18px);
             color: rgba(255, 255, 255, 0.4);
         }
 
         .error-link {
             margin-top: 32px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
             padding: 12px 28px;
             border-radius: 8px;
             background: rgba(255, 255, 255, 0.06);
@@ -133,8 +137,7 @@
             stroke-width: 2;
             stroke-linecap: round;
             stroke-linejoin: round;
-            vertical-align: middle;
-            margin-right: 6px;
+            flex-shrink: 0;
         }
     </style>
 </head>
@@ -148,82 +151,86 @@
     <div id="content"></div>
 
     <script>
-        const loader = document.getElementById('loader');
-        const content = document.getElementById('content');
+        (function() {
+            var loader = document.getElementById('loader');
+            var content = document.getElementById('content');
 
-        function reveal() {
-            loader.classList.add('hidden');
-            content.classList.add('visible');
-        }
-
-        function show404() {
-            content.innerHTML = `
-                <div class="error-page">
-                    <div class="error-code">404</div>
-                    <p class="error-msg">This page doesn't exist or has been moved.</p>
-                    <a class="error-link" href="/">
-                        <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-                        Back to home
-                    </a>
-                </div>
-            `;
-            reveal();
-        }
-
-        function load404() {
-            fetch('/404-main.txt')
-                .then(res => {
-                    if (!res.ok) throw new Error('not found');
-                    return res.text();
-                })
-                .then(html => {
-                    content.innerHTML = html;
-                    reveal();
-                })
-                .catch(() => show404());
-        }
-
-        const path = window.location.pathname;
-
-        if (path.startsWith('/game/')) {
-            const suffix = path.slice(6).replace(/\/+$/, '');
-
-            if (!suffix) {
-                window.location.href = '/';
-                return;
+            function reveal() {
+                loader.classList.add('hidden');
+                content.classList.add('visible');
             }
 
-            fetch('/games.json')
-                .then(res => {
-                    if (!res.ok) throw new Error('json error');
-                    return res.json();
-                })
-                .then(data => {
-                    let found = false;
-                    let groupFound = null;
+            function show404() {
+                content.innerHTML =
+                    '<div class="error-page">' +
+                        '<div class="error-code">404</div>' +
+                        '<p class="error-msg">The page you are looking for doesn\'t exist or has been moved.</p>' +
+                        '<a class="error-link" href="/">' +
+                            '<svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>' +
+                            'Back to home' +
+                        '</a>' +
+                    '</div>';
+                reveal();
+            }
 
-                    for (const group in data) {
-                        if (data[group].includes(suffix)) {
-                            found = true;
-                            groupFound = group;
-                            break;
-                        }
-                    }
-
-                    if (found) {
-                        const iframe = document.createElement('iframe');
-                        iframe.src = '/' + groupFound + '/' + suffix;
-                        iframe.addEventListener('load', reveal);
-                        setTimeout(reveal, 8000);
-                        content.appendChild(iframe);
-                    } else {
+            function load404() {
+                fetch('/404-main.txt')
+                    .then(function(res) {
+                        if (!res.ok) throw new Error('not found');
+                        return res.text();
+                    })
+                    .then(function(html) {
+                        content.innerHTML = html;
+                        reveal();
+                    })
+                    .catch(function() {
                         show404();
-                    }
-                })
-                .catch(() => show404());
-        } else {
-            load404();
-        }
+                    });
+            }
+
+            var path = window.location.pathname;
+
+            if (path.indexOf('/game/') === 0) {
+                var suffix = path.slice(6).replace(/\/+$/, '');
+
+                if (!suffix) {
+                    window.location.href = '/';
+                } else {
+                    fetch('/games.json')
+                        .then(function(res) {
+                            if (!res.ok) throw new Error('json error');
+                            return res.json();
+                        })
+                        .then(function(data) {
+                            var found = false;
+                            var groupFound = null;
+
+                            for (var group in data) {
+                                if (data[group].indexOf(suffix) !== -1) {
+                                    found = true;
+                                    groupFound = group;
+                                    break;
+                                }
+                            }
+
+                            if (found) {
+                                var iframe = document.createElement('iframe');
+                                iframe.src = '/' + groupFound + '/' + suffix;
+                                iframe.addEventListener('load', reveal);
+                                setTimeout(reveal, 8000);
+                                content.appendChild(iframe);
+                            } else {
+                                show404();
+                            }
+                        })
+                        .catch(function() {
+                            show404();
+                        });
+                }
+            } else {
+                load404();
+            }
+        })();
     </script>
 </body>
 </html>
