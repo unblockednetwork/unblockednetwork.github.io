@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <title>Game Loader - Hash Routing</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+            background: #000;
+            color: #fff;
+            font-family: sans-serif;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        #debug {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.8);
+            color: lime;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 50%;
+            overflow-y: auto;
+            z-index: 9999;
+        }
+    </style>
+</head>
+<body>
+    <div id="content">Laden...</div>
+    <div id="debug"></div>
+
+    <script>
+        const debugLog = (msg) => {
+            console.log(msg);
+            document.getElementById("debug").innerHTML += msg + "<br>";
+        };
+
+        // Functie om game te laden op basis van hash
+        async function loadGameFromHash() {
+            const hash = window.location.hash.slice(1); // alles na #
+            debugLog("Huidige hash: " + hash);
+
+            if (!hash) {
+                document.getElementById("content").textContent = "Geen game geselecteerd.";
+                return;
+            }
+
+            // hash verwacht formaat g1/slope of g2/1 etc
+            const parts = hash.split("/");
+            if (parts.length !== 2) {
+                document.getElementById("content").textContent = "Ongeldige game route.";
+                return;
+            }
+
+            const [group, gameName] = parts;
+            debugLog("Group: " + group + ", Game: " + gameName);
+
+            try {
+                const res = await fetch("/games.json");
+                const data = await res.json();
+
+                if (data[group] && data[group].includes(gameName)) {
+                    debugLog("Game gevonden! Laden iframe...");
+                    document.body.innerHTML = `<iframe src="/games/${group}/${gameName}"></iframe>`;
+                } else {
+                    debugLog("Game niet gevonden!");
+                    document.getElementById("content").textContent = "Game niet gevonden 😢";
+                }
+            } catch (e) {
+                debugLog("Fout bij games.json fetch: " + e);
+                document.getElementById("content").textContent = "Kon games.json niet laden 😢";
+            }
+        }
+
+        // Hash veranderen → game laden
+        window.addEventListener("hashchange", loadGameFromHash);
+        window.addEventListener("load", loadGameFromHash);
+    </script>
+</body>
+</html>
