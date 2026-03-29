@@ -2,7 +2,7 @@
 <html lang="nl">
 <head>
     <meta charset="UTF-8">
-    <title>Game Loader</title>
+    <title>Game Loader Debug</title>
     <style>
         html, body {
             margin: 0;
@@ -15,15 +15,37 @@
             height: 100%;
             border: none;
         }
+        #debug {
+            position: fixed;
+            top: 0;
+            left: 0;
+            background: rgba(0,0,0,0.8);
+            color: lime;
+            padding: 10px;
+            font-family: monospace;
+            font-size: 14px;
+            max-height: 50%;
+            overflow-y: auto;
+            z-index: 9999;
+        }
     </style>
 </head>
 <body>
     <div id="content">Laden...</div>
+    <div id="debug"></div>
 
     <script>
+        const debugLog = (msg) => {
+            console.log(msg);
+            const debugDiv = document.getElementById("debug");
+            debugDiv.innerHTML += msg + "<br>";
+        };
+
         const path = window.location.pathname;
+        debugLog("Huidige path: " + path);
 
         function load404() {
+            debugLog("404 geladen");
             fetch("/404-main.txt")
                 .then(res => res.text())
                 .then(html => {
@@ -36,38 +58,41 @@
                 });
         }
 
-        // Alleen paths die met /game/ beginnen worden behandeld
         if (path.startsWith("/game/")) {
-            const suffix = path.slice(6); // alles na /game/
-            
+            let suffix = path.slice(6).replace(/\/+$/, "");
+            debugLog("Suffix na /game/: " + suffix);
+
             if (!suffix) {
-                // /game/ → redirect naar /
+                debugLog("Suffix leeg → redirect naar /");
                 window.location.href = "/";
             } else {
-                // fetch games.json
                 fetch("/games.json")
                     .then(res => res.json())
                     .then(data => {
-                        // zoek in alle groepen g1-g4
                         let found = false;
                         for (const group in data) {
+                            debugLog("Check group: " + group);
                             if (data[group].includes(suffix)) {
+                                debugLog(`Game gevonden in ${group}: ${suffix}`);
                                 found = true;
-                                // laad iframe fullscreen
                                 document.body.innerHTML = `
-                                    <iframe src="/games/${group}/${suffix}/"></iframe>
+                                    <iframe src="/games/${group}/${suffix}"></iframe>
                                 `;
                                 break;
                             }
                         }
                         if (!found) {
+                            debugLog("Game niet gevonden → 404");
                             load404();
                         }
                     })
-                    .catch(() => load404());
+                    .catch(err => {
+                        debugLog("Fout bij fetch games.json: " + err);
+                        load404();
+                    });
             }
         } else {
-            // path niet /game/... → 404
+            debugLog("Path start niet met /game/ → 404");
             load404();
         }
     </script>
