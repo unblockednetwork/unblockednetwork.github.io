@@ -375,11 +375,11 @@
       <div class="card-actions">
         <div style="display: flex; gap: 1rem; align-items: center;">
           <span class="action-link" onclick="copyPath('${game}', event)">Copy</span>
-          <a href="${ghUrl}" target="_blank" class="action-link" title="View Source on GitHub">
+          <a href="${ghUrl}" target="_self" class="action-link" title="View Source on GitHub">
             ${ghIcon} Source
           </a>
         </div>
-        <a href="./game/${game}" target="_blank" class="action-link primary" onclick="saveRecent('${game}')">Open &rarr;</a>
+        <a href="./game/${game}" target="_self" class="action-link primary" onclick="saveRecent('${game}')">Open &rarr;</a>
       </div>
     `;
     return div;
@@ -423,7 +423,7 @@
     const game = allGames[Math.floor(Math.random() * allGames.length)];
     saveRecent(game);
     showToast(`Opening ${formatName(game)}...`);
-    setTimeout(() => window.open(`./${getPath(game)}/${game}`, '_blank'), 300);
+    setTimeout(() => window.open(`./game/${game}`, '_self'), 300);
   });
 
   init();
