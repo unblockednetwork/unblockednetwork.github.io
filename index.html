@@ -1,2 +1,432 @@
-<!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script><!-- End Cloudflare Web Analytics -->
-UN
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./logo.svg">
+  <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script><!-- End Cloudflare Web Analytics -->
+  <title>ZYNQ (UN) - Console</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #0a0a0f;
+      --bg-secondary: #12121a;
+      --border-color: #1e1e2e;
+      --text-primary: #e4e4ef;
+      --text-secondary: #6b6b80;
+      --accent-primary: #00f0ff;
+      --accent-glow: rgba(0, 240, 255, 0.15);
+      --radius: 4px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background-color: var(--bg-color);
+      color: var(--text-primary);
+      min-height: 100vh;
+      line-height: 1.6;
+      font-size: 14px;
+      -webkit-font-smoothing: antialiased;
+    }
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-color); }
+    ::-webkit-scrollbar-thumb:hover { background: var(--text-secondary); }
+
+    #app {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    header {
+      margin-bottom: 3rem;
+      padding-top: 2rem;
+    }
+    .top-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 2rem;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+    }
+    h1 span { color: var(--text-secondary); }
+    .stats {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+    }
+    .stats strong { color: var(--accent-primary); font-weight: 400; }
+    .search-container {
+      position: relative;
+      margin-bottom: 1.5rem;
+    }
+    input#search {
+      width: 100%;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid var(--border-color);
+      padding: 0.5rem 0;
+      color: var(--text-primary);
+      font-family: inherit;
+      font-size: 1.5rem;
+      font-weight: 300;
+      outline: none;
+      transition: border-color 0.3s;
+    }
+    input#search:focus { border-color: var(--accent-primary); }
+    input#search::placeholder { color: var(--text-secondary); opacity: 0.5; }
+    .controls {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 1rem;
+    }
+    .btn-minimal {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      padding: 0.4rem 0.8rem;
+      border-radius: 2px;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      transition: all 0.2s;
+    }
+    .btn-minimal:hover {
+      color: var(--bg-color);
+      background-color: var(--accent-primary);
+      border-color: var(--accent-primary);
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .section-label {
+      font-size: 0.7rem;
+      color: var(--text-secondary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+      display: block;
+    }
+    #recent-section {
+      margin-bottom: 3rem;
+      display: none;
+    }
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1px;
+      background-color: var(--border-color);
+      border: 1px solid var(--border-color);
+    }
+    .game-card {
+      background: var(--bg-color);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 120px;
+      transition: background 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+      position: relative;
+    }
+    .game-card:hover {
+      background: var(--bg-secondary);
+      box-shadow: 0 0 15px var(--accent-glow);
+      z-index: 1;
+    }
+    .card-top {
+      margin-bottom: 1rem;
+    }
+    .card-title {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--text-primary);
+      margin-bottom: 0.25rem;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .card-path {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      font-weight: 300;
+      opacity: 0.6;
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .card-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 0;
+      overflow: hidden;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+    .game-card:hover .card-actions {
+      height: auto;
+      opacity: 1;
+      margin-top: 1rem;
+    }
+    .action-link {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding-bottom: 1px;
+      border-bottom: 1px solid transparent;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .action-link:hover {
+      color: var(--text-primary);
+      border-bottom: 1px solid var(--text-primary);
+    }
+    .action-link.primary {
+       color: var(--accent-primary);
+       font-weight: 500;
+       text-shadow: 0 0 8px var(--accent-glow);
+    }
+    .action-link.primary:hover {
+       border-bottom-color: var(--accent-primary);
+    }
+    .icon {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+      vertical-align: middle;
+    }
+    .recent-list {
+      display: flex;
+      flex-direction: column;
+      border-left: 1px solid var(--accent-primary);
+      padding-left: 1rem;
+      margin-bottom: 1rem;
+    }
+    .recent-item {
+      display: flex;
+      padding: 0.5rem 0;
+      font-size: 0.85rem;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .recent-item a { color: var(--text-primary); text-decoration: none; }
+    .recent-item a:hover { color: var(--accent-primary); }
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--bg-secondary);
+      border: 1px solid var(--accent-primary);
+      color: var(--accent-primary);
+      padding: 0.5rem 1rem;
+      font-size: 0.8rem;
+      opacity: 0;
+      transition: all 0.3s;
+      pointer-events: none;
+      z-index: 1000;
+      box-shadow: 0 0 10px var(--accent-glow);
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    @media (max-width: 600px) {
+      #app { padding: 1rem; }
+      header { margin-bottom: 2rem; padding-top: 1rem; }
+      .top-line { flex-direction: column; gap: 0.5rem; }
+      input#search { font-size: 1.2rem; }
+      .game-grid { grid-template-columns: 1fr; border: none; }
+      .game-card { border-bottom: 1px solid var(--border-color); }
+      .card-actions { height: auto; opacity: 1; margin-top: 1rem; }
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+  <header>
+    <div class="top-line">
+      <h1>ZYNQ <span>/ dev</span></h1>
+      <div class="stats">
+        <span id="count-text">0</span> endpoints &nbsp;/&nbsp; uptime <span id="uptime">0s</span>
+      </div>
+    </div>
+    <div class="search-container">
+      <input type="text" id="search" placeholder="Search..." autocomplete="off">
+    </div>
+    <div class="controls">
+      <button class="btn-minimal" id="random-btn">Random</button>
+    </div>
+  </header>
+  <main>
+    <div id="recent-section">
+      <span class="section-label">Recent</span>
+      <div class="recent-list" id="recent-container"></div>
+    </div>
+    <span class="section-label">Services</span>
+    <div class="game-grid" id="games-container"></div>
+  </main>
+  <div id="toast" class="toast">Copied</div>
+</div>
+
+<script>
+  const container = document.getElementById('games-container');
+  const recentContainer = document.getElementById('recent-container');
+  const recentSection = document.getElementById('recent-section');
+  const searchInput = document.getElementById('search');
+  const gameCountEl = document.getElementById('count-text');
+  const randomBtn = document.getElementById('random-btn');
+  const uptimeEl = document.getElementById('uptime');
+  const toast = document.getElementById('toast');
+
+  let allGameData = {};
+  let allGames = [];
+  let ghConfig = { username: null, mainRepo: null };
+
+  const ghIcon = `<svg class="icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>`;
+
+  let startTime = Date.now();
+  setInterval(() => {
+    let s = Math.floor((Date.now() - startTime) / 1000);
+    uptimeEl.textContent = s < 60 ? `${s}s` : `${Math.floor(s/60)}m`;
+  }, 1000);
+
+  function detectGitHubConfig() {
+    const host = window.location.hostname;
+    const match = host.match(/^([^.]+)\.github\.io$/);
+    if (match) {
+      const username = match[1];
+      return { username: username, mainRepo: `${username}.github.io` };
+    }
+    return { username: null, mainRepo: null };
+  }
+
+  // Zet 'mijn-game-naam' om naar 'Mijn Game Naam'
+  function formatName(name) {
+    return name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
+  }
+
+  function getPath(game) {
+    return ['g1','g2','g3','g4'].find(g => allGameData[g]?.includes(game)) || 'g1';
+  }
+
+  function getGitHubUrl(repoKey, gameName) {
+    if (!ghConfig.username) return '#';
+    const repoName = (repoKey !== ghConfig.mainRepo) ? repoKey : ghConfig.mainRepo;
+    return `https://github.com/${ghConfig.username}/${repoName}/tree/main/${gameName}`;
+  }
+
+  function showToast(msg) {
+    toast.textContent = msg;
+    toast.classList.add('show');
+    setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  function copyPath(game, e) {
+    if(e) e.stopPropagation();
+    const path = `${window.location.origin}/${getPath(game)}/${game}`;
+    navigator.clipboard.writeText(path).then(() => showToast('Copied to clipboard'));
+  }
+
+  function saveRecent(game) {
+    let recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
+    recent = [game, ...recent.filter(g => g !== game)].slice(0, 3);
+    localStorage.setItem('recentGames', JSON.stringify(recent));
+    renderRecent();
+  }
+
+  function renderRecent() {
+    const recent = JSON.parse(localStorage.getItem('recentGames') || '[]');
+    recentSection.style.display = recent.length ? 'block' : 'none';
+    recentContainer.innerHTML = '';
+    recent.forEach(game => {
+      const div = document.createElement('div');
+      div.className = 'recent-item';
+      div.innerHTML = `<a href="./${getPath(game)}/${game}" target="_blank" onclick="saveRecent('${game}')">${formatName(game)}</a>`;
+      recentContainer.appendChild(div);
+    });
+  }
+
+  function createCard(game) {
+    const path = getPath(game);
+    const div = document.createElement('div');
+    div.className = 'game-card';
+    const ghUrl = getGitHubUrl(path, game);
+    div.innerHTML = `
+      <div class="card-top">
+        <div class="card-title">${formatName(game)}</div>
+        <span class="card-path">/${path}/${game}</span>
+      </div>
+      <div class="card-actions">
+        <div style="display: flex; gap: 1rem; align-items: center;">
+          <span class="action-link" onclick="copyPath('${game}', event)">Copy</span>
+          <a href="${ghUrl}" target="_self" class="action-link" title="View Source on GitHub">
+            ${ghIcon} Source
+          </a>
+        </div>
+        <a href="./game/${game}" target="_self" class="action-link primary" onclick="saveRecent('${game}')">Open &rarr;</a>
+      </div>
+    `;
+    return div;
+  }
+
+  function renderGames(games) {
+    container.innerHTML = '';
+    if (!games.length) {
+      container.innerHTML = '<div style="grid-column: 1/-1; padding: 2rem; color: var(--text-secondary); text-align: center;">No results.</div>';
+      return;
+    }
+    games.forEach(g => container.appendChild(createCard(g)));
+  }
+
+  async function init() {
+    ghConfig = detectGitHubConfig();
+    try {
+      const res = await fetch('./games.json');
+      allGameData = await res.json();
+      allGames = Object.values(allGameData).flat();
+      gameCountEl.textContent = allGames.length;
+      renderGames(allGames);
+      renderRecent();
+    } catch (e) {
+      container.innerHTML = `<div style="grid-column: 1/-1; padding: 2rem; color: var(--accent-primary);">Error loading data.</div>`;
+    }
+  }
+
+  // Aangepaste zoekfunctie: filtert op de geformatteerde naam
+  searchInput.addEventListener('input', (e) => {
+    const query = e.target.value.toLowerCase().trim();
+    const filtered = allGames.filter(gameId => {
+      const prettyName = formatName(gameId).toLowerCase();
+      return prettyName.includes(query);
+    });
+    renderGames(filtered);
+  });
+
+  randomBtn.addEventListener('click', () => {
+    if(!allGames.length) return;
+    const game = allGames[Math.floor(Math.random() * allGames.length)];
+    saveRecent(game);
+    showToast(`Opening ${formatName(game)}...`);
+    setTimeout(() => window.open(`./game/${game}`, '_self'), 300);
+  });
+
+  init();
+</script>
+</body>
+</html>
