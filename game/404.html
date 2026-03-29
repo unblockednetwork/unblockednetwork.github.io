@@ -83,7 +83,7 @@
                         }
                         if (found) {
                             // iframe laadt direct de game, zonder gX in URL
-                            document.body.innerHTML = `<iframe src="/games/${groupFound}/${suffix}"></iframe>`;
+                            document.body.innerHTML = `<iframe src="/${groupFound}/${suffix}"></iframe>`;
                         } else {
                             debugLog("Game niet gevonden → 404");
                             load404();
