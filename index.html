@@ -4,9 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./logo.svg">
-    <!-- Cloudflare Web Analytics -->
   <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script>
-  <!-- End Cloudflare Web Analytics -->
   <title>ZYNQ | Games</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -46,7 +44,6 @@
       -webkit-tap-highlight-color: transparent;
     }
 
-    /* Subtle background texture */
     body::before {
       content: '';
       position: fixed;
@@ -63,14 +60,12 @@
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--text-dim); }
 
-    /* Layout */
     #app {
       max-width: 1400px;
       margin: 0 auto;
       padding: 0 24px 80px;
     }
 
-    /* Header */
     header {
       padding: 32px 0 24px;
       border-bottom: 1px solid var(--border-subtle);
@@ -140,7 +135,6 @@
       background: var(--border);
     }
 
-    /* Search Section */
     .search-section {
       display: flex;
       gap: 12px;
@@ -209,7 +203,6 @@
 
     .btn-random:active { transform: translateY(0); }
 
-    /* Category Tabs */
     .tabs-wrapper {
       margin-top: 20px;
       overflow-x: auto;
@@ -265,7 +258,6 @@
       color: var(--accent);
     }
 
-    /* Section Headers */
     .section-header {
       display: flex;
       align-items: center;
@@ -297,7 +289,6 @@
       letter-spacing: 0.5px;
     }
 
-    /* Featured Grid */
     .featured-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
@@ -373,7 +364,6 @@
       color: var(--text-dim);
     }
 
-    /* Recent Chips */
     .recent-chips {
       display: flex;
       gap: 8px;
@@ -400,7 +390,6 @@
       color: var(--accent);
     }
 
-    /* Games Grid - Updated for clickable cards */
     .games-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -480,20 +469,11 @@
       font-size: 16px;
       font-weight: 600;
       color: var(--text);
-      margin-bottom: 4px;
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .card-meta {
-      font-size: 12px;
-      color: var(--text-dim);
-      display: flex;
-      gap: 12px;
-    }
-
-    /* Empty State */
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -510,7 +490,6 @@
       opacity: 0.5;
     }
 
-    /* Toast */
     .toast {
       position: fixed;
       bottom: 24px;
@@ -535,7 +514,6 @@
       transform: translateX(-50%) translateY(0);
     }
 
-    /* Animations */
     @keyframes fadeInUp {
       from {
         opacity: 0;
@@ -551,7 +529,6 @@
       animation: fadeInUp 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
     }
 
-    /* Responsive */
     @media (max-width: 768px) {
       #app { padding: 0 16px 60px; }
       
@@ -632,7 +609,6 @@
       }
     }
 
-    /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 0.01ms !important;
@@ -703,7 +679,6 @@
 </div>
 
 <script type="module">
-  // ========== CONFIG ==========
   const FEATURED_GAMES = [
     { id: 'subway-surfers', emoji: '🏃', tag: 'Endless Runner' },
     { id: 'slope', emoji: '🔺', tag: '3D Arcade' },
@@ -791,7 +766,6 @@
     'big-shot-boxing': '🥊', 'super-liquid-soccer': '⚽'
   };
 
-  // ========== DOM ==========
   const container = document.getElementById('games-container');
   const featuredContainer = document.getElementById('featured-container');
   const recentContainer = document.getElementById('recent-container');
@@ -805,12 +779,11 @@
   const uptimeEl = document.getElementById('uptime');
   const toast = document.getElementById('toast');
   
-async function getData() {
-  const res = await fetch("/games.json");
-  return await res.json();
-}
+  async function getData() {
+    const res = await fetch("/games.json");
+    return await res.json();
+  }
 
-  // New games data
   const NEW_GAME_DATA = await getData();
 
   let allGameData = {};
@@ -823,13 +796,8 @@ async function getData() {
     uptimeEl.textContent = s < 60 ? `${s}s` : `${Math.floor(s/60)}m`;
   }, 1000);
 
-  // ========== HELPERS ==========
   function formatName(name) {
     return name.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
-  }
-
-  function getPath(game) {
-    return ['g1','g2','g3','g4'].find(g => allGameData[g]?.includes(game)) || 'g1';
   }
 
   function getGameEmoji(gameId) {
@@ -853,7 +821,6 @@ async function getData() {
     renderRecent();
   }
 
-  // ========== RENDER ==========
   function renderCategoryTabs() {
     categoryTabs.innerHTML = '';
     Object.keys(CATEGORIES).forEach(key => {
@@ -920,24 +887,19 @@ async function getData() {
   }
 
   function createCard(game, index) {
-    const path = getPath(game);
-    // Changed to <a> tag for whole card clickability
     const card = document.createElement('a');
     card.className = 'game-card animate-in';
     card.style.animationDelay = `${Math.min(index * 0.02, 0.5)}s`;
     card.href = `./game/${game}`;
     
-    // Save to recent on click
     card.onclick = () => saveRecent(game);
 
     const emoji = getGameEmoji(game);
     
-    // HTML structure without buttons
     card.innerHTML = `
       <div class="card-emoji">${emoji}</div>
       <div class="card-content">
         <div class="card-title">${formatName(game)}</div>
-        <div class="card-meta"><span>/${path}</span></div>
       </div>
     `;
     return card;
@@ -952,7 +914,6 @@ async function getData() {
     games.forEach((g, i) => container.appendChild(createCard(g, i)));
   }
 
-  // ========== INIT ==========
   function init() {
     allGameData = NEW_GAME_DATA;
     allGames = Object.values(allGameData).flat();
