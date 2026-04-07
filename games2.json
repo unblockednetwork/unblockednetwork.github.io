@@ -102,22 +102,28 @@
         "devices": "1,2"
       },
       "blumgi-rocket": {
-        "name": "Blumgi Rocket"
+        "name": "Blumgi Rocket",
+        "devices": "1,2,3,4"
       },
       "bouncy-woods": {
-        "name": "Bouncy Woods"
+        "name": "Bouncy Woods",
+        "devices": "1,2,3,4"
       },
       "breaking-the-bank": {
-        "name": "Breaking the Bank"
+        "name": "Breaking the Bank",
+        "devices": "1,2,3,4"
       },
       "bubble-pop-adventures": {
-        "name": "Bubble Pop Adventures"
+        "name": "Bubble Pop Adventures",
+        "1,2"
       },
       "burrito-bison-revenge": {
-        "name": "Burrito Bison Revenge"
+        "name": "Burrito Bison Revenge",
+        "1,2,3,4"
       },
       "cannon-basketball-4": {
-        "name": "Cannon Basketball 4"
+        "name": "Cannon Basketball 4",
+        "1,2,3,4"
       },
       "canyon-defense": {
         "name": "Canyon Defense"
