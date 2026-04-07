@@ -66,10 +66,12 @@
         "devices":"1,2,3,4"
       },
       "battle-for-gondor": {
-        "name": "Battle for Gondor"
+        "name": "Battle for Gondor",
+        "devices":"1,2"
       },
       "big-tower-tiny-square": {
-        "name": "Big Tower Tiny Square"
+        "name": "Big Tower Tiny Square",
+        "devices":"1,2"
       },
       "bitlife": {
         "name": "BitLife"
