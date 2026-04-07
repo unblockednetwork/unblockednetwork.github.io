@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script><!-- End Cloudflare Web Analytics -->
+      <link rel="icon" href="/logo.svg">
+    <title>UN | ZYNQ</title>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+            background: #0a0a0f;
+            color: #fff;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+        }
+
+        #loader {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            background: #0a0a0f;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 28px;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        #loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: #00e68a;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        #content.visible {
+            opacity: 1;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Modern Inline 404 Styling */
+        .error-page {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: clamp(100px, 15vw, 150px);
+            font-weight: 900;
+            background: linear-gradient(135deg, #ff4b2b, #ff416c);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+        }
+
+        .error-title {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #eee;
+        }
+
+        .error-msg {
+            color: rgba(255, 255, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        .btn-home {
+            padding: 12px 24px;
+            background: #fff;
+            color: #000;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: transform 0.2s;
+        }
+
+        .btn-home:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="spinner"></div>
+    </div>
+
+    <div id="content"></div>
+
+    <script>
+        (function() {
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('content');
+
+            function reveal() {
+                loader.classList.add('hidden');
+                content.classList.add('visible');
+            }
+
+            function show404() {
+                document.title = "404 - Page Not Found";
+                content.innerHTML = `
+                    <div class="error-page">
+                        <div class="error-code">404</div>
+                        <h1 class="error-title">Page Not Found</h1>
+                        <p class="error-msg">The requested URL was not found on this server.</p>
+                        <a href="/" class="btn-home">Back to Home</a>
+                    </div>
+                `;
+                reveal();
+            }
+
+            const path = window.location.pathname;
+
+            // STAP 1: Check of het path begint met /game/
+            if (path.startsWith('/game/')) {
+                const parts = path.split('/').filter(Boolean); // splitst "/game/naam" naar ["game", "naam"]
+                const slug = parts[1];
+
+                if (!slug) {
+                    window.location.href = '/';
+                    return;
+                }
+
+                // STAP 2: Fetch games.json (nog steeds extern zoals gevraagd)
+                fetch('/games.json')
+                    .then(res => {
+                        if (!res.ok) throw new Error();
+                        return res.json();
+                    })
+                    .then(data => {
+                        let foundPath = null;
+                        
+                        // Zoek de slug in de json categorieën
+                        for (const category in data) {
+                            if (data[category].includes(slug)) {
+                                foundPath = `/${category}/${slug}`;
+                                break;
+                            }
+                        }
+
+                        if (foundPath) {
+                            const iframe = document.createElement('iframe');
+                            iframe.src = foundPath;
+                            iframe.onload = reveal;
+                            // Fallback voor als de game traag laadt
+                            setTimeout(reveal, 6000);
+                            content.appendChild(iframe);
+                        } else {
+                            show404();
+                        }
+                    })
+                    .catch(() => show404());
+            } else {
+                // Als het GEEN /game/ path is, toon direct de 404
+                show404();
+            }
+        })();
+    </script>
+</body>
+</html>
