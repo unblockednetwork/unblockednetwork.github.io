@@ -1,18 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="nl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script><!-- End Cloudflare Web Analytics -->
-      <link rel="icon" href="/logo.svg">
+    <!-- Cloudflare Web Analytics -->
+    <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+    
+    <link rel="icon" href="/logo.svg">
     <title>UN | ZYNQ</title>
+
+    <!-- HRN Engine laden -->
+    <script src="https://cdn.jsdelivr.net/gh/un-zynq/v2/dev/lib7.4.2.js"></script>
+
     <style>
         *, *::before, *::after {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-
         html, body {
             height: 100%;
             overflow: hidden;
@@ -20,7 +26,6 @@
             color: #fff;
             font-family: 'Segoe UI', system-ui, sans-serif;
         }
-
         #loader {
             position: fixed;
             inset: 0;
@@ -33,13 +38,11 @@
             gap: 28px;
             transition: opacity 0.5s ease, visibility 0.5s ease;
         }
-
         #loader.hidden {
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
         }
-
         .spinner {
             width: 36px;
             height: 36px;
@@ -48,29 +51,24 @@
             border-radius: 50%;
             animation: spin 0.8s linear infinite;
         }
-
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
-
         #content {
             width: 100%;
             height: 100%;
             opacity: 0;
             transition: opacity 0.4s ease;
         }
-
         #content.visible {
             opacity: 1;
         }
-
         iframe {
             width: 100%;
             height: 100%;
             border: none;
         }
-
-        /* Modern Inline 404 Styling */
+        /* Modern 404 Styling */
         .error-page {
             display: flex;
             flex-direction: column;
@@ -78,8 +76,8 @@
             justify-content: center;
             height: 100vh;
             text-align: center;
+            padding: 20px;
         }
-
         .error-code {
             font-size: clamp(100px, 15vw, 150px);
             font-weight: 900;
@@ -88,20 +86,18 @@
             -webkit-text-fill-color: transparent;
             line-height: 1;
         }
-
         .error-title {
             font-size: 24px;
             margin: 10px 0;
             color: #eee;
         }
-
         .error-msg {
             color: rgba(255, 255, 255, 0.5);
             margin-bottom: 30px;
+            max-width: 420px;
         }
-
         .btn-home {
-            padding: 12px 24px;
+            padding: 12px 28px;
             background: #fff;
             color: #000;
             text-decoration: none;
@@ -109,89 +105,95 @@
             font-weight: 600;
             transition: transform 0.2s;
         }
-
         .btn-home:hover {
             transform: scale(1.05);
         }
     </style>
 </head>
 <body>
-
     <div id="loader">
         <div class="spinner"></div>
+        <div style="color:#666; font-size:14px;">Loading game...</div>
     </div>
-
+    
     <div id="content"></div>
 
-    <script>
-        (function() {
-            const loader = document.getElementById('loader');
-            const content = document.getElementById('content');
+    <script type="module">
+        const loader = document.getElementById('loader');
+        const content = document.getElementById('content');
 
-            function reveal() {
-                loader.classList.add('hidden');
-                content.classList.add('visible');
-            }
+        function reveal() {
+            loader.classList.add('hidden');
+            content.classList.add('visible');
+        }
 
-            function show404() {
-                document.title = "404 - Page Not Found";
-                content.innerHTML = `
-                    <div class="error-page">
-                        <div class="error-code">404</div>
-                        <h1 class="error-title">Page Not Found</h1>
-                        <p class="error-msg">The requested URL was not found on this server.</p>
-                        <a href="/" class="btn-home">Back to Home</a>
-                    </div>
-                `;
-                reveal();
-            }
+        function show404() {
+            document.title = "404 - Game Not Found";
+            content.innerHTML = `
+                <div class="error-page">
+                    <div class="error-code">404</div>
+                    <h1 class="error-title">Game Not Found</h1>
+                    <p class="error-msg">Sorry, the game you're looking for doesn't exist or couldn't be loaded.</p>
+                    <a href="/" class="btn-home">Back to Home</a>
+                </div>
+            `;
+            reveal();
+        }
 
+        async function loadGame() {
             const path = window.location.pathname;
 
-            // STAP 1: Check of het path begint met /game/
-            if (path.startsWith('/game/')) {
-                const parts = path.split('/').filter(Boolean); // splitst "/game/naam" naar ["game", "naam"]
-                const slug = parts[1];
+            // Alleen paden zoals /game/alias ondersteunen
+            if (!path.startsWith('/game/')) {
+                show404();
+                return;
+            }
 
-                if (!slug) {
-                    window.location.href = '/';
+            const parts = path.split('/').filter(Boolean);
+            const alias = parts[1];
+
+            if (!alias) {
+                show404();
+                return;
+            }
+
+            try {
+                // Initialiseer HRN Engine
+                await window.HRN.load();
+
+                // Haal game object op via alias
+                const game = window.HRN.get(alias);
+
+                if (!game || !game.url) {
+                    show404();
                     return;
                 }
 
-                // STAP 2: Fetch games.json (nog steeds extern zoals gevraagd)
-                fetch('/games.json')
-                    .then(res => {
-                        if (!res.ok) throw new Error();
-                        return res.json();
-                    })
-                    .then(data => {
-                        let foundPath = null;
-                        
-                        // Zoek de slug in de json categorieën
-                        for (const category in data) {
-                            if (data[category].includes(slug)) {
-                                foundPath = `/${category}/${slug}`;
-                                break;
-                            }
-                        }
+                // Maak iframe aan met de juiste game URL
+                const iframe = document.createElement('iframe');
+                iframe.src = game.url;
+                iframe.allow = "fullscreen; accelerometer; gyroscope; magnetometer; autoplay";
 
-                        if (foundPath) {
-                            const iframe = document.createElement('iframe');
-                            iframe.src = foundPath;
-                            iframe.onload = reveal;
-                            // Fallback voor als de game traag laadt
-                            setTimeout(reveal, 6000);
-                            content.appendChild(iframe);
-                        } else {
-                            show404();
-                        }
-                    })
-                    .catch(() => show404());
-            } else {
-                // Als het GEEN /game/ path is, toon direct de 404
+                iframe.onload = () => {
+                    reveal();
+                };
+
+                // Fallback als iframe te lang doet over laden
+                setTimeout(reveal, 6500);
+
+                content.appendChild(iframe);
+
+                // Update title met gamenaam
+                document.title = `${game.name} - ZYNQ`;
+
+            } catch (err) {
+                console.error("Error loading game with HRN:", err);
                 show404();
             }
-        })();
+        }
+
+        // Start de game loader
+        loadGame();
     </script>
 </body>
 </html>
