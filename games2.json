@@ -322,16 +322,20 @@
         "devices":"1,2,3,4"
       },
       "marble-dash": {
-        "name": "Marble Dash"
+        "name": "Marble Dash",
+        "devices":"1,2,3,4"
       },
       "marbles-sorting": {
-        "name": "Marbles Sorting"
+        "name": "Marbles Sorting",
+        "devices":"1,2,3,4"
       },
       "meme-2048": {
-        "name": "Meme 2048"
+        "name": "Meme 2048",
+        "devices":"1,2,3,4"
       },
       "minesweeper": {
-        "name": "Minesweeper"
+        "name": "Minesweeper",
+        "devices":"1,2,3,4"
       },
       "mini-putt": {
         "name": "Mini-Putt"
