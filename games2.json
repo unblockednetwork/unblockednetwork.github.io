@@ -3,1702 +3,2235 @@
     "g1": {
       "1": {
         "name": "1",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "2048": {
         "name": "2048",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "1010-deluxe": {
         "name": "1010 Deluxe",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "2048-multitask": {
         "name": "2048 Multitask",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "3-pandas-in-japan": {
         "name": "3 Pandas in Japan",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "9007199254740992": {
         "name": "9007199254740992",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "achievement-unlocked": {
         "name": "Achievement Unlocked",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "platformer"
       },
       "adventures-with-anxiety": {
         "name": "Adventures with Anxiety",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "bad-ice-cream-2": {
         "name": "Bad Ice-Cream 2",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "bad-ice-cream-3": {
         "name": "Bad Ice-Cream 3",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "bad-ice-cream": {
         "name": "Bad Ice-Cream",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "ball-sort-halloween": {
         "name": "Ball Sort Halloween",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "ball-sort-puzzle": {
         "name": "Ball Sort Puzzle",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "ball-sort-soccer": {
         "name": "Ball Sort Soccer",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "ballistic": {
         "name": "Ballistic",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "shooter"
       },
       "bally": {
         "name": "Bally",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "battle-for-gondor": {
         "name": "Battle for Gondor",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "strategy"
       },
       "big-tower-tiny-square": {
         "name": "Big Tower Tiny Square",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "platformer"
       },
       "bitlife": {
         "name": "BitLife",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "black-hole-square": {
         "name": "Black Hole Square",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "block-the-pig": {
         "name": "Block The Pig",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "bloons-tower-defense-2": {
         "name": "Bloons Tower Defense 2",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "bloons-tower-defense-4": {
         "name": "Bloons Tower Defense 4",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "bloons-tower-defense": {
         "name": "Bloons Tower Defense",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "bloxorz": {
         "name": "Bloxorz",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "blumgi-rocket": {
         "name": "Blumgi Rocket",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "bouncy-woods": {
         "name": "Bouncy Woods",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "breaking-the-bank": {
         "name": "Breaking the Bank",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "bubble-pop-adventures": {
         "name": "Bubble Pop Adventures",
-        "devices": "1,2"
+        "devices": "1,2",
+        "category": "casual"
       },
       "burrito-bison-revenge": {
         "name": "Burrito Bison Revenge",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "cannon-basketball-4": {
         "name": "Cannon Basketball 4",
-        "devices": "1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "sports"
       },
       "canyon-defense": {
         "name": "Canyon Defense",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "cell-machine": {
         "name": "Cell Machine",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "checkers-legend": {
         "name": "Checkers Legend",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "circloo-2": {
         "name": "Circloo 2",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "circloo": {
         "name": "Circloo",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "climb-over-it": {
         "name": "Climb Over It",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "color-match": {
         "name": "Color Match",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "connect-3": {
         "name": "Connect 3",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "crossy-road": {
         "name": "Crossy Road",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "casual"
       },
       "cubes-2048-io": {
         "name": "Cubes 2048.io",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "cut-the-rope-holiday-gift": {
         "name": "Cut the Rope: Holiday Gift",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "cut-the-rope-time-travel": {
         "name": "Cut the Rope: Time Travel",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "cut-the-rope": {
         "name": "Cut the Rope",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "deal-or-no-deal": {
         "name": "Deal or No Deal",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "deepest-sword": {
         "name": "Deepest Sword",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "platformer"
       },
       "dino-bros": {
         "name": "Dino Bros",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "doctor-acorn-2": {
         "name": "Doctor Acorn 2",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "doge-2048": {
         "name": "Doge 2048",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "dummy-never-fails-2": {
         "name": "Dummy Never Fails 2",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "dummy-never-fails": {
         "name": "Dummy Never Fails",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "edge-not-found": {
         "name": "Edge Not Found",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "escaping-the-prison": {
         "name": "Escaping the Prison",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "evolution": {
         "name": "Evolution",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "exo": {
         "name": "Exo",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "platformer"
       },
       "factory-balls": {
         "name": "Factory Balls",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "farm-match": {
         "name": "Farm Match",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "flash-tetris": {
         "name": "Flash Tetris",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "fleeing-the-complex": {
         "name": "Fleeing the Complex",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "game-inside-a-game": {
         "name": "Game Inside a Game Inside ...",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "george-and-the-printer": {
         "name": "George and the Printer",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "getting-over-it": {
         "name": "Getting Over It",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "go-ball": {
         "name": "Go Ball",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "go-tet": {
         "name": "Go Tet",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "google-feud": {
         "name": "Google Feud",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "gravity-soccer": {
         "name": "Gravity Soccer",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "sports"
       },
       "grey-box-testing": {
         "name": "Grey-Box Testing",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "handshakes": {
         "name": "Handshakes",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "casual"
       },
       "hanger": {
         "name": "Hanger",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "hex-empire": {
         "name": "Hex Empire",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "hextris": {
         "name": "Hextris",
-        "devices":"1,2"
+        "devices": "1,2",
+        "category": "puzzle"
       },
       "icy-purple-head-2": {
         "name": "Icy Purple Head 2",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "icy-purple-head-3": {
         "name": "Icy Purple Head 3",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "platformer"
       },
       "the-impossible-quiz": {
         "name": "The Impossible Quiz",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "casual"
       },
       "infiltrating-the-airship": {
         "name": "Infiltrating the Airship",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "jewels-blitz-5": {
         "name": "Jewels Blitz 5",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "jungle-td": {
         "name": "Jungle TD",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "kingdom-defense-mercenary": {
         "name": "Kingdom Defense: Mercenary",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "kingdom-guards-tower-defense": {
         "name": "Kingdom Guards: Tower Defense",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "kingdom-rush": {
         "name": "Kingdom Rush",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "strategy"
       },
       "marble-dash": {
         "name": "Marble Dash",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "marbles-sorting": {
         "name": "Marbles Sorting",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "meme-2048": {
         "name": "Meme 2048",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "minesweeper": {
         "name": "Minesweeper",
-        "devices":"1,2,3,4"
+        "devices": "1,2,3,4",
+        "category": "puzzle"
       },
       "mini-putt": {
-        "name": "Mini-Putt"
+        "name": "Mini-Putt",
+        "category": "sports"
       },
       "money-movers-2": {
-        "name": "Money Movers 2"
+        "name": "Money Movers 2",
+        "category": "platformer"
       },
       "money-movers-3-guard-duty": {
-        "name": "Money Movers 3: Guard Duty"
+        "name": "Money Movers 3: Guard Duty",
+        "category": "platformer"
       },
       "money-movers": {
-        "name": "Money Movers"
+        "name": "Money Movers",
+        "category": "platformer"
       },
       "mr-bullet-3d": {
-        "name": "Mr Bullet 3D"
+        "name": "Mr Bullet 3D",
+        "category": "shooter"
       },
       "my-rusty-submarine": {
-        "name": "My Rusty Submarine"
+        "name": "My Rusty Submarine",
+        "category": "puzzle"
       },
       "ninja-cat-exploit": {
-        "name": "Ninja Cat Exploit"
+        "name": "Ninja Cat Exploit",
+        "category": "platformer"
       },
       "pandemic-2": {
-        "name": "Pandemic 2"
+        "name": "Pandemic 2",
+        "category": "strategy"
       },
       "papa-cherry-saga": {
-        "name": "Papa Cherry Saga"
+        "name": "Papa Cherry Saga",
+        "category": "puzzle"
       },
       "park-out": {
-        "name": "Park Out"
+        "name": "Park Out",
+        "category": "puzzle"
       },
       "penalty-kick-online": {
-        "name": "Penalty Kick Online"
+        "name": "Penalty Kick Online",
+        "category": "sports"
       },
       "plants-vs-zombies": {
-        "name": "Plants vs Zombies"
+        "name": "Plants vs Zombies",
+        "category": "strategy"
       },
       "portal-the-flash-version": {
-        "name": "Portal: The Flash Version"
+        "name": "Portal: The Flash Version",
+        "category": "puzzle"
       },
       "pudding-monsters": {
-        "name": "Pudding Monsters"
+        "name": "Pudding Monsters",
+        "category": "puzzle"
       },
       "push-your-luck": {
-        "name": "Push Your Luck"
+        "name": "Push Your Luck",
+        "category": "casual"
       },
       "rabbit-samurai-2": {
-        "name": "Rabbit Samurai 2"
+        "name": "Rabbit Samurai 2",
+        "category": "platformer"
       },
       "rabbit-samurai": {
-        "name": "Rabbit Samurai"
+        "name": "Rabbit Samurai",
+        "category": "platformer"
       },
       "riddle-school-2": {
-        "name": "Riddle School 2"
+        "name": "Riddle School 2",
+        "category": "puzzle"
       },
       "riddle-school-3": {
-        "name": "Riddle School 3"
+        "name": "Riddle School 3",
+        "category": "puzzle"
       },
       "riddle-school-4": {
-        "name": "Riddle School 4"
+        "name": "Riddle School 4",
+        "category": "puzzle"
       },
       "riddle-school-5": {
-        "name": "Riddle School 5"
+        "name": "Riddle School 5",
+        "category": "puzzle"
       },
       "riddle-school": {
-        "name": "Riddle School"
+        "name": "Riddle School",
+        "category": "puzzle"
       },
       "riddle-transfer-2": {
-        "name": "Riddle Transfer 2"
+        "name": "Riddle Transfer 2",
+        "category": "puzzle"
       },
       "riddle-transfer": {
-        "name": "Riddle Transfer"
+        "name": "Riddle Transfer",
+        "category": "puzzle"
       },
       "roper": {
-        "name": "Roper"
+        "name": "Roper",
+        "category": "platformer"
       },
       "save-the-doge": {
-        "name": "Save the Doge"
+        "name": "Save the Doge",
+        "category": "casual"
       },
       "slime-rush-td": {
-        "name": "Slime Rush TD"
+        "name": "Slime Rush TD",
+        "category": "strategy"
       },
       "snail-bob-7": {
-        "name": "Snail Bob 7"
+        "name": "Snail Bob 7",
+        "category": "platformer"
       },
       "snail-bob-8-island-story": {
-        "name": "Snail Bob 8: Island Story"
+        "name": "Snail Bob 8: Island Story",
+        "category": "platformer"
       },
       "solitaire": {
-        "name": "Solitaire"
+        "name": "Solitaire",
+        "category": "puzzle"
       },
       "spider-solitaire": {
-        "name": "Spider Solitaire"
+        "name": "Spider Solitaire",
+        "category": "puzzle"
       },
       "stealing-the-diamond": {
-        "name": "Stealing the Diamond"
+        "name": "Stealing the Diamond",
+        "category": "puzzle"
       },
       "super-stickman-golf": {
-        "name": "Super Stickman Golf"
+        "name": "Super Stickman Golf",
+        "category": "sports"
       },
       "stickman-hook": {
-        "name": "Stickman Hook"
+        "name": "Stickman Hook",
+        "category": "platformer"
       },
       "storm-the-house-2": {
-        "name": "Storm the House 2"
+        "name": "Storm the House 2",
+        "category": "strategy"
       },
       "super-hexbee-merger": {
-        "name": "Super Hexbee Merger"
+        "name": "Super Hexbee Merger",
+        "category": "puzzle"
       },
       "swingo": {
-        "name": "Swingo"
+        "name": "Swingo",
+        "category": "puzzle"
       },
       "territorial-io": {
-        "name": "Territorial.io"
+        "name": "Territorial.io",
+        "category": "strategy"
       },
       "the-battle": {
-        "name": "The Battle"
+        "name": "The Battle",
+        "category": "strategy"
       },
       "the-final-earth": {
-        "name": "The Final Earth"
+        "name": "The Final Earth",
+        "category": "strategy"
       },
       "the-hotel": {
-        "name": "The Hotel"
+        "name": "The Hotel",
+        "category": "puzzle"
       },
       "there-is-no-game": {
-        "name": "There Is No Game"
+        "name": "There Is No Game",
+        "category": "puzzle"
       },
       "tiny-islands": {
-        "name": "Tiny Islands"
+        "name": "Tiny Islands",
+        "category": "strategy"
       },
       "tower-crash-3d": {
-        "name": "Tower Crash 3D"
+        "name": "Tower Crash 3D",
+        "category": "casual"
       },
       "traffic-mania": {
-        "name": "Traffic Mania"
+        "name": "Traffic Mania",
+        "category": "puzzle"
       },
       "twitch-tetris": {
-        "name": "Twitch Tetris"
+        "name": "Twitch Tetris",
+        "category": "puzzle"
       },
       "wallsmash": {
-        "name": "Wallsmash"
+        "name": "Wallsmash",
+        "category": "casual"
       },
       "waterworks": {
-        "name": "Waterworks!"
+        "name": "Waterworks!",
+        "category": "puzzle"
       },
       "wheely-2": {
-        "name": "Wheely 2"
+        "name": "Wheely 2",
+        "category": "puzzle"
       },
       "wheely-3": {
-        "name": "Wheely 3"
+        "name": "Wheely 3",
+        "category": "puzzle"
       },
       "wheely-4-time-travel": {
-        "name": "Wheely 4: Time Travel"
+        "name": "Wheely 4: Time Travel",
+        "category": "puzzle"
       },
       "wheely-5-armageddon": {
-        "name": "Wheely 5: Armageddon"
+        "name": "Wheely 5: Armageddon",
+        "category": "puzzle"
       },
       "wheely-6-fairytale": {
-        "name": "Wheely 6: Fairytale"
+        "name": "Wheely 6: Fairytale",
+        "category": "puzzle"
       },
       "wheely-7-detective": {
-        "name": "Wheely 7: Detective"
+        "name": "Wheely 7: Detective",
+        "category": "puzzle"
       },
       "wheely-8-aliens": {
-        "name": "Wheely 8: Aliens"
+        "name": "Wheely 8: Aliens",
+        "category": "puzzle"
       },
       "wizard-mike": {
-        "name": "Wizard Mike"
+        "name": "Wizard Mike",
+        "category": "puzzle"
       },
       "wood-block-puzzle": {
-        "name": "Wood Block Puzzle"
+        "name": "Wood Block Puzzle",
+        "category": "puzzle"
       },
       "woodventure": {
-        "name": "Woodventure"
+        "name": "Woodventure",
+        "category": "puzzle"
       },
       "word-slide": {
-        "name": "Word Slide"
+        "name": "Word Slide",
+        "category": "puzzle"
       },
       "wordle-unlimited": {
-        "name": "Wordle Unlimited"
+        "name": "Wordle Unlimited",
+        "category": "puzzle"
       },
       "wordle": {
-        "name": "Wordle"
+        "name": "Wordle",
+        "category": "puzzle"
       },
       "xx142-b2exe": {
-        "name": "XX142-B2.EXE"
+        "name": "XX142-B2.EXE",
+        "category": "puzzle"
       }
     }
   },
   {
     "g2": {
       "ages-of-conflict": {
-        "name": "Ages of Conflict"
+        "name": "Ages of Conflict",
+        "category": "strategy"
       },
       "among-us": {
-        "name": "Among Us"
+        "name": "Among Us",
+        "category": "casual"
       },
       "baldis-basics": {
-        "name": "Baldi's Basics"
+        "name": "Baldi's Basics",
+        "category": "horror"
       },
       "big-red-button": {
-        "name": "Big Red Button"
+        "name": "Big Red Button",
+        "category": "casual"
       },
       "bitcoin-clicker": {
-        "name": "Bitcoin Clicker"
+        "name": "Bitcoin Clicker",
+        "category": "casual"
       },
       "bottle-flip-3d": {
-        "name": "Bottle Flip 3D"
+        "name": "Bottle Flip 3D",
+        "category": "reflexes"
       },
       "bottle-flip": {
-        "name": "Bottle Flip"
+        "name": "Bottle Flip",
+        "category": "reflexes"
       },
       "capybara-clicker-2": {
-        "name": "Capybara Clicker 2"
+        "name": "Capybara Clicker 2",
+        "category": "casual"
       },
       "capybara-clicker-pro": {
-        "name": "Capybara Clicker Pro"
+        "name": "Capybara Clicker Pro",
+        "category": "casual"
       },
       "capybara-clicker": {
-        "name": "Capybara Clicker"
+        "name": "Capybara Clicker",
+        "category": "casual"
       },
       "clicker-heroes": {
-        "name": "Clicker Heroes"
+        "name": "Clicker Heroes",
+        "category": "casual"
       },
       "cookie-clicker": {
-        "name": "Cookie Clicker"
+        "name": "Cookie Clicker",
+        "category": "casual"
       },
       "core-ball": {
-        "name": "Core Ball"
+        "name": "Core Ball",
+        "category": "puzzle"
       },
       "csgo-clicker": {
-        "name": "CSGO Clicker"
+        "name": "CSGO Clicker",
+        "category": "casual"
       },
       "dino-merge": {
-        "name": "Dino Merge"
+        "name": "Dino Merge",
+        "category": "puzzle"
       },
       "dogeminer": {
-        "name": "Dogeminer"
+        "name": "Dogeminer",
+        "category": "casual"
       },
       "doodle-jump": {
-        "name": "Doodle Jump"
+        "name": "Doodle Jump",
+        "category": "platformer"
       },
       "duck-life-2": {
-        "name": "Duck Life 2"
+        "name": "Duck Life 2",
+        "category": "platformer"
       },
       "duck-life-3-evolution": {
-        "name": "Duck Life 3: Evolution"
+        "name": "Duck Life 3: Evolution",
+        "category": "platformer"
       },
       "duck-life-4": {
-        "name": "Duck Life 4"
+        "name": "Duck Life 4",
+        "category": "platformer"
       },
       "duck-life": {
-        "name": "Duck Life"
+        "name": "Duck Life",
+        "category": "platformer"
       },
       "eel-slap": {
-        "name": "Eel Slap"
+        "name": "Eel Slap",
+        "category": "casual"
       },
       "elastic-man": {
-        "name": "Elastic Man"
+        "name": "Elastic Man",
+        "category": "casual"
       },
       "fake-virus": {
-        "name": "Fake Virus"
+        "name": "Fake Virus",
+        "category": "casual"
       },
       "fisherman-life": {
-        "name": "Fisherman Life"
+        "name": "Fisherman Life",
+        "category": "casual"
       },
       "flappy-bird": {
-        "name": "Flappy Bird"
+        "name": "Flappy Bird",
+        "category": "reflexes"
       },
       "flying-car-simulator": {
-        "name": "Flying Car Simulator"
+        "name": "Flying Car Simulator",
+        "category": "casual"
       },
       "flying-cars-era": {
-        "name": "Flying Cars Era"
+        "name": "Flying Cars Era",
+        "category": "casual"
       },
       "fruit-ninja": {
-        "name": "Fruit Ninja"
+        "name": "Fruit Ninja",
+        "category": "reflexes"
       },
       "frying-nemo": {
-        "name": "Frying Nemo"
+        "name": "Frying Nemo",
+        "category": "casual"
       },
       "grindcraft": {
-        "name": "Grindcraft"
+        "name": "Grindcraft",
+        "category": "casual"
       },
       "guess-the-kitty": {
-        "name": "Guess the Kitty"
+        "name": "Guess the Kitty",
+        "category": "casual"
       },
       "gura-tambourine": {
-        "name": "Gura Tambourine"
+        "name": "Gura Tambourine",
+        "category": "casual"
       },
       "hacker-typer": {
-        "name": "Hacker Typer"
+        "name": "Hacker Typer",
+        "category": "casual"
       },
       "hop-and-pop-it": {
-        "name": "Hop & Pop It"
+        "name": "Hop & Pop It",
+        "category": "casual"
       },
       "idle-breakout": {
-        "name": "Idle Breakout"
+        "name": "Idle Breakout",
+        "category": "casual"
       },
       "idle-light-city": {
-        "name": "Idle Light City"
+        "name": "Idle Light City",
+        "category": "casual"
       },
       "idle-mining-empire": {
-        "name": "Idle Mining Empire"
+        "name": "Idle Mining Empire",
+        "category": "casual"
       },
       "idle-restaurants": {
-        "name": "Idle Restaurants"
+        "name": "Idle Restaurants",
+        "category": "casual"
       },
       "idle-tree-city": {
-        "name": "Idle Tree City"
+        "name": "Idle Tree City",
+        "category": "casual"
       },
       "kitten-cannon": {
-        "name": "Kitten Cannon"
+        "name": "Kitten Cannon",
+        "category": "casual"
       },
       "learn-to-fly-2": {
-        "name": "Learn to Fly 2"
+        "name": "Learn to Fly 2",
+        "category": "casual"
       },
       "learn-to-fly": {
-        "name": "Learn to Fly"
+        "name": "Learn to Fly",
+        "category": "casual"
       },
       "little-alchemy-2": {
-        "name": "Little Alchemy 2"
+        "name": "Little Alchemy 2",
+        "category": "puzzle"
       },
       "merge-harvest": {
-        "name": "Merge Harvest"
+        "name": "Merge Harvest",
+        "category": "puzzle"
       },
       "merge-round-racers": {
-        "name": "Merge Round Racers"
+        "name": "Merge Round Racers",
+        "category": "puzzle"
       },
       "minecraft-case-simulator": {
-        "name": "Minecraft Case Simulator"
+        "name": "Minecraft Case Simulator",
+        "category": "casual"
       },
       "monster-truck-race-arena": {
-        "name": "Monster Truck Race Arena"
+        "name": "Monster Truck Race Arena",
+        "category": "sports"
       },
       "nut-simulator": {
-        "name": "Nut Simulator"
+        "name": "Nut Simulator",
+        "category": "casual"
       },
       "papas-bakeria": {
-        "name": "Papa's Bakeria"
+        "name": "Papa's Bakeria",
+        "category": "casual"
       },
       "papas-burgeria": {
-        "name": "Papa's Burgeria"
+        "name": "Papa's Burgeria",
+        "category": "casual"
       },
       "papas-cheeseria": {
-        "name": "Papa's Cheeseria"
+        "name": "Papa's Cheeseria",
+        "category": "casual"
       },
       "papas-cupcakeria": {
-        "name": "Papa's Cupcakeria"
+        "name": "Papa's Cupcakeria",
+        "category": "casual"
       },
       "papas-donuteria": {
-        "name": "Papa's Donuteria"
+        "name": "Papa's Donuteria",
+        "category": "casual"
       },
       "papas-freezeria": {
-        "name": "Papa's Freezeria"
+        "name": "Papa's Freezeria",
+        "category": "casual"
       },
       "papas-hot-doggeria": {
-        "name": "Papa's Hot Doggeria"
+        "name": "Papa's Hot Doggeria",
+        "category": "casual"
       },
       "papas-pancakeria": {
-        "name": "Papa's Pancakeria"
+        "name": "Papa's Pancakeria",
+        "category": "casual"
       },
       "papas-pastaria": {
-        "name": "Papa's Pastaria"
+        "name": "Papa's Pastaria",
+        "category": "casual"
       },
       "papas-pizzeria": {
-        "name": "Papa's Pizzeria"
+        "name": "Papa's Pizzeria",
+        "category": "casual"
       },
       "papas-scooperia": {
-        "name": "Papa's Scooperia"
+        "name": "Papa's Scooperia",
+        "category": "casual"
       },
       "papas-sushiria": {
-        "name": "Papa's Sushiria"
+        "name": "Papa's Sushiria",
+        "category": "casual"
       },
       "papas-taco-mia": {
-        "name": "Papa's Taco Mia!"
+        "name": "Papa's Taco Mia!",
+        "category": "casual"
       },
       "papas-wingeria": {
-        "name": "Papa's Wingeria"
+        "name": "Papa's Wingeria",
+        "category": "casual"
       },
       "particle-clicker": {
-        "name": "Particle Clicker"
+        "name": "Particle Clicker",
+        "category": "casual"
       },
       "pou": {
-        "name": "Pou"
+        "name": "Pou",
+        "category": "casual"
       },
       "president-simulator": {
-        "name": "President Simulator"
+        "name": "President Simulator",
+        "category": "casual"
       },
       "push-the-square": {
-        "name": "Push the Square"
+        "name": "Push the Square",
+        "category": "puzzle"
       },
       "rise-higher": {
-        "name": "Rise Higher"
+        "name": "Rise Higher",
+        "category": "reflexes"
       },
       "sandboxels": {
-        "name": "Sandboxels"
+        "name": "Sandboxels",
+        "category": "casual"
       },
       "smash-karts": {
-        "name": "Smash Karts"
+        "name": "Smash Karts",
+        "category": "casual"
       },
       "sort-the-court": {
-        "name": "Sort the Court"
+        "name": "Sort the Court",
+        "category": "casual"
       },
       "space-bar-clicker": {
-        "name": "Spacebar Clicker"
+        "name": "Spacebar Clicker",
+        "category": "casual"
       },
       "space-company": {
-        "name": "Space Company"
+        "name": "Space Company",
+        "category": "casual"
       },
       "stair-race-3d": {
-        "name": "Stair Race 3D"
+        "name": "Stair Race 3D",
+        "category": "casual"
       },
       "stickman-that-one-level": {
-        "name": "Stickman That One Level"
+        "name": "Stickman That One Level",
+        "category": "platformer"
       },
       "stickman-vs-skibidi-toilet": {
-        "name": "Stickman vs Skibidi Toilet"
+        "name": "Stickman vs Skibidi Toilet",
+        "category": "casual"
       },
       "strawberella": {
-        "name": "Strawberella"
+        "name": "Strawberella",
+        "category": "casual"
       },
       "strike-force-heroes": {
-        "name": "Strike Force Heroes"
+        "name": "Strike Force Heroes",
+        "category": "shooter"
       },
       "tall-io": {
-        "name": "Tall.io"
+        "name": "Tall.io",
+        "category": "casual"
       },
       "townscaper": {
-        "name": "Townscaper"
+        "name": "Townscaper",
+        "category": "casual"
       },
       "trollface-quest-horror-2": {
-        "name": "Trollface Quest Horror 2"
+        "name": "Trollface Quest Horror 2",
+        "category": "horror"
       },
       "trump-the-puppet": {
-        "name": "Trump the Puppet"
+        "name": "Trump the Puppet",
+        "category": "casual"
       },
       "turbo-dismounting": {
-        "name": "Turbo Dismounting"
+        "name": "Turbo Dismounting",
+        "category": "casual"
       },
       "veloce": {
-        "name": "Veloce"
+        "name": "Veloce",
+        "category": "casual"
       },
       "silk": {
-        "name": "Silk"
+        "name": "Silk",
+        "category": "casual"
       },
       "webgl-fluid-simulation": {
-        "name": "WebGL Fluid Simulation"
+        "name": "WebGL Fluid Simulation",
+        "category": "casual"
       },
       "whack-your-boss": {
-        "name": "Whack Your Boss"
+        "name": "Whack Your Boss",
+        "category": "casual"
       },
       "yoshis-fabrication-station": {
-        "name": "Yoshi's Fabrication Station"
+        "name": "Yoshi's Fabrication Station",
+        "category": "puzzle"
       }
     }
   },
   {
     "g3": {
       "10-minutes-till-dawn": {
-        "name": "10 Minutes Till Dawn"
+        "name": "10 Minutes Till Dawn",
+        "category": "survival"
       },
       "a-dark-room": {
-        "name": "A Dark Room"
+        "name": "A Dark Room",
+        "category": "survival"
       },
       "adam-and-eve-2": {
-        "name": "Adam and Eve 2"
+        "name": "Adam and Eve 2",
+        "category": "platformer"
       },
       "adam-and-eve": {
-        "name": "Adam and Eve"
+        "name": "Adam and Eve",
+        "category": "platformer"
       },
       "alien-hominid": {
-        "name": "Alien Hominid"
+        "name": "Alien Hominid",
+        "category": "shooter"
       },
       "amidst-the-sky": {
-        "name": "Amidst the Sky"
+        "name": "Amidst the Sky",
+        "category": "platformer"
       },
       "angry-sharks": {
-        "name": "Angry Sharks"
+        "name": "Angry Sharks",
+        "category": "casual"
       },
       "animal-io": {
-        "name": "Animal.io"
+        "name": "Animal.io",
+        "category": "casual"
       },
       "apple-shooter": {
-        "name": "Apple Shooter"
+        "name": "Apple Shooter",
+        "category": "shooter"
       },
       "aquapark-io": {
-        "name": "Aquapark.io"
+        "name": "Aquapark.io",
+        "category": "casual"
       },
       "arcane-archer": {
-        "name": "Arcane Archer"
+        "name": "Arcane Archer",
+        "category": "shooter"
       },
       "archers-io": {
-        "name": "Archers.io"
+        "name": "Archers.io",
+        "category": "strategy"
       },
       "avalanche": {
-        "name": "Avalanche"
+        "name": "Avalanche",
+        "category": "reflexes"
       },
       "awesome-tanks-2": {
-        "name": "Awesome Tanks 2"
+        "name": "Awesome Tanks 2",
+        "category": "shooter"
       },
       "bacon-may-die": {
-        "name": "Bacon May Die"
+        "name": "Bacon May Die",
+        "category": "platformer"
       },
       "the-black-knight": {
-        "name": "The Black Knight"
+        "name": "The Black Knight",
+        "category": "platformer"
       },
       "blumgi-slime": {
-        "name": "Blumgi Slime"
+        "name": "Blumgi Slime",
+        "category": "platformer"
       },
       "bob-the-robber-2": {
-        "name": "Bob the Robber 2"
+        "name": "Bob the Robber 2",
+        "category": "puzzle"
       },
       "bob-the-robber-4": {
-        "name": "Bob the Robber 4"
+        "name": "Bob the Robber 4",
+        "category": "puzzle"
       },
       "bomb-it-7": {
-        "name": "Bomb It 7"
+        "name": "Bomb It 7",
+        "category": "casual"
       },
       "boxel-rebound": {
-        "name": "Boxel Rebound"
+        "name": "Boxel Rebound",
+        "category": "platformer"
       },
       "boxhead-2play": {
-        "name": "Boxhead 2Play"
+        "name": "Boxhead 2Play",
+        "category": "shooter"
       },
       "bullet-force": {
-        "name": "Bullet Force"
+        "name": "Bullet Force",
+        "category": "shooter"
       },
       "bumper-ball-io": {
-        "name": "Bumper Ball.io"
+        "name": "Bumper Ball.io",
+        "category": "casual"
       },
       "burrito-bison-revenge": {
-        "name": "Burrito Bison Revenge"
+        "name": "Burrito Bison Revenge",
+        "category": "casual"
       },
       "champion-archer": {
-        "name": "Champion Archer"
+        "name": "Champion Archer",
+        "category": "shooter"
       },
       "craftmine": {
-        "name": "Craftmine"
+        "name": "Craftmine",
+        "category": "casual"
       },
       "crazy-tunnel-3d": {
-        "name": "Crazy Tunnel 3D"
+        "name": "Crazy Tunnel 3D",
+        "category": "reflexes"
       },
       "creative-kill-chamber": {
-        "name": "Creative Kill Chamber"
+        "name": "Creative Kill Chamber",
+        "category": "shooter"
       },
       "cubefield": {
-        "name": "Cubefield"
+        "name": "Cubefield",
+        "category": "reflexes"
       },
       "dante": {
-        "name": "Dante"
+        "name": "Dante",
+        "category": "platformer"
       },
       "dead-again": {
-        "name": "Dead Again"
+        "name": "Dead Again",
+        "category": "horror"
       },
       "death-run-3d": {
-        "name": "Death Run 3D"
+        "name": "Death Run 3D",
+        "category": "platformer"
       },
       "defend-the-tank": {
-        "name": "Defend the Tank"
+        "name": "Defend the Tank",
+        "category": "strategy"
       },
       "dodge": {
-        "name": "Dodge"
+        "name": "Dodge",
+        "category": "reflexes"
       },
       "endless-war-3": {
-        "name": "Endless War 3"
+        "name": "Endless War 3",
+        "category": "strategy"
       },
       "evil-glitch": {
-        "name": "Evil Glitch"
+        "name": "Evil Glitch",
+        "category": "platformer"
       },
       "fancy-pants-2": {
-        "name": "Fancy Pants 2"
+        "name": "Fancy Pants 2",
+        "category": "platformer"
       },
       "fancy-pants-3": {
-        "name": "Fancy Pants 3"
+        "name": "Fancy Pants 3",
+        "category": "platformer"
       },
       "fancy-pants-adventures": {
-        "name": "Fancy Pants Adventures"
+        "name": "Fancy Pants Adventures",
+        "category": "platformer"
       },
       "fireboy-and-watergirl-in-the-forest-temple": {
-        "name": "Fireboy & Watergirl in The Forest Temple"
+        "name": "Fireboy & Watergirl in The Forest Temple",
+        "category": "puzzle"
       },
       "fish-master": {
-        "name": "Fish Master"
+        "name": "Fish Master",
+        "category": "casual"
       },
       "fnaw": {
-        "name": "FNAW"
+        "name": "FNAW",
+        "category": "horror"
       },
       "football-run": {
-        "name": "Football Run"
+        "name": "Football Run",
+        "category": "sports"
       },
       "froggys-battle": {
-        "name": "Froggy's Battle"
+        "name": "Froggy's Battle",
+        "category": "strategy"
       },
       "galaga": {
-        "name": "Galaga"
+        "name": "Galaga",
+        "category": "shooter"
       },
       "generic-fishing-game": {
-        "name": "Generic Fishing Game"
+        "name": "Generic Fishing Game",
+        "category": "casual"
       },
       "geodash": {
-        "name": "GeoDash"
+        "name": "GeoDash",
+        "category": "reflexes"
       },
       "geometry-dash": {
-        "name": "Geometry Dash"
+        "name": "Geometry Dash",
+        "category": "platformer"
       },
       "getaway-shootout": {
-        "name": "Getaway Shootout"
+        "name": "Getaway Shootout",
+        "category": "shooter"
       },
       "gimme-the-airpod": {
-        "name": "Gimme the Airpod"
+        "name": "Gimme the Airpod",
+        "category": "casual"
       },
       "gladihoppers": {
-        "name": "Gladihoppers"
+        "name": "Gladihoppers",
+        "category": "platformer"
       },
       "glitch-dash": {
-        "name": "Glitch Dash"
+        "name": "Glitch Dash",
+        "category": "platformer"
       },
       "gobdun": {
-        "name": "Gobdun"
+        "name": "Gobdun",
+        "category": "puzzle"
       },
       "goodnight": {
-        "name": "Goodnight"
+        "name": "Goodnight",
+        "category": "horror"
       },
       "groovy-ski": {
-        "name": "Groovy Ski"
+        "name": "Groovy Ski",
+        "category": "reflexes"
       },
       "g-switch-2": {
-        "name": "G-Switch 2"
+        "name": "G-Switch 2",
+        "category": "platformer"
       },
       "g-switch-3": {
-        "name": "G-Switch 3"
+        "name": "G-Switch 3",
+        "category": "platformer"
       },
       "g-switch": {
-        "name": "G-Switch"
+        "name": "G-Switch",
+        "category": "platformer"
       },
       "gun-mayhem-2": {
-        "name": "Gun Mayhem 2"
+        "name": "Gun Mayhem 2",
+        "category": "shooter"
       },
       "gun-mayhem-redux": {
-        "name": "Gun Mayhem Redux"
+        "name": "Gun Mayhem Redux",
+        "category": "shooter"
       },
       "gun-mayhem": {
-        "name": "Gun Mayhem"
+        "name": "Gun Mayhem",
+        "category": "shooter"
       },
       "gunspin": {
-        "name": "GunSpin"
+        "name": "GunSpin",
+        "category": "casual"
       },
       "gunblood": {
-        "name": "Gunblood"
+        "name": "Gunblood",
+        "category": "shooter"
       },
       "hammer-master-io": {
-        "name": "Hammer Master.io"
+        "name": "Hammer Master.io",
+        "category": "casual"
       },
       "happy-hop": {
-        "name": "Happy Hop"
+        "name": "Happy Hop",
+        "category": "platformer"
       },
       "helicopter": {
-        "name": "Helicopter"
+        "name": "Helicopter",
+        "category": "casual"
       },
       "hide-and-smash": {
-        "name": "Hide and Smash"
+        "name": "Hide and Smash",
+        "category": "casual"
       },
       "hole-io": {
-        "name": "Hole.io"
+        "name": "Hole.io",
+        "category": "casual"
       },
       "house-of-hazards": {
-        "name": "House of Hazards"
+        "name": "House of Hazards",
+        "category": "platformer"
       },
       "hover-bot-arena": {
-        "name": "Hover Bot Arena"
+        "name": "Hover Bot Arena",
+        "category": "casual"
       },
       "hungry-lamu": {
-        "name": "Hungry Lamu"
+        "name": "Hungry Lamu",
+        "category": "horror"
       },
       "infinite-soccer": {
-        "name": "Infinite Soccer"
+        "name": "Infinite Soccer",
+        "category": "sports"
       },
       "iron-snout": {
-        "name": "Iron Snout"
+        "name": "Iron Snout",
+        "category": "platformer"
       },
       "jetpack-joyride": {
-        "name": "Jetpack Joyride"
+        "name": "Jetpack Joyride",
+        "category": "platformer"
       },
       "just-one-boss": {
-        "name": "Just One Boss"
+        "name": "Just One Boss",
+        "category": "shooter"
       },
       "kitchen-gun-game": {
-        "name": "Kitchen Gun Game"
+        "name": "Kitchen Gun Game",
+        "category": "shooter"
       },
       "knife-master": {
-        "name": "Knife Master"
+        "name": "Knife Master",
+        "category": "casual"
       },
       "knight-hero-adventure": {
-        "name": "Knight Hero Adventure"
+        "name": "Knight Hero Adventure",
+        "category": "platformer"
       },
       "knives-crash": {
-        "name": "Knives Crash"
+        "name": "Knives Crash",
+        "category": "casual"
       },
       "knife-io-fanmade": {
-        "name": "Knife.io (Fanmade)"
+        "name": "Knife.io (Fanmade)",
+        "category": "casual"
       },
       "leader-strike": {
-        "name": "Leader Strike"
+        "name": "Leader Strike",
+        "category": "shooter"
       },
       "super-mario-bros": {
-        "name": "Super Mario Bros. (Online)"
+        "name": "Super Mario Bros. (Online)",
+        "category": "platformer"
       },
       "mario": {
-        "name": "Super Mario Bros. (1985)"
+        "name": "Super Mario Bros. (1985)",
+        "category": "platformer"
       },
       "masked-forces": {
-        "name": "Masked Forces"
+        "name": "Masked Forces",
+        "category": "shooter"
       },
       "matrix-rampage": {
-        "name": "Matrix Rampage"
+        "name": "Matrix Rampage",
+        "category": "shooter"
       },
       "microbius": {
-        "name": "Microbius"
+        "name": "Microbius",
+        "category": "puzzle"
       },
       "mine-blocks": {
-        "name": "Mine Blocks"
+        "name": "Mine Blocks",
+        "category": "casual"
       },
       "ovo-2": {
-        "name": "OvO 2"
+        "name": "OvO 2",
+        "category": "platformer"
       },
       "ovo-dimensions": {
-        "name": "OvO Dimensions"
+        "name": "OvO Dimensions",
+        "category": "platformer"
       },
       "ovo": {
-        "name": "OvO"
+        "name": "OvO",
+        "category": "platformer"
       },
       "pac-man": {
-        "name": "Pac-Man"
+        "name": "Pac-Man",
+        "category": "puzzle"
       },
       "paper-io-2": {
-        "name": "Paper.io 2"
+        "name": "Paper.io 2",
+        "category": "casual"
       },
       "paper-minecraft": {
-        "name": "Paper Minecraft"
+        "name": "Paper Minecraft",
+        "category": "casual"
       },
       "papery-planes": {
-        "name": "Papery Planes"
+        "name": "Papery Planes",
+        "category": "casual"
       },
       "pixel-gun-survival": {
-        "name": "Pixel Gun Survival"
+        "name": "Pixel Gun Survival",
+        "category": "survival"
       },
       "pizza-tower": {
-        "name": "Pizza Tower"
+        "name": "Pizza Tower",
+        "category": "platformer"
       },
       "pokemon-emerald-2": {
-        "name": "Pokemon Emerald 2"
+        "name": "Pokemon Emerald 2",
+        "category": "strategy"
       },
       "pokemon-emerald": {
-        "name": "Pokemon Emerald"
+        "name": "Pokemon Emerald",
+        "category": "strategy"
       },
       "pokemon-firered": {
-        "name": "Pokemon FireRed"
+        "name": "Pokemon FireRed",
+        "category": "strategy"
       },
       "polybranch": {
-        "name": "Polybranch"
+        "name": "Polybranch",
+        "category": "casual"
       },
       "protektor": {
-        "name": "Protektor"
+        "name": "Protektor",
+        "category": "shooter"
       },
       "rolling-forests": {
-        "name": "Rolling Forests"
+        "name": "Rolling Forests",
+        "category": "casual"
       },
       "rolly-vortex": {
-        "name": "Rolly Vortex"
+        "name": "Rolly Vortex",
+        "category": "reflexes"
       },
       "rooftop-snipers": {
-        "name": "Rooftop Snipers"
+        "name": "Rooftop Snipers",
+        "category": "shooter"
       },
       "run-2": {
-        "name": "Run 2"
+        "name": "Run 2",
+        "category": "platformer"
       },
       "run-3-space": {
-        "name": "Run 3 Space"
+        "name": "Run 3 Space",
+        "category": "platformer"
       },
       "running-fred": {
-        "name": "Running Fred"
+        "name": "Running Fred",
+        "category": "platformer"
       },
       "rusher-crusher": {
-        "name": "Rusher Crusher"
+        "name": "Rusher Crusher",
+        "category": "casual"
       },
       "santy-is-home": {
-        "name": "Santy Is Home"
+        "name": "Santy Is Home",
+        "category": "horror"
       },
       "skibidi-strike": {
-        "name": "Skibidi Strike"
+        "name": "Skibidi Strike",
+        "category": "casual"
       },
       "skiing-fred": {
-        "name": "Skiing Fred"
+        "name": "Skiing Fred",
+        "category": "platformer"
       },
       "skywire": {
-        "name": "Skywire"
+        "name": "Skywire",
+        "category": "puzzle"
       },
       "sling-tomb": {
-        "name": "Sling Tomb"
+        "name": "Sling Tomb",
+        "category": "puzzle"
       },
       "slope-2-players": {
-        "name": "Slope 2 Players"
+        "name": "Slope 2 Players",
+        "category": "reflexes"
       },
       "slope-3": {
-        "name": "Slope 3"
+        "name": "Slope 3",
+        "category": "reflexes"
       },
       "slope-ball": {
-        "name": "Slope Ball"
+        "name": "Slope Ball",
+        "category": "reflexes"
       },
       "slope-city": {
-        "name": "Slope City"
+        "name": "Slope City",
+        "category": "reflexes"
       },
       "slope-run": {
-        "name": "Slope Run"
+        "name": "Slope Run",
+        "category": "reflexes"
       },
       "slope-tunnel": {
-        "name": "Slope Tunnel"
+        "name": "Slope Tunnel",
+        "category": "reflexes"
       },
       "slope": {
-        "name": "Slope"
+        "name": "Slope",
+        "category": "reflexes"
       },
       "smokin-barrels": {
-        "name": "Smokin Barrels"
+        "name": "Smokin Barrels",
+        "category": "shooter"
       },
       "snake-io-war": {
-        "name": "Snake.io War"
+        "name": "Snake.io War",
+        "category": "casual"
       },
       "snow-battle-io": {
-        "name": "Snow Battle.io"
+        "name": "Snow Battle.io",
+        "category": "casual"
       },
       "soldier-legend": {
-        "name": "Soldier Legend"
+        "name": "Soldier Legend",
+        "category": "shooter"
       },
       "space-garden": {
-        "name": "Space Garden"
+        "name": "Space Garden",
+        "category": "casual"
       },
       "stack": {
-        "name": "Stack"
+        "name": "Stack",
+        "category": "casual"
       },
       "station-141": {
-        "name": "Station 141"
+        "name": "Station 141",
+        "category": "horror"
       },
       "tactical-assassin-2": {
-        "name": "Tactical Assassin 2"
+        "name": "Tactical Assassin 2",
+        "category": "shooter"
       },
       "tactical-weapon-pack-2": {
-        "name": "Tactical Weapon Pack 2"
+        "name": "Tactical Weapon Pack 2",
+        "category": "shooter"
       },
       "tag": {
-        "name": "Tag"
+        "name": "Tag",
+        "category": "casual"
       },
       "tank-trouble-2": {
-        "name": "Tank Trouble 2"
+        "name": "Tank Trouble 2",
+        "category": "shooter"
       },
       "tanuki-sunset": {
-        "name": "Tanuki Sunset"
+        "name": "Tanuki Sunset",
+        "category": "casual"
       },
       "tap-tap-shots": {
-        "name": "Tap Tap Shots"
+        "name": "Tap Tap Shots",
+        "category": "shooter"
       },
       "temple-run-2": {
-        "name": "Temple Run 2"
+        "name": "Temple Run 2",
+        "category": "platformer"
       },
       "scratcharia": {
-        "name": "Scratcharia"
+        "name": "Scratcharia",
+        "category": "casual"
       },
       "this-is-the-only-level": {
-        "name": "This Is the Only Level"
+        "name": "This Is the Only Level",
+        "category": "puzzle"
       },
       "tiny-fishing": {
-        "name": "Tiny Fishing"
+        "name": "Tiny Fishing",
+        "category": "casual"
       },
       "toss-the-turtle": {
-        "name": "Toss the Turtle"
+        "name": "Toss the Turtle",
+        "category": "casual"
       },
       "traffic-control": {
-        "name": "Traffic Control"
+        "name": "Traffic Control",
+        "category": "puzzle"
       },
       "trains-io": {
-        "name": "Trains.io"
+        "name": "Trains.io",
+        "category": "casual"
       },
       "transporters-io": {
-        "name": "Transporters.io"
+        "name": "Transporters.io",
+        "category": "casual"
       },
       "trimps": {
-        "name": "Trimps"
+        "name": "Trimps",
+        "category": "strategy"
       },
       "tube-jumpers": {
-        "name": "Tube Jumpers"
+        "name": "Tube Jumpers",
+        "category": "casual"
       },
       "tunnel-rush-2": {
-        "name": "Tunnel Rush 2"
+        "name": "Tunnel Rush 2",
+        "category": "reflexes"
       },
       "tunnel-rush": {
-        "name": "Tunnel Rush"
+        "name": "Tunnel Rush",
+        "category": "reflexes"
       },
       "turn-turn": {
-        "name": "Turn Turn"
+        "name": "Turn Turn",
+        "category": "casual"
       },
       "two-ball-3d": {
-        "name": "Two Ball 3D"
+        "name": "Two Ball 3D",
+        "category": "casual"
       },
       "two-tunnel-3d": {
-        "name": "Two Tunnel 3D"
+        "name": "Two Tunnel 3D",
+        "category": "reflexes"
       },
       "vex-3": {
-        "name": "Vex 3"
+        "name": "Vex 3",
+        "category": "platformer"
       },
       "vex-4": {
-        "name": "Vex 4"
+        "name": "Vex 4",
+        "category": "platformer"
       },
       "vex-5": {
-        "name": "Vex 5"
+        "name": "Vex 5",
+        "category": "platformer"
       },
       "vex-6": {
-        "name": "Vex 6"
+        "name": "Vex 6",
+        "category": "platformer"
       },
       "vex-7": {
-        "name": "Vex 7"
+        "name": "Vex 7",
+        "category": "platformer"
       },
       "vex-8": {
-        "name": "Vex 8"
+        "name": "Vex 8",
+        "category": "platformer"
       },
       "wolfenstein-3d": {
-        "name": "Wolfenstein 3D"
+        "name": "Wolfenstein 3D",
+        "category": "shooter"
       },
       "worlds-hardest-game-2": {
-        "name": "World's Hardest Game 2"
+        "name": "World's Hardest Game 2",
+        "category": "puzzle"
       },
       "worlds-hardest-game": {
-        "name": "World's Hardest Game"
+        "name": "World's Hardest Game",
+        "category": "puzzle"
       },
       "wormeat-io": {
-        "name": "WormEat.io"
+        "name": "WormEat.io",
+        "category": "casual"
       }
     }
   },
   {
     "g4": {
       "1v1-lol": {
-        "name": "1v1.LOL"
+        "name": "1v1.LOL",
+        "category": "shooter"
       },
       "1-on-1-soccer": {
-        "name": "1 on 1 Soccer"
+        "name": "1 on 1 Soccer",
+        "category": "sports"
       },
       "3d-bowling": {
-        "name": "3D Bowling"
+        "name": "3D Bowling",
+        "category": "sports"
       },
       "8-ball-pool": {
-        "name": "8 Ball Pool"
+        "name": "8 Ball Pool",
+        "category": "sports"
       },
       "adrenaline-challenge": {
-        "name": "Adrenaline Challenge"
+        "name": "Adrenaline Challenge",
+        "category": "platformer"
       },
       "adventure-drivers": {
-        "name": "Adventure Drivers"
+        "name": "Adventure Drivers",
+        "category": "casual"
       },
       "aquapark-slides": {
-        "name": "Aquapark Slides"
+        "name": "Aquapark Slides",
+        "category": "casual"
       },
       "axis-football-league": {
-        "name": "Axis Football League"
+        "name": "Axis Football League",
+        "category": "sports"
       },
       "crazy-cars": {
-        "name": "Crazy Cars"
+        "name": "Crazy Cars",
+        "category": "casual"
       },
       "death-car": {
-        "name": "Death Car"
+        "name": "Death Car",
+        "category": "casual"
       },
       "draw-the-hill": {
-        "name": "Draw the Hill"
+        "name": "Draw the Hill",
+        "category": "puzzle"
       },
       "drift-boss": {
-        "name": "Drift Boss"
+        "name": "Drift Boss",
+        "category": "casual"
       },
       "drift-dudes": {
-        "name": "Drift Dudes"
+        "name": "Drift Dudes",
+        "category": "casual"
       },
       "drift-hunters-2": {
-        "name": "Drift Hunters 2"
+        "name": "Drift Hunters 2",
+        "category": "casual"
       },
       "drift-hunters-pro": {
-        "name": "Drift Hunters Pro"
+        "name": "Drift Hunters Pro",
+        "category": "casual"
       },
       "drift-hunters": {
-        "name": "Drift Hunters"
+        "name": "Drift Hunters",
+        "category": "casual"
       },
       "drive-mad": {
-        "name": "Drive Mad"
+        "name": "Drive Mad",
+        "category": "casual"
       },
       "earn-to-die": {
-        "name": "Earn to Die"
+        "name": "Earn to Die",
+        "category": "casual"
       },
       "edge-surf": {
-        "name": "Edge Surf"
+        "name": "Edge Surf",
+        "category": "reflexes"
       },
       "eggy-car": {
-        "name": "Eggy Car"
+        "name": "Eggy Car",
+        "category": "casual"
       },
       "endless-truck": {
-        "name": "Endless Truck"
+        "name": "Endless Truck",
+        "category": "casual"
       },
       "football-brawl": {
-        "name": "Football Brawl"
+        "name": "Football Brawl",
+        "category": "sports"
       },
       "football-legends": {
-        "name": "Football Legends"
+        "name": "Football Legends",
+        "category": "sports"
       },
       "football-strike": {
-        "name": "Football Strike"
+        "name": "Football Strike",
+        "category": "sports"
       },
       "get-on-top": {
-        "name": "Get On Top"
+        "name": "Get On Top",
+        "category": "casual"
       },
       "granny": {
-        "name": "Granny"
+        "name": "Granny",
+        "category": "horror"
       },
       "happy-wheels": {
-        "name": "Happy Wheels"
+        "name": "Happy Wheels",
+        "category": "casual"
       },
       "head-soccer": {
-        "name": "Head Soccer"
+        "name": "Head Soccer",
+        "category": "sports"
       },
       "heads-arena": {
-        "name": "Heads Arena"
+        "name": "Heads Arena",
+        "category": "casual"
       },
       "icycle": {
-        "name": "Icycle"
+        "name": "Icycle",
+        "category": "platformer"
       },
       "indian-truck-simulator": {
-        "name": "Indian Truck Simulator"
+        "name": "Indian Truck Simulator",
+        "category": "casual"
       },
       "infinite-craft": {
-        "name": "Infinite Craft"
+        "name": "Infinite Craft",
+        "category": "puzzle"
       },
       "mad-truck-challenge": {
-        "name": "Mad Truck Challenge"
+        "name": "Mad Truck Challenge",
+        "category": "casual"
       },
       "madalin-stunt-cars-3": {
-        "name": "Madalin Stunt Cars 3"
+        "name": "Madalin Stunt Cars 3",
+        "category": "casual"
       },
       "monster-truck-destroyer": {
-        "name": "Monster Truck Destroyer"
+        "name": "Monster Truck Destroyer",
+        "category": "casual"
       },
       "monster-truck-vs-zombie": {
-        "name": "Monster Truck vs Zombie"
+        "name": "Monster Truck vs Zombie",
+        "category": "casual"
       },
       "moto-trial-racing-2": {
-        "name": "Moto Trial Racing 2"
+        "name": "Moto Trial Racing 2",
+        "category": "platformer"
       },
       "moving-truck": {
-        "name": "Moving Truck"
+        "name": "Moving Truck",
+        "category": "casual"
       },
       "nitro-knights-io": {
-        "name": "Nitro Knights.io"
+        "name": "Nitro Knights.io",
+        "category": "casual"
       },
       "pako-highway": {
-        "name": "Pako Highway"
+        "name": "Pako Highway",
+        "category": "casual"
       },
       "parking-fury-2": {
-        "name": "Parking Fury 2"
+        "name": "Parking Fury 2",
+        "category": "casual"
       },
       "parking-fury-3": {
-        "name": "Parking Fury 3"
+        "name": "Parking Fury 3",
+        "category": "casual"
       },
       "parking-fury": {
-        "name": "Parking Fury"
+        "name": "Parking Fury",
+        "category": "casual"
       },
       "penalty-shooters-2": {
-        "name": "Penalty Shooters 2"
+        "name": "Penalty Shooters 2",
+        "category": "sports"
       },
       "pixel-smash-duel": {
-        "name": "Pixel Smash Duel"
+        "name": "Pixel Smash Duel",
+        "category": "casual"
       },
       "stickman-war": {
-        "name": "Stickman War"
+        "name": "Stickman War",
+        "category": "strategy"
       },
       "stock-car-hero": {
-        "name": "Stock Car Hero"
+        "name": "Stock Car Hero",
+        "category": "casual"
       },
       "storm-city-mafia": {
-        "name": "Storm City Mafia"
+        "name": "Storm City Mafia",
+        "category": "casual"
       },
       "super-liquid-soccer": {
-        "name": "Super Liquid Soccer"
+        "name": "Super Liquid Soccer",
+        "category": "sports"
       },
       "the-heist": {
-        "name": "The Heist"
+        "name": "The Heist",
+        "category": "puzzle"
       },
       "ultimate-offroad": {
-        "name": "Ultimate Offroad"
+        "name": "Ultimate Offroad",
+        "category": "casual"
       },
       "volley-random": {
-        "name": "Volley Random"
+        "name": "Volley Random",
+        "category": "sports"
       },
       "wheelie-bike-2": {
-        "name": "Wheelie Bike 2"
+        "name": "Wheelie Bike 2",
+        "category": "platformer"
       },
       "wheelie-bike": {
-        "name": "Wheelie Bike"
+        "name": "Wheelie Bike",
+        "category": "platformer"
       },
       "x-trial-racing": {
-        "name": "X-Trial Racing"
+        "name": "X-Trial Racing",
+        "category": "platformer"
       }
     }
   },
   {
     "g5": {
       "a-dance-of-fire-and-ice": {
-        "name": "A Dance of Fire and Ice"
+        "name": "A Dance of Fire and Ice",
+        "category": "reflexes"
       },
       "backrooms": {
-        "name": "Backrooms"
+        "name": "Backrooms",
+        "category": "horror"
       },
       "backrooms-2d": {
-        "name": "Backrooms 2D"
+        "name": "Backrooms 2D",
+        "category": "horror"
       },
       "bacon-may-die-2022": {
-        "name": "Bacon May Die (2022)"
+        "name": "Bacon May Die (2022)",
+        "category": "platformer"
       },
       "basket-and-ball": {
-        "name": "Basket & Ball"
+        "name": "Basket & Ball",
+        "category": "puzzle"
       },
       "basket-champs": {
-        "name": "Basket Champs"
+        "name": "Basket Champs",
+        "category": "sports"
       },
       "basket-random": {
-        "name": "Basket Random"
+        "name": "Basket Random",
+        "category": "sports"
       },
       "basketball-stars": {
-        "name": "Basketball Stars"
+        "name": "Basketball Stars",
+        "category": "sports"
       },
       "bicycle-stunt-3d": {
-        "name": "Bicycle Stunt 3D"
+        "name": "Bicycle Stunt 3D",
+        "category": "platformer"
       },
       "big-shot-boxing": {
-        "name": "Big Shot Boxing"
+        "name": "Big Shot Boxing",
+        "category": "sports"
       },
       "biker-street": {
-        "name": "Biker Street"
+        "name": "Biker Street",
+        "category": "casual"
       },
       "boxing-random": {
-        "name": "Boxing Random"
+        "name": "Boxing Random",
+        "category": "sports"
       },
       "burnin-rubber-5-xs": {
-        "name": "Burnin' Rubber 5 XS"
+        "name": "Burnin' Rubber 5 XS",
+        "category": "shooter"
       },
       "car-rush": {
-        "name": "Car Rush"
+        "name": "Car Rush",
+        "category": "casual"
       },
       "cars-simulator": {
-        "name": "Cars Simulator"
+        "name": "Cars Simulator",
+        "category": "casual"
       },
       "cartoon-mini-racing": {
-        "name": "Cartoon Mini Racing"
+        "name": "Cartoon Mini Racing",
+        "category": "casual"
       },
       "champion-island": {
-        "name": "Champion Island"
+        "name": "Champion Island",
+        "category": "sports"
       },
       "cluster-rush": {
-        "name": "Cluster Rush"
+        "name": "Cluster Rush",
+        "category": "reflexes"
       },
       "dots-io": {
-        "name": "Dots.io"
+        "name": "Dots.io",
+        "category": "casual"
       },
       "down-the-hill": {
-        "name": "Down The Hill"
+        "name": "Down The Hill",
+        "category": "reflexes"
       },
       "dragon-vs-bricks": {
-        "name": "Dragon vs Bricks"
+        "name": "Dragon vs Bricks",
+        "category": "puzzle"
       },
       "eagle-ride": {
-        "name": "Eagle Ride"
+        "name": "Eagle Ride",
+        "category": "casual"
       },
       "eat-the-fish-io": {
-        "name": "Eat The Fish.io"
+        "name": "Eat The Fish.io",
+        "category": "casual"
       },
       "electron-dash": {
-        "name": "Electron Dash"
+        "name": "Electron Dash",
+        "category": "reflexes"
       },
       "endless-tunnel": {
-        "name": "Endless Tunnel"
+        "name": "Endless Tunnel",
+        "category": "reflexes"
       },
       "fnaf": {
-        "name": "FNAF"
+        "name": "FNAF",
+        "category": "horror"
       },
       "fnaf-2": {
-        "name": "FNAF 2"
+        "name": "FNAF 2",
+        "category": "horror"
       },
       "fnaf-3": {
-        "name": "FNAF 3"
+        "name": "FNAF 3",
+        "category": "horror"
       },
       "fnaf-4": {
-        "name": "FNAF 4"
+        "name": "FNAF 4",
+        "category": "horror"
       },
       "fnaf-sister-location": {
-        "name": "FNAF: Sister Location"
+        "name": "FNAF: Sister Location",
+        "category": "horror"
       },
       "granny-2-asylum-horror-house": {
-        "name": "Granny 2: Asylum Horror House"
+        "name": "Granny 2: Asylum Horror House",
+        "category": "horror"
       },
       "idle-ants": {
-        "name": "Idle Ants"
+        "name": "Idle Ants",
+        "category": "casual"
       },
       "minecraft-1-5": {
-        "name": "Minecraft 1.5"
+        "name": "Minecraft 1.5",
+        "category": "casual"
       },
       "minecraft-1-8": {
-        "name": "Minecraft 1.8"
+        "name": "Minecraft 1.8",
+        "category": "casual"
       },
       "minecraft-classic": {
-        "name": "Minecraft Classic"
+        "name": "Minecraft Classic",
+        "category": "casual"
       },
       "missiles": {
-        "name": "Missiles"
+        "name": "Missiles",
+        "category": "shooter"
       },
       "monkey-mart": {
-        "name": "Monkey Mart"
+        "name": "Monkey Mart",
+        "category": "casual"
       },
       "moto-x3m": {
-        "name": "Moto X3M"
+        "name": "Moto X3M",
+        "category": "platformer"
       },
       "moto-x3m-2": {
-        "name": "Moto X3M 2"
+        "name": "Moto X3M 2",
+        "category": "platformer"
       },
       "moto-x3m-pool-party": {
-        "name": "Moto X3M: Pool Party"
+        "name": "Moto X3M: Pool Party",
+        "category": "platformer"
       },
       "moto-x3m-spooky-land": {
-        "name": "Moto X3M: Spooky Land"
+        "name": "Moto X3M: Spooky Land",
+        "category": "platformer"
       },
       "moto-x3m-winter": {
-        "name": "Moto X3M Winter"
+        "name": "Moto X3M Winter",
+        "category": "platformer"
       },
       "mutazone": {
-        "name": "Mutazone"
+        "name": "Mutazone",
+        "category": "casual"
       },
       "n-gon": {
-        "name": "N-Gon"
+        "name": "N-Gon",
+        "category": "casual"
       },
       "ninja-vs-evilcorp": {
-        "name": "Ninja vs Evil Corp"
+        "name": "Ninja vs Evil Corp",
+        "category": "platformer"
       },
       "ns-shaft": {
-        "name": "NS Shaft"
+        "name": "NS Shaft",
+        "category": "casual"
       },
       "offline-paradise": {
-        "name": "Offline Paradise"
+        "name": "Offline Paradise",
+        "category": "casual"
       },
       "om-nom-bounce": {
-        "name": "Om Nom: Bounce!"
+        "name": "Om Nom: Bounce!",
+        "category": "puzzle"
       },
       "race-survival-arena-king": {
-        "name": "Race Survival: Arena King"
+        "name": "Race Survival: Arena King",
+        "category": "survival"
       },
       "racing-monster-trucks": {
-        "name": "Racing Monster Trucks"
+        "name": "Racing Monster Trucks",
+        "category": "casual"
       },
       "real-flying-truck": {
-        "name": "Real Flying Truck"
+        "name": "Real Flying Truck",
+        "category": "casual"
       },
       "real-garbage-truck": {
-        "name": "Real Garbage Truck"
+        "name": "Real Garbage Truck",
+        "category": "casual"
       },
       "retro-bowl": {
-        "name": "Retro Bowl"
+        "name": "Retro Bowl",
+        "category": "sports"
       },
       "retro-bowl-college": {
-        "name": "Retro Bowl College"
+        "name": "Retro Bowl College",
+        "category": "sports"
       },
       "rocket-soccer-derby": {
-        "name": "Rocket Soccer Derby"
+        "name": "Rocket Soccer Derby",
+        "category": "sports"
       },
       "scrap-metal-3-infernal-trap": {
-        "name": "Scrap Metal 3: Infernal Trap"
+        "name": "Scrap Metal 3: Infernal Trap",
+        "category": "casual"
       },
       "sky-car-stunt-3d": {
-        "name": "Sky Car Stunt 3D"
+        "name": "Sky Car Stunt 3D",
+        "category": "casual"
       },
       "snow-rider-3d": {
-        "name": "Snow Rider 3D"
+        "name": "Snow Rider 3D",
+        "category": "reflexes"
       },
       "soccer-heads": {
-        "name": "Soccer Heads"
+        "name": "Soccer Heads",
+        "category": "sports"
       },
       "soccer-random": {
-        "name": "Soccer Random"
+        "name": "Soccer Random",
+        "category": "sports"
       },
       "soccer-skills": {
-        "name": "Soccer Skills"
+        "name": "Soccer Skills",
+        "category": "sports"
       },
       "spiral-roll": {
-        "name": "Spiral Roll"
+        "name": "Spiral Roll",
+        "category": "puzzle"
       },
       "sprinter": {
-        "name": "Sprinter"
+        "name": "Sprinter",
+        "category": "reflexes"
       },
       "stick-archers-battle": {
-        "name": "Stick Archers Battle"
+        "name": "Stick Archers Battle",
+        "category": "strategy"
       },
       "stick-defenders": {
-        "name": "Stick Defenders"
+        "name": "Stick Defenders",
+        "category": "strategy"
       },
       "stick-duel-battle": {
-        "name": "Stick Duel Battle"
+        "name": "Stick Duel Battle",
+        "category": "casual"
       },
       "stick-merge": {
-        "name": "Stick Merge"
+        "name": "Stick Merge",
+        "category": "puzzle"
       },
       "stickman-boost": {
-        "name": "Stickman Boost!"
+        "name": "Stickman Boost!",
+        "category": "platformer"
       },
       "stickman-go": {
-        "name": "Stickman Go"
+        "name": "Stickman Go",
+        "category": "casual"
       },
       "stickman-vs-zombies": {
-        "name": "Stickman vs Zombies"
+        "name": "Stickman vs Zombies",
+        "category": "shooter"
       },
       "subway-surfers": {
-        "name": "Subway Surfers"
+        "name": "Subway Surfers",
+        "category": "reflexes"
       },
       "subway-surfers-ny": {
-        "name": "Subway Surfers NY"
+        "name": "Subway Surfers NY",
+        "category": "reflexes"
       },
       "super-falling-fred": {
-        "name": "Super Falling Fred"
+        "name": "Super Falling Fred",
+        "category": "reflexes"
       },
       "super-heroes": {
-        "name": "Super Heroes"
+        "name": "Super Heroes",
+        "category": "casual"
       },
       "super-mario-64": {
-        "name": "Super Mario 64"
+        "name": "Super Mario 64",
+        "category": "platformer"
       },
       "super-mario-bros-wonder": {
-        "name": "Super Mario Bros. Wonder"
+        "name": "Super Mario Bros. Wonder",
+        "category": "platformer"
       },
       "super-mario-construct": {
-        "name": "Super Mario Construct"
+        "name": "Super Mario Construct",
+        "category": "platformer"
       },
       "super-tornado-io": {
-        "name": "Super Tornado.io"
+        "name": "Super Tornado.io",
+        "category": "casual"
       },
       "superhot": {
-        "name": "Superhot"
+        "name": "Superhot",
+        "category": "shooter"
       },
       "survivor-in-rainbow-monster": {
-        "name": "Survivor in Rainbow Monster"
+        "name": "Survivor in Rainbow Monster",
+        "category": "survival"
       },
       "synesthesia": {
-        "name": "Synesthesia"
+        "name": "Synesthesia",
+        "category": "reflexes"
       },
       "temple-of-boom": {
-        "name": "Temple of Boom!"
+        "name": "Temple of Boom!",
+        "category": "shooter"
       },
       "we-become-what-we-behold": {
-        "name": "We Become What We Behold"
+        "name": "We Become What We Behold",
+        "category": "casual"
       },
       "xmas-cookie-clicker": {
-        "name": "Xmas Cookie Clicker"
+        "name": "Xmas Cookie Clicker",
+        "category": "casual"
       },
       "zombie-derby-pixel-survival": {
-        "name": "Zombie Derby Pixel Survival"
+        "name": "Zombie Derby Pixel Survival",
+        "category": "survival"
       }
     }
   }
