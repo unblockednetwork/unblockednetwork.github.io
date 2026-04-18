@@ -4,13 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="./logo.svg">
-  <script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script>
+  <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "e7ca3a68f0c04656baf422e837d316d4"}'></script>
+
   <title>ZYNQ | Games</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  
-  <script src="https://cdn.jsdelivr.net/gh/un-zynq/v2/dev/lib7.4.3.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/un-zynq/zynq-lib@1.1.3/index.min.js"></script>
 
   <style>
     :root {
@@ -331,8 +333,9 @@
       .featured-grid,
       .games-grid { grid-template-columns: repeat(2, 1fr); }
     }
-  </style>
+      </style>
 </head>
+
 <body>
 <div id="app">
   <header>
@@ -341,6 +344,7 @@
         <div class="logo-mark">Z</div>
         <div class="logo-text">ZYNQ <span>Games</span></div>
       </div>
+
       <div class="stats-pill">
         <span><strong id="count-text">0</strong> games</span>
         <div class="stats-divider"></div>
@@ -351,19 +355,14 @@
     <div class="search-section">
       <div class="search-wrapper">
         <input type="text" class="search-input" id="search" placeholder="Search games..." autocomplete="off">
-        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
           <circle cx="11" cy="11" r="8"></circle>
           <path d="m21 21-4.3-4.3"></path>
         </svg>
       </div>
+
       <button class="btn-random" id="random-btn">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <rect width="12" height="12" x="2" y="10" rx="2" ry="2"></rect>
-          <path d="m17.92 14 3.5-3.5a2.24 2.24 0 0 0 0-3l-5-4.92a2.24 2.24 0 0 0-3 0L10 6"></path>
-          <path d="M6 18h.01"></path>
-          <path d="M10 14h.01"></path>
-        </svg>
-        I'm bored
+        🎲 I'm bored
       </button>
     </div>
   </header>
@@ -375,7 +374,7 @@
     <div class="featured-grid" id="featured-container"></div>
 
     <div class="section-header">
-      <div class="section-title" id="games-label">All Games</div>
+      <div class="section-title">All Games</div>
     </div>
     <div class="games-grid" id="games-container"></div>
   </main>
@@ -395,7 +394,6 @@
   let allGames = [];
   let startTime = Date.now();
 
-  // Uptime counter
   setInterval(() => {
     const s = Math.floor((Date.now() - startTime) / 1000);
     uptimeEl.textContent = s < 60 ? `${s}s` : `${Math.floor(s/60)}m`;
@@ -404,115 +402,99 @@
   function showToast(msg) {
     toast.textContent = msg;
     toast.classList.add('show');
-    setTimeout(() => toast.classList.remove('show'), 2800);
+    setTimeout(() => toast.classList.remove('show'), 2500);
   }
 
   function createGameCard(game) {
     const card = document.createElement('a');
     card.className = 'game-card';
-    // Belangrijke verandering: link naar /game/alias
     card.href = `./game/${game.alias}`;
-    
+
     card.innerHTML = `
       <div class="splash-container">
-        <img src="${game.splash}" alt="${game.name}" class="splash" loading="lazy">
+        <img src="${game.splash || game.thumb}" class="splash" loading="lazy">
       </div>
       <div class="game-info">
         <div class="game-title">${game.name}</div>
       </div>
     `;
+
     return card;
   }
 
   function renderFeatured(games) {
     featuredContainer.innerHTML = '';
-    const featured = games.slice(0, 12);
-    featured.forEach(game => {
-      featuredContainer.appendChild(createGameCard(game));
+    games.slice(0, 12).forEach(g => {
+      featuredContainer.appendChild(createGameCard(g));
     });
   }
 
-  function renderAllGames(games = allGames) {
+  function renderAll(games) {
     gamesContainer.innerHTML = '';
+
     if (!games.length) {
       gamesContainer.innerHTML = `<div class="empty-state">Geen games gevonden</div>`;
       return;
     }
-    games.forEach(game => {
-      gamesContainer.appendChild(createGameCard(game));
+
+    games.forEach(g => {
+      gamesContainer.appendChild(createGameCard(g));
     });
   }
 
   async function init() {
     try {
-      await window.HRN.load();
-      allGames = window.HRN.all();
+      if (!window.ZYNQ?.games) {
+        throw new Error("ZYNQ library not loaded");
+      }
+
+      await window.ZYNQ.games.init();
+
+      // 🔥 FIX: gebruik veilige fallback voor API variatie
+      allGames =
+        window.ZYNQ.games.list ||
+        window.ZYNQ.games.all?.() ||
+        [];
 
       countEl.textContent = allGames.length;
 
       renderFeatured(allGames);
-      renderAllGames();
+      renderAll(allGames);
 
-      // Search functionaliteit
       searchInput.addEventListener('input', () => {
-        const query = searchInput.value.trim();
-        if (!query) {
-          renderAllGames();
-          return;
-        }
-        const results = window.HRN.search(query);
-        renderAllGames(results);
+        const q = searchInput.value.trim();
+
+        if (!q) return renderAll(allGames);
+
+        const res = window.ZYNQ.games.search(q);
+        renderAll(res || []);
       });
 
-      // Random button → ook naar /game/alias
       randomBtn.addEventListener('click', () => {
-        const randomGame = window.HRN.random();
-        if (randomGame) {
-          showToast(`Opening ${randomGame.name}...`);
-          setTimeout(() => {
-            window.location.href = `./game/${randomGame.alias}`;
-          }, 280);
-        }
+        const g =
+          window.ZYNQ.games.getRandomOne?.() ||
+          window.ZYNQ.games.random?.() ||
+          window.ZYNQ.games.random?.(1)?.[0];
+
+        if (!g) return;
+
+        showToast(`Opening ${g.name}...`);
+
+        setTimeout(() => {
+          window.location.href = `./game/${g.alias}`;
+        }, 250);
       });
 
     } catch (err) {
-      console.error("HRN Engine load error:", err);
-      gamesContainer.innerHTML = `<div class="empty-state">Kon games niet laden. Probeer opnieuw.</div>`;
+      console.error("ZYNQ init error:", err);
+
+      gamesContainer.innerHTML =
+        `<div class="empty-state">ZYNQ failed to load 😢 check console</div>`;
     }
   }
-  (function(){
-  const lastShown = localStorage.getItem('toastShownDate');
-  const today = new Date().toISOString().split('T')[0];
-  if(lastShown === today) return;
-  localStorage.setItem('toastShownDate', today);
 
-  const linkCSS = document.createElement('link');
-  linkCSS.rel = 'stylesheet';
-  linkCSS.href = 'https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.css';
-  document.head.appendChild(linkCSS);
-
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/notyf@3/notyf.min.js';
-  script.onload = ()=>{
-    const style = document.createElement('style');
-    style.innerHTML = ".notyf__message a{color:#0af;text-decoration:none;font-weight:600;padding:4px 6px;border-radius:4px;background:rgba(255,255,255,0.1);display:inline-block;cursor:pointer;}";
-    document.head.appendChild(style);
-
-    const notyf = new Notyf({
-      duration: 15000,
-      position:{x:'right',y:'bottom'},
-      types:[{type:'info',background:'#111',icon:false,ripple:true}]
-    });
-
-    notyf.open({
-      type:'info',
-      message:'We apologize for the recent outages, all services are back up!'
-    });
-  };
-  document.body.appendChild(script);
-})();
-
-  init();
+  document.addEventListener("DOMContentLoaded", init);
 </script>
+
 </body>
 </html>
