@@ -1,1 +1,0 @@
-1=pc-touch;2=pc-no-touch;3=phone;4=tablet
