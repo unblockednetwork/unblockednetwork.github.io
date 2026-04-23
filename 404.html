@@ -12,7 +12,7 @@
   <title>UN | ZYNQ</title>
 
   <!-- ZYNQ ENGINE (UPDATED CDN) -->
-  <script src="https://cdn.jsdelivr.net/gh/un-zynq/zynq-lib@1.1.4/index.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/un-zynq/zynq-lib@1.1.5/index.min.js"></script>
 
   <style>
     *, *::before, *::after {
@@ -171,7 +171,7 @@
 
       if (!Z) throw new Error("ZYNQ engine not found");
 
-      await Z.games.init?.();
+      await Z.games.init?.({version:"888ee07fb7e0ae9dd8a5faedc01e2847879af1e5"});
 
       const game =
         Z.games.getByAlias?.(alias) ||
